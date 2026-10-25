@@ -1,0 +1,17 @@
+# Chaves e senhas (NUNCA vão para o repositório)
+.env
+.env.*
+!.env.exemplo
+
+# Pacote original e referência (pesados, ficam só no computador)
+catalogo-top-fest-pacote.zip
+referencia/
+
+# Ferramentas
+node_modules/
+.wrangler/
+.DS_Store
+Thumbs.db
+
+# Capturas de tela enviadas no chat
+tela*.png
