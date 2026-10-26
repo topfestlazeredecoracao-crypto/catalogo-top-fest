@@ -20,3 +20,5 @@ tela*.png
 GUIA_*.txt
 ajuda.txt
 __pycache__/
+CONTAS_E_SERVICOS.*
+*_IMPRIMIR.html
