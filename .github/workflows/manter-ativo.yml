@@ -1,0 +1,34 @@
+# A cada 3 dias: consulta o Supabase (evita a pausa do plano gratuito por
+# inatividade) e atualiza a cópia de reserva do catálogo em site/reserva/.
+name: Manter ativo e atualizar reserva
+
+on:
+  schedule:
+    - cron: "17 9 */3 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reserva:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Gerar cópia de reserva
+        run: python scripts/gerar_reserva.py
+      - name: Salvar no repositório (se mudou)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/reserva
+          if git diff --cached --quiet; then
+            echo "Nada mudou."
+          else
+            git commit -m "Atualiza cópia de reserva do catálogo"
+            git push
+          fi

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Administração – Catálogo Top Fest</title>
+<meta name="theme-color" content="#8f6d14">
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<header class="topo">
+  <img src="../img/logo.png" width="48" height="48" alt="">
+  <div class="topo-tit"><strong>Administração</strong><span>Catálogo Top Fest</span></div>
+  <a class="btn-topo" href="../" target="_blank" rel="noopener">Ver site</a>
+  <button class="btn-topo" id="sair" type="button" hidden>Sair</button>
+</header>
+
+<main id="app">
+  <!-- Entrar -->
+  <section id="tela-login" class="caixa" hidden>
+    <h1>Entrar</h1>
+    <form id="form-login">
+      <label>E-mail<input type="email" name="email" autocomplete="username" required></label>
+      <label>Senha<input type="password" name="senha" autocomplete="current-password" required></label>
+      <button class="btn pri grande" type="submit">Entrar</button>
+    </form>
+    <button class="link" id="ir-esqueci" type="button">Esqueci minha senha</button>
+  </section>
+
+  <!-- Esqueci a senha -->
+  <section id="tela-esqueci" class="caixa" hidden>
+    <h1>Esqueci minha senha</h1>
+    <p>Digite o seu e-mail. Vamos enviar um link para você criar uma senha nova.</p>
+    <form id="form-esqueci">
+      <label>E-mail<input type="email" name="email" autocomplete="username" required></label>
+      <button class="btn pri grande" type="submit">Enviar link</button>
+    </form>
+    <button class="link" id="voltar-login" type="button">Voltar para entrar</button>
+  </section>
+
+  <!-- Nova senha (depois de clicar no link do e-mail) -->
+  <section id="tela-nova-senha" class="caixa" hidden>
+    <h1>Criar senha nova</h1>
+    <form id="form-nova-senha">
+      <label>Senha nova (mínimo 8 caracteres)<input type="password" name="senha" autocomplete="new-password" minlength="8" required></label>
+      <label>Repita a senha nova<input type="password" name="senha2" autocomplete="new-password" minlength="8" required></label>
+      <button class="btn pri grande" type="submit">Salvar senha nova</button>
+    </form>
+  </section>
+
+  <!-- Painel -->
+  <section id="tela-painel" hidden>
+    <nav class="abas" role="tablist">
+      <button role="tab" data-aba="produtos" class="on">📦 Produtos</button>
+      <button role="tab" data-aba="categorias">🗂️ Categorias</button>
+      <button role="tab" data-aba="inspiracoes">📸 Inspirações</button>
+      <button role="tab" data-aba="config">⚙️ Configurações</button>
+      <button role="tab" data-aba="backup">💾 Cópia de segurança</button>
+    </nav>
+
+    <div id="aba-produtos" class="aba">
+      <div class="barra">
+        <button class="btn pri" id="novo-produto" type="button">➕ Novo produto</button>
+      </div>
+      <div class="filtros">
+        <input id="busca" type="search" placeholder="Buscar produto" aria-label="Buscar produto">
+        <select id="filtro-cat" aria-label="Filtrar por categoria"></select>
+      </div>
+      <p class="dica" id="dica-ordem"></p>
+      <ul id="lista-produtos" class="lista"></ul>
+    </div>
+
+    <div id="aba-categorias" class="aba" hidden>
+      <div class="barra">
+        <button class="btn pri" id="nova-categoria" type="button">➕ Nova categoria</button>
+      </div>
+      <p class="dica">Use ▲ e ▼ para mudar a ordem dos botões de categoria no site.</p>
+      <ul id="lista-categorias" class="lista"></ul>
+    </div>
+
+    <div id="aba-inspiracoes" class="aba" hidden>
+      <div class="cartao">
+        <h2>Adicionar fotos</h2>
+        <label>Quem montou?
+          <select id="legenda-nova">
+            <option value="">Montado pela equipe Top Fest</option>
+            <option value="Montado pela cliente (pegue e monte)">Montado pela cliente (pegue e monte)</option>
+          </select>
+        </label>
+        <label class="btn pri grande arquivo">📷 Escolher fotos
+          <input id="fotos-insp" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+        </label>
+      </div>
+      <p class="dica">Use ◀ e ▶ para mudar a ordem das fotos na galeria.</p>
+      <ul id="lista-insp" class="galeria"></ul>
+    </div>
+
+    <div id="aba-config" class="aba" hidden>
+      <form id="form-config" class="cartao">
+        <h2>WhatsApp e telefones</h2>
+        <label>Número do WhatsApp que recebe os orçamentos
+          <input name="whatsapp_orcamentos" inputmode="tel" required placeholder="(19) 99161-6329">
+          <small>Pode digitar com ou sem DDD 55. Ex.: (19) 99161-6329</small>
+        </label>
+        <label>WhatsApp como aparece escrito
+          <input name="whatsapp_exibicao" placeholder="(19) 99161-6329">
+        </label>
+        <label>Telefone secundário
+          <input name="telefone_secundario" inputmode="tel" placeholder="(19) 99113-8624">
+        </label>
+        <label class="check"><input type="checkbox" name="mostrar_precos"> Mostrar preços no site (só para produtos que tiverem preço)</label>
+        <button class="btn pri grande" type="submit">Salvar configurações</button>
+      </form>
+      <form id="form-senha" class="cartao">
+        <h2>Trocar minha senha</h2>
+        <label>Senha nova (mínimo 8 caracteres)<input type="password" name="senha" autocomplete="new-password" minlength="8" required></label>
+        <label>Repita a senha nova<input type="password" name="senha2" autocomplete="new-password" minlength="8" required></label>
+        <button class="btn grande" type="submit">Trocar senha</button>
+      </form>
+    </div>
+
+    <div id="aba-backup" class="aba" hidden>
+      <div class="cartao">
+        <h2>Baixar cópia de segurança</h2>
+        <p>Baixa um arquivo <b>.json</b> com todas as categorias, produtos, inspirações e configurações. Guarde no computador ou no Google Drive.</p>
+        <button class="btn pri grande" id="exportar" type="button">⬇️ Baixar cópia agora</button>
+      </div>
+      <div class="cartao">
+        <h2>Restaurar uma cópia</h2>
+        <p>Volta os dados para como estavam na cópia escolhida. Itens criados depois da cópia <b>não</b> são apagados.</p>
+        <label class="btn grande arquivo">⬆️ Escolher arquivo de cópia
+          <input id="importar" type="file" accept="application/json,.json" hidden>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <p id="carregando" class="caixa">Carregando…</p>
+</main>
+
+<!-- Formulário de produto -->
+<dialog id="dlg-produto" aria-labelledby="dlg-produto-tit">
+  <form id="form-produto" method="dialog">
+    <h2 id="dlg-produto-tit">Produto</h2>
+    <div class="foto-edit">
+      <div id="prev-produto" class="prev"></div>
+      <div>
+        <label class="btn arquivo">📷 Escolher foto
+          <input name="foto" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+        </label>
+        <button class="btn" type="button" id="tirar-foto" hidden>Remover foto</button>
+        <small>JPG, PNG ou WebP. A foto é reduzida automaticamente.</small>
+      </div>
+    </div>
+    <label>Nome<input name="nome" required maxlength="150"></label>
+    <label>Descrição<textarea name="descricao" rows="3" maxlength="600"></textarea></label>
+    <label>Categoria<select name="categoria_id" required></select></label>
+    <div id="nova-cat-campos" hidden>
+      <label>Nome da nova categoria<input name="nova_cat_nome" maxlength="80"></label>
+      <label>Ícone (um emoji)<input name="nova_cat_icone" maxlength="8" value="🎉"></label>
+    </div>
+    <label>Preço (opcional)<input name="preco" inputmode="decimal" placeholder="Ex.: 35,00">
+      <small>Só aparece no site se "Mostrar preços" estiver ligado em Configurações.</small></label>
+    <label class="check"><input type="checkbox" name="ativo" checked> Visível no site</label>
+    <div class="acoes">
+      <button class="btn" value="cancelar" type="button" data-fechar>Cancelar</button>
+      <button class="btn pri" type="submit">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Formulário de categoria -->
+<dialog id="dlg-categoria" aria-labelledby="dlg-categoria-tit">
+  <form id="form-categoria" method="dialog">
+    <h2 id="dlg-categoria-tit">Categoria</h2>
+    <label>Nome<input name="nome" required maxlength="80"></label>
+    <label>Ícone (um emoji)<input name="icone" maxlength="8" required></label>
+    <div class="acoes">
+      <button class="btn" type="button" data-fechar>Cancelar</button>
+      <button class="btn pri" type="submit">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Confirmação -->
+<dialog id="dlg-confirma" aria-labelledby="dlg-confirma-tit">
+  <form method="dialog">
+    <h2 id="dlg-confirma-tit">Tem certeza?</h2>
+    <p id="dlg-confirma-txt"></p>
+    <div class="acoes">
+      <button class="btn" value="nao">Cancelar</button>
+      <button class="btn perigo" value="sim" id="dlg-confirma-sim">Sim</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="aviso" role="status" aria-live="polite" hidden></div>
+
+<script src="vendor/supabase-2.117.3.js"></script>
+<script src="../js/config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

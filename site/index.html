@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chácara Top Fest – Catálogo de locação</title>
+<meta name="description" content="Catálogo de decoração para locação da Chácara Top Fest: arcos, painéis, mobiliário, boleiras, capas temáticas e flores. Monte seu pedido e peça o orçamento pelo WhatsApp.">
+<meta name="theme-color" content="#8f6d14">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Chácara Top Fest – Catálogo de decoração para locação">
+<meta property="og:description" content="Escolha os itens, monte seu pedido e peça o orçamento pelo WhatsApp.">
+<meta property="og:image" content="img/compartilhar.jpg">
+<link rel="preconnect" href="https://mtxczbepmxbxzafdypga.supabase.co" crossorigin>
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<header>
+  <img src="img/logo.png" width="92" height="92" alt="Chácara Top Fest – Lazer, eventos e decorações">
+  <div>
+    <h1>Catálogo de decoração para locação</h1>
+    <p>Chácara Top Fest · Lazer, eventos e decorações</p>
+  </div>
+</header>
+<main class="wrap">
+  <label class="sr" for="q">Buscar item</label>
+  <input id="q" type="search" placeholder="Buscar item (ex.: arco, boleira, toalha)" autocomplete="off">
+  <nav id="chips" aria-label="Categorias"></nav>
+  <div id="grid" aria-live="polite"><div class="empty">Carregando o catálogo…</div></div>
+</main>
+<footer>Escolha os itens, monte seu pedido e envie pelo WhatsApp para receber o orçamento.<br>Valores e disponibilidade sob consulta.</footer>
+<button id="fab" type="button" hidden></button>
+<div id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden></div>
+<div id="ov" hidden><div id="panel" role="dialog" aria-modal="true" aria-labelledby="ptitle"></div></div>
+<script src="js/config.js"></script>
+<script src="js/catalogo.js"></script>
+</body>
+</html>
