@@ -15,3 +15,8 @@ Thumbs.db
 
 # Capturas de tela enviadas no chat
 tela*.png
+
+# Guias impressos para a dona (não fazem parte do site)
+GUIA_*.txt
+ajuda.txt
+__pycache__/
