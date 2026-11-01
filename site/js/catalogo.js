@@ -411,7 +411,13 @@
 
   carregarSupabase()
     .catch(carregarReserva)
-    .then(function (d) { montar(d); linksDuvida(); chips(); grid(); fab(); })
+    .then(function (d) {
+      montar(d);
+      // Ao entrar no site, já abre a galeria de inspirações (se tiver fotos).
+      var g = cats.filter(function (c) { return c.tipo === GALERIA; })[0];
+      if (g && insp.length && cat === "Todos" && !q) cat = g.chave;
+      linksDuvida(); chips(); grid(); fab();
+    })
     .catch(function () {
       $("#grid").innerHTML = '<div class="empty">Não foi possível carregar o catálogo agora. Tente novamente em alguns minutos.</div>';
     });
