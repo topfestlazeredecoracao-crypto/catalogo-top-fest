@@ -292,7 +292,7 @@
     var nome = x.nome + (cod(x) ? " (Cód. " + cod(x) + ")" : "");
     var varias = insp.length > 1;
     $("#lb").innerHTML =
-      '<div class="lb-topo"><button class="lb-voltar" data-lb="fechar" aria-label="Voltar ao catálogo">✕ Voltar</button></div>' +
+      '<div class="lb-topo"><button class="lb-voltar" data-lb="fechar" aria-label="Voltar ao catálogo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg> Voltar</button></div>' +
       '<div class="lb-foto"><img src="' + esc(fotoUrl(x.imagem)) + '" alt="' + esc(nome) + '"></div>' +
       '<p class="lb-nome">' + esc(nome) + (x.descricao ? "<small>" + esc(x.descricao) + "</small>" : "") + "</p>" +
       // Setas numa barra abaixo da foto, para não cobrir a imagem.
