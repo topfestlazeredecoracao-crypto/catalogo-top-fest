@@ -102,16 +102,16 @@
   }
 
   function chips() {
-    var botao = function (chave, icone, nome, extra) {
+    var botao = function (chave, nome, extra) {
       var on = cat === chave;
       return '<button class="chip' + (on ? " on" : "") + (extra || "") + '" data-c="' + esc(chave) + '" aria-pressed="' + on + '">' +
-        '<span class="ic" aria-hidden="true">' + esc(icone) + "</span><span>" + esc(nome) + "</span></button>";
+        "<span>" + esc(nome) + "</span></button>";
     };
     // A galeria de inspirações vem primeiro, em destaque.
     var h = "";
-    cats.forEach(function (c) { if (c.tipo === GALERIA) h += botao(c.chave, c.icone, c.nome, " destaque"); });
-    h += botao("Todos", "✨", "Todos");
-    cats.forEach(function (c) { if (c.tipo !== GALERIA) h += botao(c.chave, c.icone, c.nome); });
+    cats.forEach(function (c) { if (c.tipo === GALERIA) h += botao(c.chave, c.nome, " destaque"); });
+    h += botao("Todos", "Todos");
+    cats.forEach(function (c) { if (c.tipo !== GALERIA) h += botao(c.chave, c.nome); });
     $("#chips").innerHTML = h;
   }
 
@@ -163,7 +163,7 @@
       // Em "Todos", um título antes de cada categoria.
       if (!c && pc !== ultimaCat) {
         ultimaCat = pc;
-        h += '<h2 class="sec-tit">' + esc(pc.icone) + " " + esc(pc.nome) + "</h2>";
+        h += '<h2 class="sec-tit">' + esc(pc.nome) + "</h2>";
       }
       var foto = fotoUrl(p.imagem);
       h += '<div class="card"><div class="tile">' +
@@ -182,13 +182,20 @@
     var g = cats.filter(function (c) { return c.tipo === GALERIA; })[0];
     if (!g || !insp.length) return "";
     return '<section class="destaque" aria-labelledby="dest-tit">' +
-      '<h2 id="dest-tit">' + esc(g.icone) + " " + esc(g.nome) + "</h2>" +
+      '<h2 id="dest-tit">' + esc(g.nome) + "</h2>" +
       "<p>Festas montadas com os nossos itens. Toque na foto para ampliar.</p>" +
       '<div class="fila">' + insp.slice(0, 10).map(function (x, i) {
         return '<button class="ins" data-z="' + i + '" aria-label="Ampliar foto de inspiração ' + (i + 1) + '">' +
           '<img src="' + esc(fotoUrl(x.imagem)) + '" alt="Inspiração de decoração ' + (i + 1) + '" loading="lazy" decoding="async" width="132" height="132"></button>';
       }).join("") + "</div>" +
       '<button class="ver-todas" data-c="' + esc(g.chave) + '">Ver todas as ' + insp.length + " fotos ›</button></section>";
+  }
+
+  // Botões "Tirar dúvidas": abrem o WhatsApp sem lista de itens.
+  function linksDuvida() {
+    var href = "https://wa.me/" + conf.whatsapp_orcamentos + "?text=" +
+      encodeURIComponent("Olá! Vim pelo catálogo da Chácara Top Fest e gostaria de tirar uma dúvida.");
+    Array.prototype.forEach.call(document.querySelectorAll("[data-duvida]"), function (a) { a.href = href; });
   }
 
   function total() {
@@ -324,7 +331,7 @@
 
   carregarSupabase()
     .catch(carregarReserva)
-    .then(function (d) { montar(d); chips(); grid(); fab(); })
+    .then(function (d) { montar(d); linksDuvida(); chips(); grid(); fab(); })
     .catch(function () {
       $("#grid").innerHTML = '<div class="empty">Não foi possível carregar o catálogo agora. Tente novamente em alguns minutos.</div>';
     });
