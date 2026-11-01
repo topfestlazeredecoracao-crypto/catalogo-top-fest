@@ -318,7 +318,7 @@ Na lista de orçamentos:
 > O orçamento guarda o nome e o valor dos itens do dia em que foi feito. Se você mudar o produto depois, o orçamento antigo não muda.
 
 ### 11.4 Situação do orçamento
-Dentro do orçamento, o campo **Situação** tem três opções:
+Na lista de orçamentos, cada um tem a caixinha **Situação**. Toque nela e escolha a opção: ela **salva na hora**. (Também dá para mudar dentro do **✏️ Abrir**.) As opções são:
 
 | Situação | Quando usar |
 |---|---|
@@ -329,18 +329,18 @@ Dentro do orçamento, o campo **Situação** tem três opções:
 Na lista, use **"Todas as situações"** para ver só os em aberto, os aprovados ou os cancelados.
 
 ### 11.5 Gerar o contrato
-1. Abra o orçamento (**✏️ Abrir**) e confira:
-   - a **Situação** está em **Aprovado**;
+1. Na lista, mude a **Situação** para **Aprovado** (fica verde e aparece o botão **📄 Contrato**).
+2. Abra o orçamento (**✏️ Abrir**) e confira:
    - a **Data da retirada** e a **Data da devolução** estão preenchidas (se ficarem vazias, o contrato sai com a linha em branco para escrever à mão).
-2. Confira se o **cliente** tem endereço, bairro, telefone, CPF e **RG** no cadastro (aba 👥 Clientes). O que faltar sai em branco no contrato.
-3. Toque em **Salvar orçamento**.
-4. Na lista, toque em **📄 Contrato**. Abre o contrato preenchido, com:
+3. Confira se o **cliente** tem endereço, bairro, telefone, CPF e **RG** no cadastro (aba 👥 Clientes). O que faltar sai em branco no contrato.
+4. Toque em **Salvar orçamento**.
+5. Na lista, toque em **📄 Contrato**. Abre o contrato preenchido, com:
    - os dados do cliente;
    - as datas de retirada e devolução;
    - a tabela com os itens e serviços aprovados;
    - o valor total, o **sinal** (50%) e o **restante** a pagar na retirada;
    - as cláusulas e as linhas de assinatura.
-5. Escolha:
+6. Escolha:
    - **🖨️ Imprimir / Salvar em PDF**: para imprimir e assinar, ou mandar o PDF para o cliente;
    - **📝 Baixar em Word**: baixa o contrato em Word, para mudar algum detalhe antes de imprimir.
 

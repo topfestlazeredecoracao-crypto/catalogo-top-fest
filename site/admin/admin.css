@@ -95,3 +95,9 @@ a.btn{text-decoration:none}
 .sit-aberto{background:var(--tile);color:var(--tx)}
 .sit-aprovado{background:var(--ok);color:#fff}
 .sit-cancelado{background:var(--bd);color:var(--mu);text-decoration:line-through}
+.sit-troca{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:0;font-size:14px;color:var(--mu)}
+.sit-troca select{width:auto;margin:0;padding:8px 10px;font-weight:700;border-width:2px}
+.sit-troca select.sit-aprovado{background:var(--ok);border-color:var(--ok);color:#fff}
+.sit-troca select.sit-cancelado{background:var(--bd);color:var(--tx)}
+.sit-troca select.sit-aberto{background:var(--bg);color:var(--tx)}
+.sit-troca option{background:var(--card);color:var(--tx)}

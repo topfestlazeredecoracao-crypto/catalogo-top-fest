@@ -1110,8 +1110,12 @@
         .filter(Boolean).join(" · ");
       return '<li class="item" data-id="' + esc(o.id) + '">' +
         '<div class="mini">🧾</div>' +
-        '<div class="item-info"><b>Nº ' + o.numero + " · " + esc(nomeCliente(o) || "Sem cliente") +
-        ' <span class="sit sit-' + esc(o.situacao) + '">' + (SITUACOES[o.situacao] || "") + "</span></b><span>" + esc(info) + "</span></div>" +
+        '<div class="item-info"><b>Nº ' + o.numero + " · " + esc(nomeCliente(o) || "Sem cliente") + "</b><span>" + esc(info) + "</span></div>" +
+        // A situação muda direto na lista (salva na hora).
+        '<label class="sit-troca">Situação:<select data-acao="situacao" class="sit-' + esc(o.situacao) + '">' +
+        Object.keys(SITUACOES).map(function (k) {
+          return '<option value="' + k + '"' + (o.situacao === k ? " selected" : "") + ">" + SITUACOES[k] + "</option>";
+        }).join("") + "</select></label>" +
         '<div class="item-acoes">' +
         '<button class="btn" data-acao="abrir">✏️ Abrir</button>' +
         '<a class="btn" href="imprimir.html?id=' + encodeURIComponent(o.id) + '" target="_blank" rel="noopener">🖨️ Imprimir / PDF</a>' +
@@ -1132,6 +1136,20 @@
   $("#busca-orc").addEventListener("input", desenharOrcamentos);
   $("#filtro-situacao").addEventListener("change", desenharOrcamentos);
   $("#novo-orcamento").addEventListener("click", function () { abrirOrcamento(null); });
+
+  $("#lista-orcamentos").addEventListener("change", function (e) {
+    var sel = e.target.closest('select[data-acao="situacao"]');
+    if (!sel) return;
+    var o = orcPorId(sel.closest("[data-id]").dataset.id);
+    var nova = sel.value;
+    sel.disabled = true;
+    sb.from("orcamentos").update({ situacao: nova }).eq("id", o.id).select().single().then(ok).then(function (novo) {
+      Object.assign(o, novo);
+      desenharOrcamentos();
+      avisar(nova === "aprovado" ? "Orçamento nº " + o.numero + ' aprovado. O botão "📄 Contrato" já está disponível.'
+        : "Situação do orçamento nº " + o.numero + ": " + SITUACOES[nova] + ".");
+    }).catch(function (er) { falhou(er); desenharOrcamentos(); });
+  });
 
   $("#lista-orcamentos").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-acao]");
