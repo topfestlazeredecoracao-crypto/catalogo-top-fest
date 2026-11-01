@@ -1,37 +1,37 @@
 {
  "categorias": [
   {
-   "icone": "📸",
+   "icone": "🏺",
    "id": 2,
-   "nome": "Inspirações de decoração",
+   "nome": "Inspirações de decorações",
    "ordem": 1,
    "tipo": "galeria"
   },
   {
    "icone": "⭕",
    "id": 3,
-   "nome": "Temas – capas de arco redondo 1,5 m",
+   "nome": "Capas: arco redondo 1,5 m",
    "ordem": 2,
    "tipo": "produtos"
   },
   {
    "icone": "🎀",
    "id": 4,
-   "nome": "Temas – capas para arco romano 2 m",
+   "nome": "Capas: arco romano 2 m",
    "ordem": 3,
    "tipo": "produtos"
   },
   {
-   "icone": "🎁",
+   "icone": "🏺",
    "id": 5,
-   "nome": "Temas – capas em outros formatos",
+   "nome": "Capas: outros formatos",
    "ordem": 4,
    "tipo": "produtos"
   },
   {
    "icone": "🧁",
    "id": 6,
-   "nome": "Temas – capas para festa de mesa (arco redondo 0,5 m)",
+   "nome": "Capas: festa de mesa (0,5 m)",
    "ordem": 5,
    "tipo": "produtos"
   },
@@ -108,7 +108,7 @@
   {
    "icone": "🧺",
    "id": 17,
-   "nome": "Capas para mesas e cadeiras",
+   "nome": "Capas: mesas e cadeiras",
    "ordem": 16,
    "tipo": "produtos"
   },
@@ -118,10 +118,17 @@
    "nome": "Flores",
    "ordem": 17,
    "tipo": "produtos"
+  },
+  {
+   "icone": "🎉",
+   "id": 54,
+   "nome": "Decorações prontas",
+   "ordem": 18,
+   "tipo": "produtos"
   }
  ],
  "configuracoes": {
-  "atualizado_em": "2026-10-26T00:46:53.388546+00:00",
+  "atualizado_em": "2026-11-01T13:25:07.009165+00:00",
   "id": 1,
   "mostrar_precos": false,
   "nome": "Chácara Top Fest",
@@ -130,206 +137,6 @@
   "whatsapp_exibicao": "(19) 99161-6329",
   "whatsapp_orcamentos": "5519991616329"
  },
- "inspiracoes": [
-  {
-   "id": "i01",
-   "imagem": "reserva/fotos/inspiracoes/i01.jpg",
-   "legenda": "",
-   "ordem": 1
-  },
-  {
-   "id": "i02",
-   "imagem": "reserva/fotos/inspiracoes/i02.jpg",
-   "legenda": "",
-   "ordem": 2
-  },
-  {
-   "id": "i03",
-   "imagem": "reserva/fotos/inspiracoes/i03.jpg",
-   "legenda": "",
-   "ordem": 3
-  },
-  {
-   "id": "i04",
-   "imagem": "reserva/fotos/inspiracoes/i04.jpg",
-   "legenda": "",
-   "ordem": 4
-  },
-  {
-   "id": "i05",
-   "imagem": "reserva/fotos/inspiracoes/i05.jpg",
-   "legenda": "",
-   "ordem": 5
-  },
-  {
-   "id": "i06",
-   "imagem": "reserva/fotos/inspiracoes/i06.jpg",
-   "legenda": "",
-   "ordem": 6
-  },
-  {
-   "id": "i07",
-   "imagem": "reserva/fotos/inspiracoes/i07.jpg",
-   "legenda": "",
-   "ordem": 7
-  },
-  {
-   "id": "i08",
-   "imagem": "reserva/fotos/inspiracoes/i08.jpg",
-   "legenda": "",
-   "ordem": 8
-  },
-  {
-   "id": "i09",
-   "imagem": "reserva/fotos/inspiracoes/i09.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 9
-  },
-  {
-   "id": "i10",
-   "imagem": "reserva/fotos/inspiracoes/i10.jpg",
-   "legenda": "",
-   "ordem": 10
-  },
-  {
-   "id": "i11",
-   "imagem": "reserva/fotos/inspiracoes/i11.jpg",
-   "legenda": "",
-   "ordem": 11
-  },
-  {
-   "id": "i12",
-   "imagem": "reserva/fotos/inspiracoes/i12.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 12
-  },
-  {
-   "id": "i13",
-   "imagem": "reserva/fotos/inspiracoes/i13.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 13
-  },
-  {
-   "id": "i14",
-   "imagem": "reserva/fotos/inspiracoes/i14.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 14
-  },
-  {
-   "id": "i15",
-   "imagem": "reserva/fotos/inspiracoes/i15.jpg",
-   "legenda": "",
-   "ordem": 15
-  },
-  {
-   "id": "i16",
-   "imagem": "reserva/fotos/inspiracoes/i16.jpg",
-   "legenda": "",
-   "ordem": 16
-  },
-  {
-   "id": "i17",
-   "imagem": "reserva/fotos/inspiracoes/i17.jpg",
-   "legenda": "",
-   "ordem": 17
-  },
-  {
-   "id": "i18",
-   "imagem": "reserva/fotos/inspiracoes/i18.jpg",
-   "legenda": "",
-   "ordem": 18
-  },
-  {
-   "id": "i19",
-   "imagem": "reserva/fotos/inspiracoes/i19.jpg",
-   "legenda": "",
-   "ordem": 19
-  },
-  {
-   "id": "i20",
-   "imagem": "reserva/fotos/inspiracoes/i20.jpg",
-   "legenda": "",
-   "ordem": 20
-  },
-  {
-   "id": "i21",
-   "imagem": "reserva/fotos/inspiracoes/i21.jpg",
-   "legenda": "",
-   "ordem": 21
-  },
-  {
-   "id": "i22",
-   "imagem": "reserva/fotos/inspiracoes/i22.jpg",
-   "legenda": "",
-   "ordem": 22
-  },
-  {
-   "id": "i23",
-   "imagem": "reserva/fotos/inspiracoes/i23.jpg",
-   "legenda": "",
-   "ordem": 23
-  },
-  {
-   "id": "i24",
-   "imagem": "reserva/fotos/inspiracoes/i24.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 24
-  },
-  {
-   "id": "i25",
-   "imagem": "reserva/fotos/inspiracoes/i25.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 25
-  },
-  {
-   "id": "i26",
-   "imagem": "reserva/fotos/inspiracoes/i26.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 26
-  },
-  {
-   "id": "i27",
-   "imagem": "reserva/fotos/inspiracoes/i27.jpg",
-   "legenda": "",
-   "ordem": 27
-  },
-  {
-   "id": "i28",
-   "imagem": "reserva/fotos/inspiracoes/i28.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 28
-  },
-  {
-   "id": "i29",
-   "imagem": "reserva/fotos/inspiracoes/i29.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 29
-  },
-  {
-   "id": "i30",
-   "imagem": "reserva/fotos/inspiracoes/i30.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 30
-  },
-  {
-   "id": "i31",
-   "imagem": "reserva/fotos/inspiracoes/i31.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 31
-  },
-  {
-   "id": "i32",
-   "imagem": "reserva/fotos/inspiracoes/i32.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 32
-  },
-  {
-   "id": "i33",
-   "imagem": "reserva/fotos/inspiracoes/i33.jpg",
-   "legenda": "Montado pela cliente (pegue e monte)",
-   "ordem": 33
-  }
- ],
  "produtos": [
   {
    "ativo": true,
@@ -344,23 +151,34 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 1,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p080",
-   "imagem": "reserva/fotos/produtos/p080.jpg",
-   "nome": "Kit completo – Neon",
+   "categoria_id": 54,
+   "codigo": 217,
+   "descricao": "",
+   "id": "p9095c74926",
+   "imagem": null,
+   "nome": "Decoração 01",
    "ordem": 1,
    "preco": null
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 2,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p081",
-   "imagem": "reserva/fotos/produtos/p081.jpg",
-   "nome": "Kit completo – Gamer",
+   "categoria_id": 2,
+   "codigo": 218,
+   "descricao": "",
+   "id": "i01",
+   "imagem": "reserva/fotos/inspiracoes/i01.jpg",
+   "nome": "Decoração completa",
+   "ordem": 1,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 219,
+   "descricao": "",
+   "id": "i02",
+   "imagem": "reserva/fotos/inspiracoes/i02.jpg",
+   "nome": "Decoração completa",
    "ordem": 2,
    "preco": null
   },
@@ -377,12 +195,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 3,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p082",
-   "imagem": "reserva/fotos/produtos/p082.jpg",
-   "nome": "Kit completo – Futebol",
+   "categoria_id": 2,
+   "codigo": 220,
+   "descricao": "",
+   "id": "i03",
+   "imagem": "reserva/fotos/inspiracoes/i03.jpg",
+   "nome": "Decoração completa",
    "ordem": 3,
    "preco": null
   },
@@ -399,12 +217,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 4,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p083",
-   "imagem": "reserva/fotos/produtos/p083.jpg",
-   "nome": "Kit completo – Vingadores",
+   "categoria_id": 2,
+   "codigo": 221,
+   "descricao": "",
+   "id": "i04",
+   "imagem": "reserva/fotos/inspiracoes/i04.jpg",
+   "nome": "Decoração completa",
    "ordem": 4,
    "preco": null
   },
@@ -421,12 +239,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 5,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p084",
-   "imagem": "reserva/fotos/produtos/p084.jpg",
-   "nome": "Kit completo – Policial",
+   "categoria_id": 2,
+   "codigo": 222,
+   "descricao": "",
+   "id": "i05",
+   "imagem": "reserva/fotos/inspiracoes/i05.jpg",
+   "nome": "Decoração completa",
    "ordem": 5,
    "preco": null
   },
@@ -443,12 +261,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 6,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p085",
-   "imagem": "reserva/fotos/produtos/p085.jpg",
-   "nome": "Kit completo – Moana",
+   "categoria_id": 2,
+   "codigo": 223,
+   "descricao": "",
+   "id": "i06",
+   "imagem": "reserva/fotos/inspiracoes/i06.jpg",
+   "nome": "Decoração completa",
    "ordem": 6,
    "preco": null
   },
@@ -465,12 +283,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 7,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p086",
-   "imagem": "reserva/fotos/produtos/p086.jpg",
-   "nome": "Kit completo – Mulher-Maravilha",
+   "categoria_id": 2,
+   "codigo": 224,
+   "descricao": "",
+   "id": "i07",
+   "imagem": "reserva/fotos/inspiracoes/i07.jpg",
+   "nome": "Decoração completa",
    "ordem": 7,
    "preco": null
   },
@@ -487,12 +305,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 8,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p087",
-   "imagem": "reserva/fotos/produtos/p087.jpg",
-   "nome": "Kit completo – Meninas Superpoderosas",
+   "categoria_id": 2,
+   "codigo": 225,
+   "descricao": "",
+   "id": "i08",
+   "imagem": "reserva/fotos/inspiracoes/i08.jpg",
+   "nome": "Decoração completa",
    "ordem": 8,
    "preco": null
   },
@@ -504,6 +322,17 @@
    "id": "p143",
    "imagem": "reserva/fotos/produtos/p143.jpg",
    "nome": "Bolo fake – Branco e dourado",
+   "ordem": 9,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 226,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i09",
+   "imagem": "reserva/fotos/inspiracoes/i09.jpg",
+   "nome": "Decoração completa",
    "ordem": 9,
    "preco": null
   },
@@ -531,6 +360,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 227,
+   "descricao": "",
+   "id": "i10",
+   "imagem": "reserva/fotos/inspiracoes/i10.jpg",
+   "nome": "Decoração completa",
+   "ordem": 10,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 10,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
@@ -548,6 +388,17 @@
    "id": "p145",
    "imagem": "reserva/fotos/produtos/p145.jpg",
    "nome": "Bolo fake – Rosé e branco com laço",
+   "ordem": 11,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 228,
+   "descricao": "",
+   "id": "i11",
+   "imagem": "reserva/fotos/inspiracoes/i11.jpg",
+   "nome": "Decoração completa",
    "ordem": 11,
    "preco": null
   },
@@ -575,6 +426,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 229,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i12",
+   "imagem": "reserva/fotos/inspiracoes/i12.jpg",
+   "nome": "Decoração completa",
+   "ordem": 12,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 12,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
@@ -592,6 +454,17 @@
    "id": "p150",
    "imagem": "reserva/fotos/produtos/p150.jpg",
    "nome": "Bolo fake pequeno",
+   "ordem": 13,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 230,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i13",
+   "imagem": "reserva/fotos/inspiracoes/i13.jpg",
+   "nome": "Decoração completa",
    "ordem": 13,
    "preco": null
   },
@@ -619,6 +492,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 231,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i14",
+   "imagem": "reserva/fotos/inspiracoes/i14.jpg",
+   "nome": "Decoração completa",
+   "ordem": 14,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 14,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
@@ -641,6 +525,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 232,
+   "descricao": "",
+   "id": "i15",
+   "imagem": "reserva/fotos/inspiracoes/i15.jpg",
+   "nome": "Decoração completa",
+   "ordem": 15,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 15,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
@@ -648,6 +543,17 @@
    "imagem": "reserva/fotos/produtos/p094.jpg",
    "nome": "Kit completo – Chá de bebê",
    "ordem": 15,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 233,
+   "descricao": "",
+   "id": "i16",
+   "imagem": "reserva/fotos/inspiracoes/i16.jpg",
+   "nome": "Decoração completa",
+   "ordem": 16,
    "preco": null
   },
   {
@@ -663,6 +569,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 234,
+   "descricao": "",
+   "id": "i17",
+   "imagem": "reserva/fotos/inspiracoes/i17.jpg",
+   "nome": "Decoração completa",
+   "ordem": 17,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 17,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
@@ -670,6 +587,17 @@
    "imagem": "reserva/fotos/produtos/p096.jpg",
    "nome": "Kit completo – Primeira Eucaristia",
    "ordem": 17,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 235,
+   "descricao": "",
+   "id": "i18",
+   "imagem": "reserva/fotos/inspiracoes/i18.jpg",
+   "nome": "Decoração completa",
+   "ordem": 18,
    "preco": null
   },
   {
@@ -685,6 +613,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 236,
+   "descricao": "",
+   "id": "i19",
+   "imagem": "reserva/fotos/inspiracoes/i19.jpg",
+   "nome": "Decoração completa",
+   "ordem": 19,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 19,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
@@ -692,6 +631,17 @@
    "imagem": "reserva/fotos/produtos/p098.jpg",
    "nome": "Kit completo – Preto",
    "ordem": 19,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 237,
+   "descricao": "",
+   "id": "i20",
+   "imagem": "reserva/fotos/inspiracoes/i20.jpg",
+   "nome": "Decoração completa",
+   "ordem": 20,
    "preco": null
   },
   {
@@ -707,6 +657,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 238,
+   "descricao": "",
+   "id": "i21",
+   "imagem": "reserva/fotos/inspiracoes/i21.jpg",
+   "nome": "Decoração completa",
+   "ordem": 21,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 21,
    "descricao": "Arco redondo, cilindros e arco romano, com capas no tema Confraternização.",
@@ -718,6 +679,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 239,
+   "descricao": "",
+   "id": "i22",
+   "imagem": "reserva/fotos/inspiracoes/i22.jpg",
+   "nome": "Decoração completa",
+   "ordem": 22,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 22,
    "descricao": "Arco romano, arco redondo e cilindros com capas no tema Laços Happy Birthday.",
@@ -725,6 +697,17 @@
    "imagem": "reserva/fotos/produtos/p147.jpg",
    "nome": "Kit completo – Laços Happy Birthday",
    "ordem": 22,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 240,
+   "descricao": "",
+   "id": "i23",
+   "imagem": "reserva/fotos/inspiracoes/i23.jpg",
+   "nome": "Decoração completa",
+   "ordem": 23,
    "preco": null
   },
   {
@@ -751,12 +734,34 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 241,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i24",
+   "imagem": "reserva/fotos/inspiracoes/i24.jpg",
+   "nome": "Decoração completa",
+   "ordem": 24,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 25,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p101",
    "imagem": "reserva/fotos/produtos/p101.jpg",
    "nome": "Capa para arco 1,5 m – 15 anos",
+   "ordem": 25,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 242,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i25",
+   "imagem": "reserva/fotos/inspiracoes/i25.jpg",
+   "nome": "Decoração completa",
    "ordem": 25,
    "preco": null
   },
@@ -773,12 +778,34 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 243,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i26",
+   "imagem": "reserva/fotos/inspiracoes/i26.jpg",
+   "nome": "Decoração completa",
+   "ordem": 26,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 27,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p103",
    "imagem": "reserva/fotos/produtos/p103.jpg",
    "nome": "Capa para arco 1,5 m – Jujutsu Kaisen",
+   "ordem": 27,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 244,
+   "descricao": "",
+   "id": "i27",
+   "imagem": "reserva/fotos/inspiracoes/i27.jpg",
+   "nome": "Decoração completa",
    "ordem": 27,
    "preco": null
   },
@@ -795,12 +822,34 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 245,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i28",
+   "imagem": "reserva/fotos/inspiracoes/i28.jpg",
+   "nome": "Decoração completa",
+   "ordem": 28,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 29,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p105",
    "imagem": "reserva/fotos/produtos/p105.jpg",
    "nome": "Capa para arco 1,5 m – Corinthians",
+   "ordem": 29,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 246,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i29",
+   "imagem": "reserva/fotos/inspiracoes/i29.jpg",
+   "nome": "Decoração completa",
    "ordem": 29,
    "preco": null
   },
@@ -817,12 +866,34 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 247,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i30",
+   "imagem": "reserva/fotos/inspiracoes/i30.jpg",
+   "nome": "Decoração completa",
+   "ordem": 30,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 31,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p107",
    "imagem": "reserva/fotos/produtos/p107.jpg",
    "nome": "Capa para arco 1,5 m – São Paulo",
+   "ordem": 31,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 248,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i31",
+   "imagem": "reserva/fotos/inspiracoes/i31.jpg",
+   "nome": "Decoração completa",
    "ordem": 31,
    "preco": null
   },
@@ -839,12 +910,34 @@
   },
   {
    "ativo": true,
+   "categoria_id": 2,
+   "codigo": 249,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i32",
+   "imagem": "reserva/fotos/inspiracoes/i32.jpg",
+   "nome": "Decoração completa",
+   "ordem": 32,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 33,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p109",
    "imagem": "reserva/fotos/produtos/p109.jpg",
    "nome": "Capa para arco 1,5 m – Tenista",
+   "ordem": 33,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 250,
+   "descricao": "Montado pela cliente (pegue e monte)",
+   "id": "i33",
+   "imagem": "reserva/fotos/inspiracoes/i33.jpg",
+   "nome": "Decoração completa",
    "ordem": 33,
    "preco": null
   },
@@ -1120,6 +1213,17 @@
    "id": "p128",
    "imagem": "reserva/fotos/produtos/p128.jpg",
    "nome": "Capas para cilindros",
+   "ordem": 58,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 4,
+   "codigo": 216,
+   "descricao": "",
+   "id": "pf9b7f44ade",
+   "imagem": "reserva/fotos/produtos/mvxwz53w-xizpdn.webp",
+   "nome": "Escolha seu tema - Arco romano",
    "ordem": 58,
    "preco": null
   },
