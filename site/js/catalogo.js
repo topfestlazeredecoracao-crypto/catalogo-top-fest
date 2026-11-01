@@ -393,6 +393,29 @@
   }
   try { localStorage.removeItem("topfest-sem-categorias"); } catch (e) { /* sem armazenamento */ }
   mostrarCategorias(true);
+
+  // A coluna de categorias ocupa só o espaço visível da tela (abaixo do cabeçalho
+  // e acima do botão do orçamento), para dar para rolar até a última categoria.
+  var ajustePendente = false;
+  function ajustarAlturaCategorias() {
+    ajustePendente = false;
+    var ch = $("#chips");
+    var topo = Math.max(ch.getBoundingClientRect().top, 0);
+    var fabEl = $("#fab");
+    var baixo = fabEl.hidden ? 0 : fabEl.offsetHeight;
+    var alt = (window.visualViewport ? window.visualViewport.height : window.innerHeight) - topo - baixo;
+    ch.style.maxHeight = Math.max(alt, 160) + "px";
+  }
+  function pedirAjuste() {
+    if (ajustePendente) return;
+    ajustePendente = true;
+    requestAnimationFrame(ajustarAlturaCategorias);
+  }
+  window.addEventListener("scroll", pedirAjuste, { passive: true });
+  window.addEventListener("resize", pedirAjuste);
+  if (window.visualViewport) window.visualViewport.addEventListener("resize", pedirAjuste);
+  new MutationObserver(pedirAjuste).observe($("#fab"), { attributes: true, attributeFilter: ["hidden"] });
+  pedirAjuste();
   $("#ver-cats").addEventListener("click", function () {
     mostrarCategorias(document.body.classList.contains("sem-categorias"));
   });
@@ -415,7 +438,7 @@
       // Ao entrar no site, já abre a galeria de inspirações (se tiver fotos).
       var g = cats.filter(function (c) { return c.tipo === GALERIA; })[0];
       if (g && insp.length && cat === "Todos" && !q) cat = g.chave;
-      linksDuvida(); chips(); grid(); fab();
+      linksDuvida(); chips(); grid(); fab(); pedirAjuste();
     })
     .catch(function () {
       $("#grid").innerHTML = '<div class="empty">Não foi possível carregar o catálogo agora. Tente novamente em alguns minutos.</div>';
