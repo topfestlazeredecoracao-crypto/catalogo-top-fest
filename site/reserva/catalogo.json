@@ -334,6 +334,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 78,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p136",
    "imagem": "reserva/fotos/produtos/p136.jpg",
@@ -344,6 +345,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 1,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p080",
    "imagem": "reserva/fotos/produtos/p080.jpg",
@@ -354,6 +356,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 2,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p081",
    "imagem": "reserva/fotos/produtos/p081.jpg",
@@ -364,6 +367,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 80,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p137",
    "imagem": "reserva/fotos/produtos/p137.jpg",
@@ -374,6 +378,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 3,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p082",
    "imagem": "reserva/fotos/produtos/p082.jpg",
@@ -384,6 +389,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 81,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p138",
    "imagem": "reserva/fotos/produtos/p138.jpg",
@@ -394,6 +400,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 4,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p083",
    "imagem": "reserva/fotos/produtos/p083.jpg",
@@ -404,6 +411,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 82,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p139",
    "imagem": "reserva/fotos/produtos/p139.jpg",
@@ -414,6 +422,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 5,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p084",
    "imagem": "reserva/fotos/produtos/p084.jpg",
@@ -424,6 +433,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 83,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p140",
    "imagem": "reserva/fotos/produtos/p140.jpg",
@@ -434,6 +444,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 6,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p085",
    "imagem": "reserva/fotos/produtos/p085.jpg",
@@ -444,6 +455,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 84,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p141",
    "imagem": "reserva/fotos/produtos/p141.jpg",
@@ -454,6 +466,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 7,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p086",
    "imagem": "reserva/fotos/produtos/p086.jpg",
@@ -464,6 +477,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 85,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p142",
    "imagem": "reserva/fotos/produtos/p142.jpg",
@@ -474,6 +488,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 8,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p087",
    "imagem": "reserva/fotos/produtos/p087.jpg",
@@ -484,6 +499,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 86,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p143",
    "imagem": "reserva/fotos/produtos/p143.jpg",
@@ -494,6 +510,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 9,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p088",
    "imagem": "reserva/fotos/produtos/p088.jpg",
@@ -504,6 +521,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 87,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p144",
    "imagem": "reserva/fotos/produtos/p144.jpg",
@@ -514,6 +532,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 10,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p089",
    "imagem": "reserva/fotos/produtos/p089.jpg",
@@ -524,6 +543,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 88,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p145",
    "imagem": "reserva/fotos/produtos/p145.jpg",
@@ -534,6 +554,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 11,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p090",
    "imagem": "reserva/fotos/produtos/p090.jpg",
@@ -544,6 +565,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 89,
    "descricao": "Bolo decorativo (fake) para a mesa.",
    "id": "p146",
    "imagem": "reserva/fotos/produtos/p146.jpg",
@@ -554,6 +576,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 12,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p091",
    "imagem": "reserva/fotos/produtos/p091.jpg",
@@ -564,6 +587,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 90,
    "descricao": "Cores do glace disponíveis: rosa, azul, amarelo, preto e dourado.",
    "id": "p150",
    "imagem": "reserva/fotos/produtos/p150.jpg",
@@ -574,6 +598,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 13,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p092",
    "imagem": "reserva/fotos/produtos/p092.jpg",
@@ -584,6 +609,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 91,
    "descricao": "Bolo decorativo (fake) tema sereia.",
    "id": "p153",
    "imagem": "reserva/fotos/produtos/p153.jpg",
@@ -594,6 +620,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 14,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p093",
    "imagem": "reserva/fotos/produtos/p093.jpg",
@@ -604,6 +631,7 @@
   {
    "ativo": true,
    "categoria_id": 7,
+   "codigo": 92,
    "descricao": "Expositor de bolo em acrílico, para personalizar com o tema da festa.",
    "id": "p198",
    "imagem": "reserva/fotos/produtos/p198.jpg",
@@ -614,6 +642,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 15,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p094",
    "imagem": "reserva/fotos/produtos/p094.jpg",
@@ -624,6 +653,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 16,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p095",
    "imagem": "reserva/fotos/produtos/p095.jpg",
@@ -634,6 +664,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 17,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p096",
    "imagem": "reserva/fotos/produtos/p096.jpg",
@@ -644,6 +675,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 18,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p097",
    "imagem": "reserva/fotos/produtos/p097.jpg",
@@ -654,6 +686,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 19,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p098",
    "imagem": "reserva/fotos/produtos/p098.jpg",
@@ -664,6 +697,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 20,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p099",
    "imagem": "reserva/fotos/produtos/p099.jpg",
@@ -674,6 +708,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 21,
    "descricao": "Arco redondo, cilindros e arco romano, com capas no tema Confraternização.",
    "id": "p127",
    "imagem": "reserva/fotos/produtos/p127.jpg",
@@ -684,6 +719,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 22,
    "descricao": "Arco romano, arco redondo e cilindros com capas no tema Laços Happy Birthday.",
    "id": "p147",
    "imagem": "reserva/fotos/produtos/p147.jpg",
@@ -694,6 +730,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 23,
    "descricao": "Arco redondo e cilindros com capas no tema Formatura.",
    "id": "p148",
    "imagem": "reserva/fotos/produtos/p148.jpg",
@@ -704,6 +741,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 24,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p100",
    "imagem": "reserva/fotos/produtos/p100.jpg",
@@ -714,6 +752,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 25,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p101",
    "imagem": "reserva/fotos/produtos/p101.jpg",
@@ -724,6 +763,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 26,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p102",
    "imagem": "reserva/fotos/produtos/p102.jpg",
@@ -734,6 +774,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 27,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p103",
    "imagem": "reserva/fotos/produtos/p103.jpg",
@@ -744,6 +785,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 28,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p104",
    "imagem": "reserva/fotos/produtos/p104.jpg",
@@ -754,6 +796,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 29,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p105",
    "imagem": "reserva/fotos/produtos/p105.jpg",
@@ -764,6 +807,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 30,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p106",
    "imagem": "reserva/fotos/produtos/p106.jpg",
@@ -774,6 +818,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 31,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p107",
    "imagem": "reserva/fotos/produtos/p107.jpg",
@@ -784,6 +829,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 32,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p108",
    "imagem": "reserva/fotos/produtos/p108.jpg",
@@ -794,6 +840,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 33,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p109",
    "imagem": "reserva/fotos/produtos/p109.jpg",
@@ -804,6 +851,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 34,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p110",
    "imagem": "reserva/fotos/produtos/p110.jpg",
@@ -814,6 +862,7 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 35,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p111",
    "imagem": "reserva/fotos/produtos/p111.jpg",
@@ -824,6 +873,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 36,
    "descricao": "Capa para arco romano.",
    "id": "p129",
    "imagem": "reserva/fotos/produtos/p129.jpg",
@@ -834,6 +884,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 37,
    "descricao": "Capa para arco romano.",
    "id": "p130",
    "imagem": "reserva/fotos/produtos/p130.jpg",
@@ -844,6 +895,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 38,
    "descricao": "Capa para arco romano.",
    "id": "p190",
    "imagem": "reserva/fotos/produtos/p190.jpg",
@@ -854,6 +906,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 39,
    "descricao": "Capa para arco romano.",
    "id": "p131",
    "imagem": "reserva/fotos/produtos/p131.jpg",
@@ -864,6 +917,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 40,
    "descricao": "Painel romano de 2 x 1 m, dupla face.",
    "id": "p163",
    "imagem": "reserva/fotos/produtos/p163.jpg",
@@ -874,6 +928,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 41,
    "descricao": "Painel romano de 2 x 1 m, dupla face.",
    "id": "p164",
    "imagem": "reserva/fotos/produtos/p164.jpg",
@@ -884,6 +939,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 42,
    "descricao": "Painel romano dupla face.",
    "id": "p165",
    "imagem": "reserva/fotos/produtos/p165.jpg",
@@ -894,6 +950,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 43,
    "descricao": "Painel romano dupla face.",
    "id": "p166",
    "imagem": "reserva/fotos/produtos/p166.jpg",
@@ -904,6 +961,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 44,
    "descricao": "Capa lisa para arco romano.",
    "id": "p177",
    "imagem": "reserva/fotos/produtos/p177.jpg",
@@ -914,6 +972,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 45,
    "descricao": "Capa lisa para arco romano.",
    "id": "p178",
    "imagem": "reserva/fotos/produtos/p178.jpg",
@@ -924,6 +983,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 46,
    "descricao": "Capa lisa para arco romano.",
    "id": "p179",
    "imagem": "reserva/fotos/produtos/p179.jpg",
@@ -934,6 +994,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 47,
    "descricao": "Capa lisa para arco romano.",
    "id": "p180",
    "imagem": "reserva/fotos/produtos/p180.jpg",
@@ -944,6 +1005,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 48,
    "descricao": "Capa lisa para arco romano.",
    "id": "p181",
    "imagem": "reserva/fotos/produtos/p181.jpg",
@@ -954,6 +1016,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 49,
    "descricao": "Capa lisa para arco romano.",
    "id": "p182",
    "imagem": "reserva/fotos/produtos/p182.jpg",
@@ -964,6 +1027,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 50,
    "descricao": "Capa lisa para arco romano.",
    "id": "p183",
    "imagem": "reserva/fotos/produtos/p183.jpg",
@@ -974,6 +1038,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 51,
    "descricao": "Capa lisa para arco romano.",
    "id": "p184",
    "imagem": "reserva/fotos/produtos/p184.jpg",
@@ -984,6 +1049,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 52,
    "descricao": "Capa lisa para arco romano.",
    "id": "p185",
    "imagem": "reserva/fotos/produtos/p185.jpg",
@@ -994,6 +1060,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 53,
    "descricao": "Capa lisa para arco romano.",
    "id": "p186",
    "imagem": "reserva/fotos/produtos/p186.jpg",
@@ -1004,6 +1071,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 54,
    "descricao": "Capa lisa para arco romano.",
    "id": "p187",
    "imagem": "reserva/fotos/produtos/p187.jpg",
@@ -1014,6 +1082,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 55,
    "descricao": "Capa para arco romano.",
    "id": "p188",
    "imagem": "reserva/fotos/produtos/p188.jpg",
@@ -1024,6 +1093,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 56,
    "descricao": "Capa para arco romano.",
    "id": "p189",
    "imagem": "reserva/fotos/produtos/p189.jpg",
@@ -1034,6 +1104,7 @@
   {
    "ativo": true,
    "categoria_id": 4,
+   "codigo": 57,
    "descricao": "Capas lisas nas cores pink e laranja para arco romano e cilindros.",
    "id": "p212",
    "imagem": "reserva/fotos/produtos/p212.jpg",
@@ -1044,6 +1115,7 @@
   {
    "ativo": true,
    "categoria_id": 5,
+   "codigo": 58,
    "descricao": "Consulte os temas disponíveis.",
    "id": "p128",
    "imagem": "reserva/fotos/produtos/p128.jpg",
@@ -1054,6 +1126,7 @@
   {
    "ativo": true,
    "categoria_id": 5,
+   "codigo": 59,
    "descricao": "Capa retangular para painel.",
    "id": "p132",
    "imagem": "reserva/fotos/produtos/p132.jpg",
@@ -1064,6 +1137,7 @@
   {
    "ativo": true,
    "categoria_id": 5,
+   "codigo": 60,
    "descricao": "Capa retangular para painel.",
    "id": "p133",
    "imagem": "reserva/fotos/produtos/p133.jpg",
@@ -1074,6 +1148,7 @@
   {
    "ativo": true,
    "categoria_id": 5,
+   "codigo": 61,
    "descricao": "Capa retangular para painel.",
    "id": "p134",
    "imagem": "reserva/fotos/produtos/p134.jpg",
@@ -1084,6 +1159,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 62,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p112",
    "imagem": "reserva/fotos/produtos/p112.jpg",
@@ -1094,6 +1170,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 63,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p113",
    "imagem": "reserva/fotos/produtos/p113.jpg",
@@ -1104,6 +1181,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 64,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p114",
    "imagem": "reserva/fotos/produtos/p114.jpg",
@@ -1114,6 +1192,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 65,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p115",
    "imagem": "reserva/fotos/produtos/p115.jpg",
@@ -1124,6 +1203,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 66,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p116",
    "imagem": "reserva/fotos/produtos/p116.jpg",
@@ -1134,6 +1214,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 67,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p117",
    "imagem": "reserva/fotos/produtos/p117.jpg",
@@ -1144,6 +1225,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 68,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p118",
    "imagem": "reserva/fotos/produtos/p118.jpg",
@@ -1154,6 +1236,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 69,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p119",
    "imagem": "reserva/fotos/produtos/p119.jpg",
@@ -1164,6 +1247,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 70,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p120",
    "imagem": "reserva/fotos/produtos/p120.jpg",
@@ -1174,6 +1258,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 71,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p121",
    "imagem": "reserva/fotos/produtos/p121.jpg",
@@ -1184,6 +1269,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 72,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p122",
    "imagem": "reserva/fotos/produtos/p122.jpg",
@@ -1194,6 +1280,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 73,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p123",
    "imagem": "reserva/fotos/produtos/p123.jpg",
@@ -1204,6 +1291,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 74,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p124",
    "imagem": "reserva/fotos/produtos/p124.jpg",
@@ -1214,6 +1302,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 75,
    "descricao": "Capa para o arco redondo de 0,50 x 0,50 m (festa de mesa).",
    "id": "p125",
    "imagem": "reserva/fotos/produtos/p125.jpg",
@@ -1224,6 +1313,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 76,
    "descricao": "Palavra dourada e 15 anos, com LED.",
    "id": "p126",
    "imagem": "reserva/fotos/produtos/p126.jpg",
@@ -1234,6 +1324,7 @@
   {
    "ativo": true,
    "categoria_id": 6,
+   "codigo": 77,
    "descricao": "Palavras em dourado: Oh Baby, Chá de Cozinha, Celebre a Vida, Love, Formei, Happy Birthday, Parabéns, Boy or Girl?, Gratidão e Batizado.",
    "id": "p206",
    "imagem": "reserva/fotos/produtos/p206.jpg",
@@ -1244,6 +1335,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 93,
    "descricao": "5 peças. Pode ser locado separado.",
    "id": "p015",
    "imagem": "reserva/fotos/produtos/p015.jpg",
@@ -1254,6 +1346,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 94,
    "descricao": "Altura 64 cm, comprimento 72 cm, largura 35 cm.",
    "id": "p016",
    "imagem": "reserva/fotos/produtos/p016.jpg",
@@ -1264,6 +1357,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 95,
    "descricao": "70 x 32 x 71 cm.",
    "id": "p017",
    "imagem": "reserva/fotos/produtos/p017.jpg",
@@ -1274,6 +1368,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 96,
    "descricao": "Altura 69 cm, comprimento 70 cm, largura 32 cm.",
    "id": "p018",
    "imagem": "reserva/fotos/produtos/p018.jpg",
@@ -1284,6 +1379,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 97,
    "descricao": "48 x 43 x 20 cm.",
    "id": "p019",
    "imagem": "reserva/fotos/produtos/p019.jpg",
@@ -1294,6 +1390,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 98,
    "descricao": "Altura 80 cm, largura 90 cm, profundidade 50 cm.",
    "id": "p020",
    "imagem": "reserva/fotos/produtos/p020.jpg",
@@ -1304,6 +1401,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 99,
    "descricao": "Mesas P, M e G com alturas de 40, 50 e 62 cm.",
    "id": "p021",
    "imagem": "reserva/fotos/produtos/p021.jpg",
@@ -1314,6 +1412,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 100,
    "descricao": "Para vestir com o tema desejado. Temos 2 unidades de cada.",
    "id": "p022",
    "imagem": "reserva/fotos/produtos/p022.jpg",
@@ -1324,6 +1423,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 101,
    "descricao": "Comp. 60 cm, larg. 35 cm, alt. 50 cm (assento a 23 cm). Suporta até 40 kg.",
    "id": "p023",
    "imagem": "reserva/fotos/produtos/p023.jpg",
@@ -1334,6 +1434,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 102,
    "descricao": "Comprimento 24 cm, largura 30 cm, altura 90 cm.",
    "id": "p024",
    "imagem": "reserva/fotos/produtos/p024.jpg",
@@ -1344,6 +1445,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 103,
    "descricao": "Altura 90 cm.",
    "id": "p025",
    "imagem": "reserva/fotos/produtos/p025.jpg",
@@ -1354,6 +1456,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 104,
    "descricao": "Floreira cilíndrica branca, com tampo.",
    "id": "p208",
    "imagem": "reserva/fotos/produtos/p208.jpg",
@@ -1364,6 +1467,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 105,
    "descricao": "Mesas G 80 x 39 x 39, M 70 x 35 x 35 e P 60 x 30 x 30 cm.",
    "id": "p209",
    "imagem": "reserva/fotos/produtos/p209.jpg",
@@ -1374,6 +1478,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 106,
    "descricao": "Alturas de 80, 70 e 60 cm, com tampos redondos de 70, 60 e 50 cm de diâmetro.",
    "id": "p210",
    "imagem": "reserva/fotos/produtos/p210.jpg",
@@ -1384,6 +1489,7 @@
   {
    "ativo": true,
    "categoria_id": 8,
+   "codigo": 107,
    "descricao": "Trio de mesas brancas de tamanhos diferentes.",
    "id": "p215",
    "imagem": "reserva/fotos/produtos/p215.jpg",
@@ -1394,6 +1500,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 108,
    "descricao": "Arco 1,5 m, arco romano 2 m e mesas G 80x39x39, M 70x35x35 e P 60x30x30 cm. Pode ser locado separado.",
    "id": "p001",
    "imagem": "reserva/fotos/produtos/p001.jpg",
@@ -1404,6 +1511,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 109,
    "descricao": "Para painel de festa: cortina, banner, lona, balões ou flores. Altura 1,1 a 3 m e largura 1,8 a 3 m.",
    "id": "p002",
    "imagem": "reserva/fotos/produtos/p002.jpg",
@@ -1414,6 +1522,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 110,
    "descricao": "Aço carbono, pintura eletrostática. Altura de 1,60 a 2,10 m.",
    "id": "p003",
    "imagem": "reserva/fotos/produtos/p003.jpg",
@@ -1424,6 +1533,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 111,
    "descricao": "Arco redondo dourado grande.",
    "id": "p004",
    "imagem": "reserva/fotos/produtos/p004.jpg",
@@ -1434,6 +1544,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 112,
    "descricao": "Arco redondo dourado com base.",
    "id": "p005",
    "imagem": "reserva/fotos/produtos/p005.jpg",
@@ -1444,6 +1555,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 113,
    "descricao": "Para festa de mesa.",
    "id": "p006",
    "imagem": "reserva/fotos/produtos/p006.jpg",
@@ -1454,6 +1566,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 114,
    "descricao": "Para festa de mesa.",
    "id": "p007",
    "imagem": "reserva/fotos/produtos/p007.jpg",
@@ -1464,6 +1577,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 115,
    "descricao": "2 unidades disponíveis.",
    "id": "p008",
    "imagem": "reserva/fotos/produtos/p008.jpg",
@@ -1474,6 +1588,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 116,
    "descricao": "Dois modelos de uso: unidos ou separados.",
    "id": "p009",
    "imagem": "reserva/fotos/produtos/p009.jpg",
@@ -1484,6 +1599,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 117,
    "descricao": "Dourado.",
    "id": "p010",
    "imagem": "reserva/fotos/produtos/p010.jpg",
@@ -1494,6 +1610,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 118,
    "descricao": "Consulte o número de hastes disponíveis.",
    "id": "p012",
    "imagem": "reserva/fotos/produtos/p012.jpg",
@@ -1504,6 +1621,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 119,
    "descricao": "6 unidades disponíveis.",
    "id": "p013",
    "imagem": "reserva/fotos/produtos/p013.jpg",
@@ -1514,6 +1632,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 120,
    "descricao": "Coluna com base.",
    "id": "p014",
    "imagem": "reserva/fotos/produtos/p014.jpg",
@@ -1524,6 +1643,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 121,
    "descricao": "Altura 2,20 m e largura 1,50 m.",
    "id": "p162",
    "imagem": "reserva/fotos/produtos/p162.jpg",
@@ -1534,6 +1654,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 122,
    "descricao": "Argola decorativa de 1,75 m.",
    "id": "p170",
    "imagem": "reserva/fotos/produtos/p170.jpg",
@@ -1544,6 +1665,7 @@
   {
    "ativo": true,
    "categoria_id": 9,
+   "codigo": 123,
    "descricao": "Arco montável em formato de flor, com 1,8 m.",
    "id": "p213",
    "imagem": "reserva/fotos/produtos/p213.jpg",
@@ -1554,6 +1676,7 @@
   {
    "ativo": true,
    "categoria_id": 10,
+   "codigo": 124,
    "descricao": "Quadro com letras, números e símbolos.",
    "id": "p058",
    "imagem": "reserva/fotos/produtos/p058.jpg",
@@ -1564,6 +1687,7 @@
   {
    "ativo": true,
    "categoria_id": 10,
+   "codigo": 125,
    "descricao": "Não precisa de tomada. Números de 0 a 9; só o 1 tem 2 unidades.",
    "id": "p059",
    "imagem": "reserva/fotos/produtos/p059.jpg",
@@ -1574,6 +1698,7 @@
   {
    "ativo": true,
    "categoria_id": 10,
+   "codigo": 126,
    "descricao": "110/220 V. Precisa ser ligado na tomada.",
    "id": "p060",
    "imagem": "reserva/fotos/produtos/p060.jpg",
@@ -1584,6 +1709,7 @@
   {
    "ativo": true,
    "categoria_id": 10,
+   "codigo": 127,
    "descricao": "2 unidades disponíveis.",
    "id": "p175",
    "imagem": "reserva/fotos/produtos/p175.jpg",
@@ -1594,6 +1720,7 @@
   {
    "ativo": true,
    "categoria_id": 11,
+   "codigo": 128,
    "descricao": "Serve em todos os tipos de painel.",
    "id": "p062",
    "imagem": "reserva/fotos/produtos/p062.jpg",
@@ -1604,6 +1731,7 @@
   {
    "ativo": true,
    "categoria_id": 11,
+   "codigo": 129,
    "descricao": "Serve em todos os tipos de painel.",
    "id": "p063",
    "imagem": "reserva/fotos/produtos/p063.jpg",
@@ -1614,6 +1742,7 @@
   {
    "ativo": true,
    "categoria_id": 11,
+   "codigo": 130,
    "descricao": "Serve em todos os tipos de painel.",
    "id": "p064",
    "imagem": "reserva/fotos/produtos/p064.jpg",
@@ -1624,6 +1753,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 131,
    "descricao": "1 arco decorativo, 1 escadinha para doces e 5 boleiras/bandejas. Pode ser locado separado.",
    "id": "p011",
    "imagem": "reserva/fotos/produtos/p011.jpg",
@@ -1634,6 +1764,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 132,
    "descricao": "40 cm de diâmetro e 15 cm de altura.",
    "id": "p035",
    "imagem": "reserva/fotos/produtos/p035.jpg",
@@ -1644,6 +1775,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 133,
    "descricao": "20 cm de diâmetro e 15 cm de altura. Suporta cerca de 10 kg.",
    "id": "p036",
    "imagem": "reserva/fotos/produtos/p036.jpg",
@@ -1654,6 +1786,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 134,
    "descricao": "Uma com 20 cm de diâmetro e 22 cm de altura; outra com 23 cm e 24 cm de altura.",
    "id": "p037",
    "imagem": "reserva/fotos/produtos/p037.jpg",
@@ -1664,6 +1797,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 135,
    "descricao": "1 boleira de 20 cm, 2 bandejas redondas de 17 cm e 2 retangulares de 20 x 15 cm.",
    "id": "p038",
    "imagem": "reserva/fotos/produtos/p038.jpg",
@@ -1674,6 +1808,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 136,
    "descricao": "2 andares, 30 x 15 x 33 cm.",
    "id": "p039",
    "imagem": "reserva/fotos/produtos/p039.jpg",
@@ -1684,6 +1819,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 137,
    "descricao": "Bandejas para docinhos.",
    "id": "p040",
    "imagem": "reserva/fotos/produtos/p040.jpg",
@@ -1694,6 +1830,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 138,
    "descricao": "1 boleira de 20 cm e 22 cm de altura, 2 bandejas redondas de 20 cm e 2 de 17 cm.",
    "id": "p041",
    "imagem": "reserva/fotos/produtos/p041.jpg",
@@ -1704,6 +1841,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 139,
    "descricao": "30 x 30 x 10 cm.",
    "id": "p042",
    "imagem": "reserva/fotos/produtos/p042.jpg",
@@ -1714,6 +1852,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 140,
    "descricao": "1 boleira caracol 25 cm, 2 bandejas imperial 20 cm e 2 bandejas retangulares 20 x 15 cm.",
    "id": "p043",
    "imagem": "reserva/fotos/produtos/p043.jpg",
@@ -1724,6 +1863,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 141,
    "descricao": "Conjunto completo na cor branca.",
    "id": "p044",
    "imagem": "reserva/fotos/produtos/p044.jpg",
@@ -1734,6 +1874,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 142,
    "descricao": "Conjunto completo na cor preta.",
    "id": "p045",
    "imagem": "reserva/fotos/produtos/p045.jpg",
@@ -1744,6 +1885,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 143,
    "descricao": "1 boleira plus, 2 vasos Popi, 2 mini boleiras e bandejas.",
    "id": "p046",
    "imagem": "reserva/fotos/produtos/p046.jpg",
@@ -1754,6 +1896,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 144,
    "descricao": "1 boleira plus, 2 vasos Popi, 2 mini boleiras e bandejas.",
    "id": "p047",
    "imagem": "reserva/fotos/produtos/p047.jpg",
@@ -1764,6 +1907,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 145,
    "descricao": "1 boleira plus, 2 vasos Popi, 2 mini boleiras e bandejas.",
    "id": "p048",
    "imagem": "reserva/fotos/produtos/p048.jpg",
@@ -1774,6 +1918,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 146,
    "descricao": "1 boleira plus, 2 vasos Popi, 2 mini boleiras e bandejas.",
    "id": "p049",
    "imagem": "reserva/fotos/produtos/p049.jpg",
@@ -1784,6 +1929,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 147,
    "descricao": "Bandejas em formato de borboleta, na cor azul.",
    "id": "p156",
    "imagem": "reserva/fotos/produtos/p156.jpg",
@@ -1794,6 +1940,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 148,
    "descricao": "Kit com bandejas, vasos e boleiras na cor rose gold.",
    "id": "p157",
    "imagem": "reserva/fotos/produtos/p157.jpg",
@@ -1804,6 +1951,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 149,
    "descricao": "Bandejas na cor nude.",
    "id": "p158",
    "imagem": "reserva/fotos/produtos/p158.jpg",
@@ -1814,6 +1962,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 150,
    "descricao": "Kit com bandejas e boleira na cor azul royal.",
    "id": "p159",
    "imagem": "reserva/fotos/produtos/p159.jpg",
@@ -1824,6 +1973,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 151,
    "descricao": "Kit com bandejas, boleira e vasos na cor marrom.",
    "id": "p160",
    "imagem": "reserva/fotos/produtos/p160.jpg",
@@ -1834,6 +1984,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 152,
    "descricao": "Kit de bandejas na cor laranja.",
    "id": "p167",
    "imagem": "reserva/fotos/produtos/p167.jpg",
@@ -1844,6 +1995,7 @@
   {
    "ativo": true,
    "categoria_id": 12,
+   "codigo": 153,
    "descricao": "Kit verde com 2 bandejas em formato de árvore de Natal, 2 bandejas retangulares com pés e 2 boleiras redondas.",
    "id": "p214",
    "imagem": "reserva/fotos/produtos/p214.jpg",
@@ -1854,6 +2006,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 154,
    "descricao": "Conjunto decorativo.",
    "id": "p052",
    "imagem": "reserva/fotos/produtos/p052.jpg",
@@ -1864,6 +2017,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 155,
    "descricao": "22,5 x 14,8 cm.",
    "id": "p053",
    "imagem": "reserva/fotos/produtos/p053.jpg",
@@ -1874,6 +2028,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 156,
    "descricao": "15 x 6,5 cm.",
    "id": "p054",
    "imagem": "reserva/fotos/produtos/p054.jpg",
@@ -1884,6 +2039,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 157,
    "descricao": "Vaso decorativo.",
    "id": "p055",
    "imagem": "reserva/fotos/produtos/p055.jpg",
@@ -1894,6 +2050,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 158,
    "descricao": "33 cm de altura, base de 17 cm.",
    "id": "p056",
    "imagem": "reserva/fotos/produtos/p056.jpg",
@@ -1904,6 +2061,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 159,
    "descricao": "4 unidades disponíveis. Alturas de 17 cm e 15 cm.",
    "id": "p161",
    "imagem": "reserva/fotos/produtos/p161.jpg",
@@ -1914,6 +2072,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 160,
    "descricao": "Vaso prata de 19 cm.",
    "id": "p172",
    "imagem": "reserva/fotos/produtos/p172.jpg",
@@ -1924,6 +2083,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 161,
    "descricao": "Vaso cilíndrico, 12 x 30 cm.",
    "id": "p176",
    "imagem": "reserva/fotos/produtos/p176.jpg",
@@ -1934,6 +2094,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 162,
    "descricao": "Vaso de ferro dourado de 39 cm.",
    "id": "p199",
    "imagem": "reserva/fotos/produtos/p199.jpg",
@@ -1944,6 +2105,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 163,
    "descricao": "Vaso de ferro dourado de 26 cm.",
    "id": "p200",
    "imagem": "reserva/fotos/produtos/p200.jpg",
@@ -1954,6 +2116,7 @@
   {
    "ativo": true,
    "categoria_id": 13,
+   "codigo": 164,
    "descricao": "Vaso de mesa dourado.",
    "id": "p201",
    "imagem": "reserva/fotos/produtos/p201.jpg",
@@ -1964,6 +2127,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 165,
    "descricao": "Para decoração de mesa.",
    "id": "p050",
    "imagem": "reserva/fotos/produtos/p050.jpg",
@@ -1974,6 +2138,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 166,
    "descricao": "26 x 22 cm. O vaso não acompanha.",
    "id": "p051",
    "imagem": "reserva/fotos/produtos/p051.jpg",
@@ -1984,6 +2149,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 167,
    "descricao": "6 peças.",
    "id": "p065",
    "imagem": "reserva/fotos/produtos/p065.jpg",
@@ -1994,6 +2160,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 168,
    "descricao": "5 peças.",
    "id": "p066",
    "imagem": "reserva/fotos/produtos/p066.jpg",
@@ -2004,6 +2171,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 169,
    "descricao": "6 peças.",
    "id": "p067",
    "imagem": "reserva/fotos/produtos/p067.jpg",
@@ -2014,6 +2182,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 170,
    "descricao": "5 peças.",
    "id": "p068",
    "imagem": "reserva/fotos/produtos/p068.jpg",
@@ -2024,6 +2193,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 171,
    "descricao": "14 cm mais base.",
    "id": "p069",
    "imagem": "reserva/fotos/produtos/p069.jpg",
@@ -2034,6 +2204,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 172,
    "descricao": "Dois modelos disponíveis.",
    "id": "p070",
    "imagem": "reserva/fotos/produtos/p070.jpg",
@@ -2044,6 +2215,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 173,
    "descricao": "Tema fazendinha.",
    "id": "p072",
    "imagem": "reserva/fotos/produtos/p072.jpg",
@@ -2054,6 +2226,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 174,
    "descricao": "Tema junino e fazendinha.",
    "id": "p073",
    "imagem": "reserva/fotos/produtos/p073.jpg",
@@ -2064,6 +2237,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 175,
    "descricao": "Decoração tema fundo do mar.",
    "id": "p154",
    "imagem": "reserva/fotos/produtos/p154.jpg",
@@ -2074,6 +2248,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 176,
    "descricao": "Decoração tema fundo do mar.",
    "id": "p155",
    "imagem": "reserva/fotos/produtos/p155.jpg",
@@ -2084,6 +2259,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 177,
    "descricao": "Caixa de MDF sem fundo. 65 x 47 x 37 cm (C x L x A).",
    "id": "p169",
    "imagem": "reserva/fotos/produtos/p169.jpg",
@@ -2094,6 +2270,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 178,
    "descricao": "Cubos com a palavra BABY. Cada cubo tem 20 x 20 cm.",
    "id": "p207",
    "imagem": "reserva/fotos/produtos/p207.jpg",
@@ -2104,6 +2281,7 @@
   {
    "ativo": true,
    "categoria_id": 14,
+   "codigo": 179,
    "descricao": "Rede decorativa de corda, na cor creme.",
    "id": "p211",
    "imagem": "reserva/fotos/produtos/p211.jpg",
@@ -2114,6 +2292,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 180,
    "descricao": "Felpudo.",
    "id": "p030",
    "imagem": "reserva/fotos/produtos/p030.jpg",
@@ -2124,6 +2303,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 181,
    "descricao": "Felpudo.",
    "id": "p031",
    "imagem": "reserva/fotos/produtos/p031.jpg",
@@ -2134,6 +2314,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 182,
    "descricao": "2 unidades disponíveis.",
    "id": "p032",
    "imagem": "reserva/fotos/produtos/p032.jpg",
@@ -2144,6 +2325,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 183,
    "descricao": "Napa de 2 x 1,4 m.",
    "id": "p033",
    "imagem": "reserva/fotos/produtos/p033.jpg",
@@ -2154,6 +2336,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 184,
    "descricao": "Carpete de 2 x 2 m.",
    "id": "p034",
    "imagem": "reserva/fotos/produtos/p034.jpg",
@@ -2164,6 +2347,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 185,
    "descricao": "Tapete com estampa de grama.",
    "id": "p151",
    "imagem": "reserva/fotos/produtos/p151.jpg",
@@ -2174,6 +2358,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 186,
    "descricao": "Tapete com estampa de campo de futebol.",
    "id": "p152",
    "imagem": "reserva/fotos/produtos/p152.jpg",
@@ -2184,6 +2369,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 187,
    "descricao": "Napa de 2 x 1,4 m.",
    "id": "p202",
    "imagem": "reserva/fotos/produtos/p202.jpg",
@@ -2194,6 +2380,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 188,
    "descricao": "Carpete de 2 x 2 m.",
    "id": "p203",
    "imagem": "reserva/fotos/produtos/p203.jpg",
@@ -2204,6 +2391,7 @@
   {
    "ativo": true,
    "categoria_id": 15,
+   "codigo": 189,
    "descricao": "Carpete de 2 x 2 m.",
    "id": "p204",
    "imagem": "reserva/fotos/produtos/p204.jpg",
@@ -2214,6 +2402,7 @@
   {
    "ativo": true,
    "categoria_id": 16,
+   "codigo": 190,
    "descricao": "8 funções.",
    "id": "p061",
    "imagem": "reserva/fotos/produtos/p061.jpg",
@@ -2224,6 +2413,7 @@
   {
    "ativo": true,
    "categoria_id": 16,
+   "codigo": 191,
    "descricao": "Para fundo de painel.",
    "id": "p071",
    "imagem": "reserva/fotos/produtos/p071.jpg",
@@ -2234,6 +2424,7 @@
   {
    "ativo": true,
    "categoria_id": 16,
+   "codigo": 192,
    "descricao": "Véu para decoração, com 6 metros.",
    "id": "p149",
    "imagem": "reserva/fotos/produtos/p149.jpg",
@@ -2244,6 +2435,7 @@
   {
    "ativo": true,
    "categoria_id": 16,
+   "codigo": 193,
    "descricao": "Cortina azul de 1,5 x 2 m.",
    "id": "p205",
    "imagem": "reserva/fotos/produtos/p205.jpg",
@@ -2254,6 +2446,7 @@
   {
    "ativo": true,
    "categoria_id": 17,
+   "codigo": 194,
    "descricao": "40 unidades disponíveis.",
    "id": "p026",
    "imagem": "reserva/fotos/produtos/p026.jpg",
@@ -2264,6 +2457,7 @@
   {
    "ativo": true,
    "categoria_id": 17,
+   "codigo": 195,
    "descricao": "38 unidades disponíveis.",
    "id": "p027",
    "imagem": "reserva/fotos/produtos/p027.jpg",
@@ -2274,6 +2468,7 @@
   {
    "ativo": true,
    "categoria_id": 17,
+   "codigo": 196,
    "descricao": "10 unidades disponíveis.",
    "id": "p028",
    "imagem": "reserva/fotos/produtos/p028.jpg",
@@ -2284,6 +2479,7 @@
   {
    "ativo": true,
    "categoria_id": 17,
+   "codigo": 197,
    "descricao": "10 de cada cor: marfim, azul-claro, verde-limão, pink, rosa-claro, vermelha, cinza e preta. 20 azul royal e 20 verde tiffany.",
    "id": "p029",
    "imagem": "reserva/fotos/produtos/p029.jpg",
@@ -2294,6 +2490,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 198,
    "descricao": "Planta artificial.",
    "id": "p057",
    "imagem": "reserva/fotos/produtos/p057.jpg",
@@ -2304,6 +2501,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 199,
    "descricao": "24 rosas abertas e 13 botões.",
    "id": "p074",
    "imagem": "reserva/fotos/produtos/p074.jpg",
@@ -2314,6 +2512,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 200,
    "descricao": "6 unidades.",
    "id": "p075",
    "imagem": "reserva/fotos/produtos/p075.jpg",
@@ -2324,6 +2523,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 201,
    "descricao": "Flor artificial para arranjos.",
    "id": "p076",
    "imagem": "reserva/fotos/produtos/p076.jpg",
@@ -2334,6 +2534,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 202,
    "descricao": "10 rosas abertas e 5 botões.",
    "id": "p077",
    "imagem": "reserva/fotos/produtos/p077.jpg",
@@ -2344,6 +2545,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 203,
    "descricao": "4 de cada tom.",
    "id": "p078",
    "imagem": "reserva/fotos/produtos/p078.jpg",
@@ -2354,6 +2556,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 204,
    "descricao": "24 unidades disponíveis.",
    "id": "p079",
    "imagem": "reserva/fotos/produtos/p079.jpg",
@@ -2364,6 +2567,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 205,
    "descricao": "Flores artificiais para arranjos.",
    "id": "p168",
    "imagem": "reserva/fotos/produtos/p168.jpg",
@@ -2374,6 +2578,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 206,
    "descricao": "Flores artificiais para arranjos.",
    "id": "p171",
    "imagem": "reserva/fotos/produtos/p171.jpg",
@@ -2384,6 +2589,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 207,
    "descricao": "Flores artificiais para arranjos.",
    "id": "p173",
    "imagem": "reserva/fotos/produtos/p173.jpg",
@@ -2394,6 +2600,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 208,
    "descricao": "Plantas artificiais em formato de meia-lua.",
    "id": "p174",
    "imagem": "reserva/fotos/produtos/p174.jpg",
@@ -2404,6 +2611,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 209,
    "descricao": "24 unidades disponíveis.",
    "id": "p191",
    "imagem": "reserva/fotos/produtos/p191.jpg",
@@ -2414,6 +2622,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 210,
    "descricao": "24 unidades disponíveis.",
    "id": "p192",
    "imagem": "reserva/fotos/produtos/p192.jpg",
@@ -2424,6 +2633,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 211,
    "descricao": "24 unidades disponíveis.",
    "id": "p193",
    "imagem": "reserva/fotos/produtos/p193.jpg",
@@ -2434,6 +2644,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 212,
    "descricao": "24 unidades disponíveis.",
    "id": "p194",
    "imagem": "reserva/fotos/produtos/p194.jpg",
@@ -2444,6 +2655,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 213,
    "descricao": "24 unidades disponíveis.",
    "id": "p195",
    "imagem": "reserva/fotos/produtos/p195.jpg",
@@ -2454,6 +2666,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 214,
    "descricao": "24 unidades disponíveis.",
    "id": "p196",
    "imagem": "reserva/fotos/produtos/p196.jpg",
@@ -2464,6 +2677,7 @@
   {
    "ativo": true,
    "categoria_id": 18,
+   "codigo": 215,
    "descricao": "24 unidades disponíveis.",
    "id": "p197",
    "imagem": "reserva/fotos/produtos/p197.jpg",
