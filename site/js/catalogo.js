@@ -114,10 +114,9 @@
       return '<button class="chip' + (on ? " on" : "") + (extra || "") + '" data-c="' + esc(chave) + '" aria-pressed="' + on + '">' +
         "<span>" + esc(nome) + "</span></button>";
     };
-    // A galeria de inspirações vem primeiro, em destaque.
-    var h = "";
-    cats.forEach(function (c) { if (c.tipo === GALERIA) h += botao(c.chave, c.nome, " destaque"); });
-    h += botao("Todos", "Todos");
+    // "Todos" primeiro; logo abaixo, a galeria de inspirações (mesma cor das outras).
+    var h = botao("Todos", "Todos");
+    cats.forEach(function (c) { if (c.tipo === GALERIA) h += botao(c.chave, c.nome); });
     cats.forEach(function (c) { if (c.tipo !== GALERIA) h += botao(c.chave, c.nome); });
     $("#chips").innerHTML = h;
   }
@@ -282,20 +281,70 @@
     $("#fab").focus();
   }
 
+  // Foto ampliada das inspirações: setas para passar, botão "Voltar" para sair.
+  var fotoAtual = -1;
+  var origemFoto = null;
+
+  function mostrarFoto(i) {
+    if (!insp.length) return;
+    fotoAtual = (i + insp.length) % insp.length;
+    var x = insp[fotoAtual];
+    var nome = x.nome + (cod(x) ? " (Cód. " + cod(x) + ")" : "");
+    var varias = insp.length > 1;
+    $("#lb").innerHTML =
+      '<div class="lb-topo"><span class="lb-cont">' + (fotoAtual + 1) + " de " + insp.length + "</span>" +
+      '<button class="lb-voltar" data-lb="fechar">‹ Voltar ao catálogo</button></div>' +
+      '<div class="lb-foto">' +
+      (varias ? '<button class="lb-seta lb-ant" data-lb="ant" aria-label="Foto anterior">‹</button>' : "") +
+      '<img src="' + esc(fotoUrl(x.imagem)) + '" alt="' + esc(nome) + '">' +
+      (varias ? '<button class="lb-seta lb-prox" data-lb="prox" aria-label="Próxima foto">›</button>' : "") +
+      "</div>" +
+      '<p class="lb-nome">' + esc(nome) + (x.descricao ? "<small>" + esc(x.descricao) + "</small>" : "") + "</p>";
+    // Já carrega a próxima foto para a troca ser rápida.
+    if (varias) new Image().src = fotoUrl(insp[(fotoAtual + 1) % insp.length].imagem);
+  }
+
+  function abrirFoto(i, origem) {
+    origemFoto = origem;
+    mostrarFoto(i);
+    $("#lb").hidden = false;
+    document.body.style.overflow = "hidden";
+    var v = $("#lb .lb-voltar");
+    if (v) v.focus();
+  }
+
   function fecharFoto() {
     $("#lb").hidden = true;
     $("#lb").innerHTML = "";
+    fotoAtual = -1;
+    document.body.style.overflow = "";
+    if (origemFoto && document.contains(origemFoto)) origemFoto.focus();
   }
+
+  // No celular: arrastar o dedo para o lado troca a foto.
+  var toqueX = null, toqueY = null;
+  $("#lb").addEventListener("touchstart", function (e) {
+    toqueX = e.touches[0].clientX;
+    toqueY = e.touches[0].clientY;
+  }, { passive: true });
+  $("#lb").addEventListener("touchend", function (e) {
+    if (toqueX === null) return;
+    var dx = e.changedTouches[0].clientX - toqueX;
+    var dy = e.changedTouches[0].clientY - toqueY;
+    toqueX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) mostrarFoto(fotoAtual + (dx < 0 ? 1 : -1));
+  });
 
   document.addEventListener("click", function (e) {
     var z = e.target.closest("[data-z]");
-    if (z) {
-      var x = insp[Number(z.dataset.z)];
-      $("#lb").innerHTML = '<img src="' + esc(fotoUrl(x.imagem)) + '" alt="Inspiração de decoração ampliada">';
-      $("#lb").hidden = false;
+    if (z) { abrirFoto(Number(z.dataset.z), z); return; }
+    if (e.target.closest("#lb")) {
+      var b = e.target.closest("[data-lb]");
+      if (b && b.dataset.lb === "ant") mostrarFoto(fotoAtual - 1);
+      else if (b && b.dataset.lb === "prox") mostrarFoto(fotoAtual + 1);
+      else if ((b && b.dataset.lb === "fechar") || e.target.id === "lb") fecharFoto();
       return;
     }
-    if (e.target.closest("#lb")) { fecharFoto(); return; }
     var t = e.target.closest("[data-a],[data-c]");
     if (!t) { if (e.target.id === "ov") fecharPainel(); return; }
     if (t.dataset.c) {
@@ -322,9 +371,13 @@
   });
 
   document.addEventListener("keydown", function (e) {
-    if (e.key !== "Escape") return;
-    if (!$("#lb").hidden) fecharFoto();
-    else if (!$("#ov").hidden) fecharPainel();
+    if (!$("#lb").hidden) {
+      if (e.key === "ArrowLeft") mostrarFoto(fotoAtual - 1);
+      else if (e.key === "ArrowRight") mostrarFoto(fotoAtual + 1);
+      else if (e.key === "Escape") fecharFoto();
+      return;
+    }
+    if (e.key === "Escape" && !$("#ov").hidden) fecharPainel();
   });
 
   $("#fab").addEventListener("click", abrirPainel);
