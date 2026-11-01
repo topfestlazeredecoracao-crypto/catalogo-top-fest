@@ -383,18 +383,16 @@
 
   $("#fab").addEventListener("click", abrirPainel);
 
-  // Botão ☰: esconde ou mostra a coluna de categorias (o aparelho lembra a escolha).
-  var CATS_ESCONDIDAS = "topfest-sem-categorias";
+  // Botão ☰: esconde ou mostra a coluna de categorias.
+  // Ao entrar no site a coluna sempre aparece, para o cliente saber que ela existe.
   function mostrarCategorias(mostrar) {
     document.body.classList.toggle("sem-categorias", !mostrar);
     var b = $("#ver-cats");
     b.setAttribute("aria-expanded", String(mostrar));
     b.setAttribute("aria-label", mostrar ? "Esconder categorias" : "Mostrar categorias");
-    try { localStorage.setItem(CATS_ESCONDIDAS, mostrar ? "" : "1"); } catch (e) { /* sem armazenamento */ }
   }
-  var escondidas = false;
-  try { escondidas = localStorage.getItem(CATS_ESCONDIDAS) === "1"; } catch (e) { /* sem armazenamento */ }
-  mostrarCategorias(!escondidas);
+  try { localStorage.removeItem("topfest-sem-categorias"); } catch (e) { /* sem armazenamento */ }
+  mostrarCategorias(true);
   $("#ver-cats").addEventListener("click", function () {
     mostrarCategorias(document.body.classList.contains("sem-categorias"));
   });
