@@ -435,9 +435,6 @@
     .catch(carregarReserva)
     .then(function (d) {
       montar(d);
-      // Ao entrar no site, já abre a galeria de inspirações (se tiver fotos).
-      var g = cats.filter(function (c) { return c.tipo === GALERIA; })[0];
-      if (g && insp.length && cat === "Todos" && !q) cat = g.chave;
       linksDuvida(); chips(); grid(); fab(); pedirAjuste();
     })
     .catch(function () {
