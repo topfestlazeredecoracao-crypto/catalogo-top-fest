@@ -292,14 +292,14 @@
     var nome = x.nome + (cod(x) ? " (Cód. " + cod(x) + ")" : "");
     var varias = insp.length > 1;
     $("#lb").innerHTML =
-      '<div class="lb-topo"><button class="lb-voltar" data-lb="fechar">‹ Voltar ao catálogo</button></div>' +
+      '<div class="lb-topo"><button class="lb-voltar" data-lb="fechar" aria-label="Voltar ao catálogo">✕ Voltar</button></div>' +
       '<div class="lb-foto"><img src="' + esc(fotoUrl(x.imagem)) + '" alt="' + esc(nome) + '"></div>' +
       '<p class="lb-nome">' + esc(nome) + (x.descricao ? "<small>" + esc(x.descricao) + "</small>" : "") + "</p>" +
       // Setas numa barra abaixo da foto, para não cobrir a imagem.
       '<div class="lb-nav">' +
-      (varias ? '<button class="lb-seta" data-lb="ant" aria-label="Foto anterior">‹ Anterior</button>' : "<span></span>") +
+      (varias ? '<button class="lb-seta" data-lb="ant" aria-label="Foto anterior">‹</button>' : "<span></span>") +
       '<span class="lb-cont">' + (fotoAtual + 1) + " de " + insp.length + "</span>" +
-      (varias ? '<button class="lb-seta" data-lb="prox" aria-label="Próxima foto">Próxima ›</button>' : "<span></span>") +
+      (varias ? '<button class="lb-seta" data-lb="prox" aria-label="Próxima foto">›</button>' : "<span></span>") +
       "</div>";
     // Já carrega a próxima foto para a troca ser rápida.
     if (varias) new Image().src = fotoUrl(insp[(fotoAtual + 1) % insp.length].imagem);
