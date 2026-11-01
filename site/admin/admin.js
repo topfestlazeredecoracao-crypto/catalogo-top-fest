@@ -277,7 +277,7 @@
     var sel = $("#filtro-cat");
     var atual = sel.value;
     sel.innerHTML = '<option value="">Todas as categorias</option>' + catsDeProduto().map(function (c) {
-      return '<option value="' + c.id + '">' + esc(c.icone + " " + c.nome) + " (" + produtosDaCategoria(c.id).length + ")</option>";
+      return '<option value="' + c.id + '">' + esc(c.nome) + " (" + produtosDaCategoria(c.id).length + ")</option>";
     }).join("");
     sel.value = atual;
   }
@@ -298,9 +298,9 @@
       return posCat[a.categoria_id] - posCat[b.categoria_id] || a.ordem - b.ordem || a.nome.localeCompare(b.nome);
     });
     $("#lista-produtos").innerHTML = lista.map(function (p, i) {
-      var c = cat(p.categoria_id) || { nome: "?", icone: "❔" };
+      var c = cat(p.categoria_id) || { nome: "?" };
       return '<li class="item' + (p.ativo ? "" : " oculto") + '" data-id="' + esc(p.id) + '">' +
-        '<div class="mini">' + (p.imagem ? '<img src="' + esc(fotoUrl(p.imagem)) + '" alt="" loading="lazy">' : esc(c.icone)) + "</div>" +
+        '<div class="mini">' + (p.imagem ? '<img src="' + esc(fotoUrl(p.imagem)) + '" alt="" loading="lazy">' : "📷") + "</div>" +
         '<div class="item-info"><b><span class="cod">Cód. ' + cod(p.codigo) + "</span> " + esc(p.nome) +
         (p.ativo ? "" : ' <span class="selo">OCULTO</span>') + "</b>" +
         "<span>" + esc(c.nome) + (p.preco != null ? " · " + brl(p.preco) + (p.mostrar_preco ? "" : " (preço escondido no site)") : "") +
@@ -384,14 +384,14 @@
 
   function opcoesCategoria(selecionada) {
     formP.categoria_id.innerHTML = catsDeProduto().map(function (c) {
-      return '<option value="' + c.id + '">' + esc(c.icone + " " + c.nome) + "</option>";
+      return '<option value="' + c.id + '">' + esc(c.nome) + "</option>";
     }).join("") + '<option value="nova">➕ Criar nova categoria…</option>';
     if (selecionada) formP.categoria_id.value = String(selecionada);
     $("#nova-cat-campos").hidden = formP.categoria_id.value !== "nova";
   }
 
-  function previa(url, icone) {
-    $("#prev-produto").innerHTML = url ? '<img src="' + esc(url) + '" alt="Prévia da foto">' : esc(icone || "📦");
+  function previa(url) {
+    $("#prev-produto").innerHTML = url ? '<img src="' + esc(url) + '" alt="Prévia da foto">' : "📷";
     $("#tirar-foto").hidden = !url;
   }
 
@@ -410,8 +410,7 @@
       formP.preco.value = p.preco == null ? "" : String(p.preco).replace(".", ",");
       formP.ativo.checked = p.ativo;
     }
-    var c = cat(Number(formP.categoria_id.value));
-    previa(p && p.imagem ? fotoUrl(p.imagem) : "", c && c.icone);
+    previa(p && p.imagem ? fotoUrl(p.imagem) : "");
     $("#dlg-produto").showModal();
   }
 
@@ -436,8 +435,7 @@
     fotoNova = null;
     removerFoto = true;
     formP.foto.value = "";
-    var c = cat(Number(formP.categoria_id.value));
-    previa("", c && c.icone);
+    previa("");
   });
 
   $$("[data-fechar]").forEach(function (b) {
@@ -508,7 +506,7 @@
     if (formP.categoria_id.value !== "nova") return Promise.resolve(Number(formP.categoria_id.value));
     var nome = formP.nova_cat_nome.value.trim();
     if (!nome) return Promise.reject(new Error("Digite o nome da nova categoria."));
-    return criarCategoria(nome, formP.nova_cat_icone.value.trim() || "🎉").then(function (c) { return c.id; });
+    return criarCategoria(nome).then(function (c) { return c.id; });
   }
 
   // ---------- Fotos ----------
@@ -562,7 +560,7 @@
       var n = produtosDaCategoria(c.id).length;
       var galeria = c.tipo === "galeria";
       return '<li class="item" data-id="' + c.id + '">' +
-        '<div class="mini">' + esc(c.icone) + "</div>" +
+        '<div class="mini">' + (galeria ? "📸" : "🗂️") + "</div>" +
         '<div class="item-info"><b>' + esc(c.nome) + "</b><span>" +
         (galeria ? "Galeria de fotos (" + st.insp.length + " fotos)" : n + (n === 1 ? " produto" : " produtos")) + "</span></div>" +
         '<div class="item-acoes">' +
@@ -590,9 +588,9 @@
     else if (acao === "excluir") excluirCategoria(c);
   });
 
-  function criarCategoria(nome, icone) {
+  function criarCategoria(nome) {
     var ordem = st.cats.reduce(function (m, x) { return Math.max(m, x.ordem); }, 0) + 1;
-    return sb.from("categorias").insert({ nome: nome, icone: icone, tipo: "produtos", ordem: ordem })
+    return sb.from("categorias").insert({ nome: nome, tipo: "produtos", ordem: ordem })
       .select().single().then(ok).then(function (c) {
         st.cats.push(c);
         desenharCategorias();
@@ -608,7 +606,6 @@
     formC.reset();
     $("#dlg-categoria-tit").textContent = c ? "Editar categoria" : "Nova categoria";
     formC.nome.value = c ? c.nome : "";
-    formC.icone.value = c ? c.icone : "🎉";
     $("#dlg-categoria").showModal();
   }
 
@@ -616,12 +613,12 @@
 
   formC.addEventListener("submit", function (e) {
     e.preventDefault();
-    var nome = formC.nome.value.trim(), icone = formC.icone.value.trim();
+    var nome = formC.nome.value.trim();
     var c = categoriaEditando;
     var acao = c
-      ? sb.from("categorias").update({ nome: nome, icone: icone }).eq("id", c.id).select().single().then(ok)
+      ? sb.from("categorias").update({ nome: nome }).eq("id", c.id).select().single().then(ok)
           .then(function (novo) { Object.assign(c, novo); desenharTudo(); })
-      : criarCategoria(nome, icone);
+      : criarCategoria(nome);
     ocupado($('button[type="submit"]', formC), acao.then(function () {
       $("#dlg-categoria").close();
       avisar("Categoria salva.");

@@ -87,7 +87,7 @@ O produto novo entra **no fim** da categoria escolhida. Para mudar a posição, 
 
 **Para trocar a foto:** dentro do Editar, toque em **📷 Escolher foto** e escolha a foto nova. A prévia mostra como ficou. Depois toque em **Salvar**.
 
-**Para tirar a foto:** toque em **Remover foto** e em **Salvar**. No site, no lugar da foto, aparece o ícone da categoria.
+**Para tirar a foto:** toque em **Remover foto** e em **Salvar**. No site, no lugar da foto, aparece o desenho de uma câmera (📷).
 
 ### 4.4 Dicas para fotos bonitas
 - Fotografe o item **sozinho**, com **fundo liso e claro** e boa luz (perto de uma janela, de dia).
@@ -140,13 +140,13 @@ Cada produto tem um **código** de 3 números (ex.: **Cód. 080**). O cliente v�
 As categorias são os botões no alto do site (Mobiliário, Flores, Placas...).
 
 ### 5.1 Criar categoria
-- **Pela aba 🗂️ Categorias:** toque em **➕ Nova categoria**, digite o **nome**, escolha um **ícone** (um emoji, ex.: 🎈) e toque em **Salvar**.
-- **Ou direto ao cadastrar um produto:** em **Categoria**, escolha **"➕ Criar nova categoria…"** e preencha o nome e o ícone.
+- **Pela aba 🗂️ Categorias:** toque em **➕ Nova categoria**, digite o **nome** e toque em **Salvar**.
+- **Ou direto ao cadastrar um produto:** em **Categoria**, escolha **"➕ Criar nova categoria…"** e preencha o nome.
 
 A categoria nova entra **no fim** da lista de botões.
 
-### 5.2 Renomear ou trocar o ícone
-Toque em **✏️ Editar** na categoria, mude o nome ou o ícone e toque em **Salvar**.
+### 5.2 Renomear
+Toque em **✏️ Editar** na categoria, mude o nome e toque em **Salvar**.
 
 ### 5.3 Mudar a ordem dos botões no site
 Use **▲** e **▼** na aba **🗂️ Categorias**. A ordem vale na hora.

@@ -55,7 +55,7 @@
   function carregarSupabase() {
     return Promise.all([
       api("configuracoes", "select=*&id=eq.1"),
-      api("categorias", "select=id,nome,icone,tipo,ordem&order=ordem,id"),
+      api("categorias", "select=id,nome,tipo,ordem&order=ordem,id"),
       api("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ordem&ativo=is.true&order=ordem,nome"),
       api("inspiracoes", "select=id,imagem,legenda,ordem&order=ordem,id"),
       // Só os preços que a administradora deixou aparecer.
@@ -168,7 +168,7 @@
       var foto = fotoUrl(p.imagem);
       h += '<div class="card"><div class="tile">' +
         (foto ? '<img src="' + esc(foto) + '" alt="' + esc(p.nome) + '" loading="lazy" decoding="async" width="230" height="170">'
-              : '<span role="img" aria-label="' + esc(pc.nome) + '">' + esc(pc.icone) + "</span>") +
+              : '<span role="img" aria-label="Produto sem foto">📷</span>') +
         // O nome da categoria só aparece na busca (fora dela, o título da seção já mostra).
         '</div><div class="body">' + (t ? '<span class="cat">' + esc(pc.nome) + "</span>" : "") +
         (cod(p) ? '<span class="cod">Cód. ' + cod(p) + "</span>" : "") + "<h3>" + esc(p.nome) + "</h3><p>" +
