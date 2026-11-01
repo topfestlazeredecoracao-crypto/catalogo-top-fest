@@ -46,7 +46,7 @@ Para sair, toque em **Sair**, no canto de cima. Faça isso sempre que usar um co
 ## 3. As abas da área da administradora
 
 ```
-[ 📦 Produtos ] [ 🗂️ Categorias ] [ 📸 Inspirações ] [ ⚙️ Configurações ] [ 💾 Cópia de segurança ]
+[ 📦 Produtos ] [ 🧾 Orçamentos ] [ 👥 Clientes ] [ 🗂️ Categorias ] [ 📸 Inspirações ] [ ⚙️ Configurações ] [ 💾 Cópia de segurança ]
 ```
 
 No celular, arraste as abas para o lado para ver todas.
@@ -56,10 +56,10 @@ No celular, arraste as abas para o lado para ver todas.
 ## 4. Produtos
 
 ### 4.1 Encontrar um produto
-- Use o campo **"Buscar produto"** e digite parte do nome (ex.: `boleira`).
+- Use o campo **"Buscar produto"** e digite parte do nome (ex.: `boleira`) ou o **código** (ex.: `080`).
 - Ou escolha uma categoria em **"Todas as categorias"**.
 
-Cada produto aparece num cartão com a foto, o nome, a categoria e os botões:
+Cada produto aparece num cartão com a foto, o **código** (ex.: **Cód. 080**), o nome, a categoria e os botões:
 
 ```
 [ ✏️ Editar ] [ 🙈 Ocultar ] [ ▲ ] [ ▼ ] [ 🗑️ Excluir ]
@@ -75,6 +75,8 @@ Produtos ocultos aparecem com a borda tracejada e a etiqueta vermelha **OCULTO**
 5. Escolha a **Categoria**.
 6. Deixe marcado **"Visível no site"**.
 7. Toque em **Salvar**. Vai aparecer a mensagem **"Produto incluído."**
+
+O campo **Código** pode ficar vazio: o sistema dá sozinho o próximo número livre. Se quiser, digite um código seu (só números). O sistema não deixa repetir código.
 
 O produto novo entra **no fim** da categoria escolhida. Para mudar a posição, veja o item 4.6.
 
@@ -113,8 +115,23 @@ Use **ocultar** em vez de excluir quando o item pode voltar. Assim você não pe
 
 ⚠️ **A exclusão não tem volta**: a foto também é apagada. Se tiver dúvida, use **Ocultar**.
 
-### 4.8 Preço (opcional, desligado)
-O formulário tem um campo **Preço (opcional)**. Ele **não aparece no site** enquanto a opção **"Mostrar preços no site"** estiver desligada em **⚙️ Configurações**. Hoje os preços são passados pelo WhatsApp, então deixe desligado.
+### 4.8 Preço: mostrar ou esconder no site
+O formulário do produto tem:
+- **Preço (opcional):** o valor da locação. Ele também entra **automaticamente** quando você coloca o produto num orçamento (item 11).
+- **"Mostrar o preço deste produto no site":** marque para o cliente ver o preço deste produto; desmarque para esconder só este.
+
+Além disso, em **⚙️ Configurações** existe o botão geral **"Mostrar preços no site"**:
+
+| Botão geral (Configurações) | "Mostrar o preço deste produto" | O cliente vê o preço? |
+|---|---|---|
+| Desligado | (tanto faz) | **Não** (nenhum preço aparece) |
+| Ligado | Marcado e com preço preenchido | **Sim** |
+| Ligado | Desmarcado | **Não** |
+
+Os preços escondidos ficam protegidos no sistema: o visitante não consegue vê-los, nem mexendo no site.
+
+### 4.9 Código do produto
+Cada produto tem um **código** de 3 números (ex.: **Cód. 080**). O cliente vê o código no site, e ele vai junto na mensagem do WhatsApp. Assim você sabe exatamente qual item ele quer.
 
 ---
 
@@ -174,7 +191,7 @@ Na aba **⚙️ Configurações**:
 | **Número do WhatsApp que recebe os orçamentos** | Para onde vão os pedidos do botão verde. Digite com DDD, ex.: `(19) 99161-6329`. O sistema completa o código do Brasil (55) sozinho. |
 | **WhatsApp como aparece escrito** | Como o número é mostrado por escrito. |
 | **Telefone secundário** | Outro telefone de contato. |
-| **Mostrar preços no site** | Liga ou desliga a exibição dos preços (veja o item 4.8). |
+| **Mostrar preços no site** | Botão geral que liga ou desliga os preços no site (veja o item 4.8). |
 
 Toque em **Salvar configurações**.
 
@@ -190,7 +207,11 @@ Toque em **Salvar configurações**.
 3. É baixado um arquivo com um nome como `copia-catalogo-topfest-2026-11-01.json`.
 4. Guarde esse arquivo no **Google Drive** da Top Fest ou num pendrive.
 
-A cópia guarda **os textos, as categorias, a ordem e as configurações**. As **fotos** ficam guardadas no sistema e, além disso, uma cópia delas é salva automaticamente a cada 3 dias no GitHub.
+A cópia guarda **os textos, as categorias, a ordem, as configurações, os clientes e os orçamentos**.
+
+⚠️ O arquivo tem **dados pessoais dos clientes** (telefone, CPF, endereço). Guarde em lugar seguro e não envie para outras pessoas.
+
+As **fotos** ficam guardadas no sistema e, além disso, uma cópia delas é salva automaticamente a cada 3 dias no GitHub.
 
 ### 8.2 Restaurar uma cópia
 Use só se algo foi apagado ou alterado por engano.
@@ -214,8 +235,8 @@ Os itens criados **depois** da cópia **não** são apagados. Se precisar, exclu
 ```
 Olá! Gostaria de um orçamento de locação dos itens abaixo:
 
-- 2x Kit completo – Neon
-- 1x Boleira prateada
+- 2x (Cód. 001) Kit completo – Neon
+- 1x (Cód. 150) Boleira prateada
 
 Nome: Maria
 Data do evento: 20/12/2026
@@ -225,7 +246,61 @@ Obrigado!
 
 ---
 
-## 10. Se algo der errado
+Com essa mensagem você pode montar o orçamento em segundos: veja o item 11.2.
+
+---
+
+## 10. Clientes
+
+Na aba **👥 Clientes** você guarda os dados de quem aluga com você. **Só você vê essas informações**: o site público não mostra nada.
+
+### 10.1 Cadastrar um cliente
+1. Toque em **➕ Novo cliente**.
+2. Preencha o **Nome** (obrigatório) e o que tiver: **WhatsApp**, **CPF ou CNPJ**, **E-mail**, **CEP**, **Endereço**, **Bairro**, **Cidade** e **Observações**.
+3. Toque em **Salvar**.
+
+O sistema confere se o **CPF/CNPJ** está correto (pode digitar com ou sem pontos). Se aparecer **"Esse CPF não é válido"**, confira os números com o cliente.
+
+### 10.2 Encontrar, editar e excluir
+- Use a busca: nome, telefone, CPF/CNPJ ou cidade.
+- **✏️ Editar** muda os dados. **💬 WhatsApp** abre a conversa com o cliente.
+- **🧾 Novo orçamento** começa um orçamento já com esse cliente.
+- **🗑️ Excluir** apaga o cliente. Os orçamentos dele **continuam salvos**, só com o nome.
+
+---
+
+## 11. Orçamentos
+
+Na aba **🧾 Orçamentos** você monta o orçamento com valores, imprime ou salva em PDF e envia pelo WhatsApp do cliente. **Só você vê os orçamentos.**
+
+### 11.1 Fazer um orçamento do zero
+1. Toque em **➕ Novo orçamento**.
+2. Em **Cliente**, escolha o cliente. Se ele não estiver cadastrado, toque em **➕ Cadastrar cliente**.
+3. Preencha a **Data do evento**.
+4. Em **Adicionar produto**, digite o **código** (ex.: `080`) ou parte do nome e toque no produto da lista. (Digitar o código e apertar **Enter** também adiciona.)
+5. Ajuste a **Qtd** e o **Valor unit.** de cada item. O valor já vem do cadastro do produto, se ele tiver preço.
+6. Para cobrar **montagem, entrega, decoração** ou outro serviço, toque em **➕ Serviço** e escreva o nome, a quantidade e o valor.
+7. Se quiser, preencha **Desconto**, **Taxa de entrega / frete** e **Observações** (ex.: horário, local, forma de pagamento).
+8. Confira o **Total** e toque em **Salvar orçamento**. Ele ganha um número (nº 1, nº 2…).
+
+### 11.2 Fazer o orçamento a partir do pedido do WhatsApp (mais rápido)
+1. No WhatsApp, **toque e segure** a mensagem do cliente e escolha **Copiar**.
+2. Na aba **🧾 Orçamentos**, toque em **📋 Colar pedido do WhatsApp**, cole a mensagem e toque em **Montar orçamento**.
+3. O sistema coloca os itens (pelos códigos), a data do evento e, se o nome já estiver cadastrado, o cliente.
+4. Se o cliente não estiver cadastrado, aparece um aviso: toque em **➕ Cadastrar cliente** (o nome já vem preenchido).
+5. Coloque os valores, os serviços, e toque em **Salvar orçamento**.
+
+### 11.3 Imprimir, salvar em PDF ou enviar
+Na lista de orçamentos:
+- **🖨️ Imprimir / PDF:** abre a folha do orçamento com a logo. Toque em **Imprimir / Salvar em PDF**. Para PDF, escolha **"Salvar como PDF"** no lugar da impressora. Depois é só mandar o PDF para o cliente.
+- **💬 Enviar no WhatsApp:** abre o WhatsApp do cliente com o orçamento escrito, pronto para enviar. (O cliente precisa ter WhatsApp cadastrado.)
+- **✏️ Abrir:** muda o orçamento. **📄 Copiar:** cria um orçamento novo com os mesmos itens. **🗑️ Excluir:** apaga.
+
+> O orçamento guarda o nome e o valor dos itens do dia em que foi feito. Se você mudar o produto depois, o orçamento antigo não muda.
+
+---
+
+## 12. Se algo der errado
 
 | O que aconteceu | O que fazer |
 |---|---|
@@ -235,11 +310,14 @@ Obrigado!
 | **A mudança não aparece no site** | No site, **recarregue a página** (puxe a tela para baixo no celular, ou aperte **F5** no computador). |
 | **"Formato de foto não aceito."** | Use foto **JPG, PNG ou WebP**. Fotos "HEIC" do iPhone: no iPhone, vá em **Ajustes › Câmera › Formatos** e escolha **"Mais compatível"**. |
 | **O site mostra "Mostrando a última cópia salva do catálogo."** | O sistema de dados está fora do ar ou pausado. Os clientes continuam vendo o catálogo e pedindo orçamento, mas as mudanças feitas agora só aparecem quando ele voltar. Avise o responsável técnico (veja a lista de contas e serviços). |
+| **"Já existe um produto com esse código."** | Outro produto já usa esse número. Deixe o campo **Código** vazio para o sistema escolher, ou digite outro. |
+| **"Esse CPF/CNPJ não é válido."** | Algum número foi digitado errado. Confira com o cliente. O campo pode ficar vazio. |
+| **A folha de impressão diz "Entre na área da administradora primeiro"** | Entre no `/admin` com seu e-mail e senha e abra o orçamento de novo. |
 | **A área da administradora não abre ou dá erro estranho** | Feche e abra o navegador. Se continuar, tire um **print da tela** e mande ao responsável técnico. |
 
 ---
 
-## 11. Itens para revisar quando puder
+## 13. Itens para revisar quando puder
 
 Anotações feitas na montagem do catálogo:
 
