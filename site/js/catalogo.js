@@ -57,14 +57,13 @@
       api("configuracoes", "select=*&id=eq.1"),
       api("categorias", "select=id,nome,tipo,ordem&order=ordem,id"),
       api("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ordem&ativo=is.true&order=ordem,nome"),
-      api("inspiracoes", "select=id,imagem,legenda,ordem&order=ordem,id"),
       // Só os preços que a administradora deixou aparecer.
       api("precos_publicos", "select=id,preco")
     ]).then(function (r) {
       var precos = {};
-      r[4].forEach(function (x) { precos[x.id] = x.preco; });
+      r[3].forEach(function (x) { precos[x.id] = x.preco; });
       r[2].forEach(function (p) { p.preco = p.id in precos ? precos[p.id] : null; });
-      return { configuracoes: r[0][0], categorias: r[1], produtos: r[2], inspiracoes: r[3] };
+      return { configuracoes: r[0][0], categorias: r[1], produtos: r[2] };
     });
   }
 
@@ -81,11 +80,19 @@
     cats = d.categorias.slice().sort(function (a, b) { return a.ordem - b.ordem || a.id - b.id; });
     var posCat = {};
     cats.forEach(function (c, i) { posCat[c.id] = i; c.chave = String(c.id); });
+    var gal = cats.filter(function (c) { return c.tipo === GALERIA; })[0];
+    // Cópia de reserva antiga: as fotos de inspiração ainda vinham numa lista separada.
+    if (gal && d.inspiracoes && d.inspiracoes.length) {
+      d.produtos = d.produtos.concat(d.inspiracoes.map(function (x) {
+        return { id: x.id, categoria_id: gal.id, nome: "Decoração completa", descricao: x.legenda || "", imagem: x.imagem, ordem: x.ordem, codigo: null, preco: null };
+      }));
+    }
     prods = d.produtos.filter(function (p) { return p.ativo !== false && p.categoria_id in posCat; })
       .sort(function (a, b) { return posCat[a.categoria_id] - posCat[b.categoria_id] || a.ordem - b.ordem; });
     porId = {};
     prods.forEach(function (p) { porId[p.id] = p; });
-    insp = d.inspiracoes.slice().sort(function (a, b) { return a.ordem - b.ordem; });
+    // As inspirações são os produtos da categoria do tipo "galeria".
+    insp = prods.filter(function (p) { return gal && p.categoria_id === gal.id; });
     // Remove do orçamento itens que saíram do catálogo.
     Object.keys(cart).forEach(function (k) { if (!porId[k]) delete cart[k]; });
     salvarCarrinho();
@@ -145,10 +152,13 @@
     var c = cat === "Todos" ? null : catPorId(Number(cat));
     var aviso = reserva ? '<div class="aviso">Mostrando a última cópia salva do catálogo.</div>' : "";
     if (c && c.tipo === GALERIA) {
+      // Foto grande (amplia ao tocar) + código, nome, legenda, preço e botão de orçamento.
       $("#grid").innerHTML = aviso + (insp.map(function (x, i) {
-        return '<div class="card"><button class="ins" data-z="' + i + '" aria-label="Ampliar foto de inspiração' + (x.legenda ? ": " + esc(x.legenda) : "") + '">' +
-          '<img src="' + esc(fotoUrl(x.imagem)) + '" alt="Inspiração de decoração' + (x.legenda ? " – " + esc(x.legenda) : "") + '" loading="lazy" decoding="async"></button>' +
-          (x.legenda ? '<p class="cap">' + esc(x.legenda) + "</p>" : "") + "</div>";
+        var nome = x.nome + (cod(x) ? " (Cód. " + cod(x) + ")" : "");
+        return '<div class="card"><button class="ins" data-z="' + i + '" aria-label="Ampliar foto: ' + esc(nome) + '">' +
+          '<img src="' + esc(fotoUrl(x.imagem)) + '" alt="' + esc(nome + (x.descricao ? " – " + x.descricao : "")) + '" loading="lazy" decoding="async"></button>' +
+          '<div class="body">' + (cod(x) ? '<span class="cod">Cód. ' + cod(x) + "</span>" : "") + "<h3>" + esc(x.nome) + "</h3>" +
+          (x.descricao ? "<p>" + esc(x.descricao) + "</p>" : "") + preco(x) + ctl(x.id, x.nome) + "</div></div>";
       }).join("") || '<div class="empty">Nenhuma foto ainda.</div>');
       return;
     }
@@ -157,7 +167,8 @@
     var ultimaCat = null;
     prods.forEach(function (p) {
       var pc = catPorId(p.categoria_id);
-      if (!pc || pc.tipo === GALERIA) return;
+      // Inspirações não entram em "Todos" (têm a faixa própria), só na busca.
+      if (!pc || (pc.tipo === GALERIA && !t)) return;
       if (c && p.categoria_id !== c.id) return;
       if (t && (cod(p) + " " + p.nome + " " + p.descricao).toLowerCase().indexOf(t) < 0) return;
       // Em "Todos", um título antes de cada categoria.

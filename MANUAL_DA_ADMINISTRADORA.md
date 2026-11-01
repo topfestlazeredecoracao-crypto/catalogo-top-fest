@@ -163,22 +163,33 @@ A categoria **"Inspirações de decoração"** é a galeria de fotos e não pode
 
 ## 6. Inspirações (galeria de fotos de festas montadas)
 
+Cada foto de inspiração funciona **como um produto**: tem **código**, **nome**, **legenda** (descrição) e **preço** (opcional). O cliente pode tocar em **"Adicionar ao orçamento"** e ela vai no pedido do WhatsApp com o código, por exemplo: `- 1x (Cód. 216) Decoração Stitch`.
+
 ### 6.1 Adicionar fotos
 1. Abra a aba **📸 Inspirações**.
 2. Em **"Quem montou?"**, escolha:
-   - **Montado pela equipe Top Fest**: a foto aparece **sem legenda**;
-   - **Montado pela cliente (pegue e monte)**: a foto aparece com essa legenda.
+   - **Montado pela equipe Top Fest**: a foto fica **sem legenda**;
+   - **Montado pela cliente (pegue e monte)**: a foto fica com essa legenda.
 3. Toque em **📷 Escolher fotos**. Pode escolher **várias de uma vez**.
 4. Espere a mensagem **"... fotos adicionadas."**
 
-### 6.2 Mudar a legenda de uma foto
-Embaixo de cada foto há uma caixinha **Equipe Top Fest / Cliente (pegue e monte)**. Escolha a opção certa: ela salva sozinha.
+Cada foto nova ganha um **código** e o nome **"Decoração completa"**. Troque o nome e coloque o preço no item 6.2.
+
+### 6.2 Nome, preço e legenda
+1. Toque em **✏️ Editar** embaixo da foto.
+2. Mude o **Nome** (ex.: `Decoração Stitch`), a **Descrição** (é a legenda que aparece embaixo da foto) e, se quiser, o **Preço**.
+3. O preço segue as mesmas regras dos produtos (item 4.8): só aparece no site se o botão geral estiver ligado e "Mostrar o preço deste produto no site" estiver marcado.
+4. Toque em **Salvar**.
+
+Pelo **✏️ Editar** também dá para **ocultar** a foto (desmarcando "Visível no site") ou trocar a imagem.
 
 ### 6.3 Mudar a ordem
 Use **◀** (para trás) e **▶** (para frente).
 
 ### 6.4 Remover uma foto
-Toque em **🗑️** embaixo da foto e confirme em **Remover**.
+Toque em **🗑️** embaixo da foto e confirme em **Excluir**.
+
+> As inspirações também aparecem na aba **📦 Produtos** (filtro "Inspirações de decoração") e podem ser colocadas nos **orçamentos** pelo código.
 
 ---
 

@@ -87,3 +87,7 @@ dialog.largo{width:min(760px,100vw - 20px)}
 .totais div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
 .totais .total{font-size:20px;font-weight:700;border-top:1px solid var(--bd);margin-top:6px;padding-top:8px}
 a.btn{text-decoration:none}
+.galeria .insp-info{padding:8px 8px 4px;display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--mu)}
+.galeria .insp-info b{color:var(--tx);font-size:14px;overflow-wrap:anywhere}
+.galeria li.oculto{opacity:.65;border-style:dashed}
+.galeria .item-acoes .btn[data-acao="editar"]{flex:1 0 100%}

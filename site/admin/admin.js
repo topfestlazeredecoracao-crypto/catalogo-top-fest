@@ -10,9 +10,8 @@
   var TIPOS_FOTO = ["image/jpeg", "image/png", "image/webp"];
   var MAX_ENVIO = 15 * 1024 * 1024;   // arquivo original escolhido
   var MAX_LADO = 800;                 // lado maior depois de reduzir
-  var LEGENDA_CLIENTE = "Montado pela cliente (pegue e monte)";
 
-  var st = { cats: [], prods: [], insp: [], conf: null, clientes: [], orcs: [] };
+  var st = { cats: [], prods: [], conf: null, clientes: [], orcs: [] };
   var produtoEditando = null;
   var fotoNova = null;      // Blob já reduzido
   var removerFoto = false;
@@ -237,17 +236,15 @@
     return Promise.all([
       sb.from("categorias").select("*").order("ordem").order("id"),
       sb.from("produtos").select("*").order("ordem").order("nome"),
-      sb.from("inspiracoes").select("*").order("ordem").order("id"),
       sb.from("configuracoes").select("*").eq("id", 1).single(),
       sb.from("clientes").select("*").order("nome"),
       sb.from("orcamentos").select("*").order("numero", { ascending: false })
     ]).then(function (r) {
       st.cats = ok(r[0]);
       st.prods = ok(r[1]);
-      st.insp = ok(r[2]);
-      st.conf = ok(r[3]);
-      st.clientes = ok(r[4]);
-      st.orcs = ok(r[5]);
+      st.conf = ok(r[2]);
+      st.clientes = ok(r[3]);
+      st.orcs = ok(r[4]);
       desenharTudo();
     }).catch(falhou);
   }
@@ -266,7 +263,14 @@
     for (var i = 0; i < st.cats.length; i++) if (st.cats[i].id === id) return st.cats[i];
     return null;
   }
-  function catsDeProduto() { return st.cats.filter(function (c) { return c.tipo !== "galeria"; }); }
+  // Todas as categorias, inclusive a galeria (as inspirações também são produtos).
+  function catsDeProduto() { return st.cats; }
+  function categoriaGaleria() { return st.cats.filter(function (c) { return c.tipo === "galeria"; })[0] || null; }
+  // Fotos de inspiração = produtos da categoria do tipo "galeria", na ordem.
+  function inspiracoes() {
+    var g = categoriaGaleria();
+    return g ? produtosDaCategoria(g.id) : [];
+  }
   function produtosDaCategoria(id) {
     return st.prods.filter(function (p) { return p.categoria_id === id; })
       .sort(function (a, b) { return a.ordem - b.ordem || a.nome.localeCompare(b.nome); });
@@ -334,6 +338,7 @@
     return sb.from("produtos").update({ ativo: !p.ativo }).eq("id", p.id).select().single().then(ok).then(function (novo) {
       Object.assign(p, novo);
       desenharProdutos();
+      desenharInspiracoes();
       avisar(p.ativo ? "Produto visível no site." : "Produto oculto do site.");
     }).catch(falhou);
   }
@@ -370,6 +375,7 @@
         preencherFiltroCategorias();
         desenharProdutos();
         desenharCategorias();
+        desenharInspiracoes();
         avisar("Produto excluído.");
       });
     }).catch(falhou);
@@ -498,6 +504,7 @@
       preencherFiltroCategorias();
       desenharProdutos();
       desenharCategorias();
+      desenharInspiracoes();
       avisar(p ? "Produto salvo." : "Produto incluído.");
     });
   }
@@ -562,7 +569,7 @@
       return '<li class="item" data-id="' + c.id + '">' +
         '<div class="mini">' + (galeria ? "📸" : "🗂️") + "</div>" +
         '<div class="item-info"><b>' + esc(c.nome) + "</b><span>" +
-        (galeria ? "Galeria de fotos (" + st.insp.length + " fotos)" : n + (n === 1 ? " produto" : " produtos")) + "</span></div>" +
+        (galeria ? "Galeria de fotos (" + n + " fotos)" : n + (n === 1 ? " produto" : " produtos")) + "</span></div>" +
         '<div class="item-acoes">' +
         '<button class="btn" data-acao="subir" aria-label="Subir"' + (i === 0 ? " disabled" : "") + ">▲</button>" +
         '<button class="btn" data-acao="descer" aria-label="Descer"' + (i === st.cats.length - 1 ? " disabled" : "") + ">▼</button>" +
@@ -641,78 +648,68 @@
   }
 
   // ---------- Inspirações ----------
+  // Cada foto é um produto da categoria-galeria: tem código, nome, descrição (legenda) e preço.
   function desenharInspiracoes() {
-    $("#lista-insp").innerHTML = st.insp.map(function (x, i) {
-      return '<li data-id="' + esc(x.id) + '"><img src="' + esc(fotoUrl(x.imagem)) + '" alt="Inspiração ' + (i + 1) + '" loading="lazy">' +
-        '<select data-acao="legenda" aria-label="Quem montou">' +
-        '<option value="">Equipe Top Fest</option>' +
-        '<option value="' + esc(LEGENDA_CLIENTE) + '"' + (x.legenda === LEGENDA_CLIENTE ? " selected" : "") + ">Cliente (pegue e monte)</option>" +
-        (x.legenda && x.legenda !== LEGENDA_CLIENTE ? '<option selected value="' + esc(x.legenda) + '">' + esc(x.legenda) + "</option>" : "") +
-        "</select>" +
+    var lista = inspiracoes();
+    $("#lista-insp").innerHTML = lista.map(function (x, i) {
+      return '<li data-id="' + esc(x.id) + '"' + (x.ativo ? "" : ' class="oculto"') + '><img src="' + esc(fotoUrl(x.imagem)) + '" alt="Inspiração ' + (i + 1) + '" loading="lazy">' +
+        '<div class="insp-info"><b><span class="cod">Cód. ' + cod(x.codigo) + "</span> " + esc(x.nome) + "</b>" +
+        (x.ativo ? "" : ' <span class="selo">OCULTO</span>') +
+        (x.descricao ? "<span>" + esc(x.descricao) + "</span>" : "") +
+        (x.preco != null ? "<span>" + brl(x.preco) + (x.mostrar_preco ? "" : " (escondido)") + "</span>" : "") + "</div>" +
         '<div class="item-acoes">' +
+        '<button class="btn" data-acao="editar">✏️ Editar</button>' +
         '<button class="btn" data-acao="subir" aria-label="Para trás"' + (i === 0 ? " disabled" : "") + ">◀</button>" +
         '<button class="btn" data-acao="excluir" aria-label="Remover foto">🗑️</button>' +
-        '<button class="btn" data-acao="descer" aria-label="Para frente"' + (i === st.insp.length - 1 ? " disabled" : "") + ">▶</button>" +
+        '<button class="btn" data-acao="descer" aria-label="Para frente"' + (i === lista.length - 1 ? " disabled" : "") + ">▶</button>" +
         "</div></li>";
     }).join("") || '<li class="dica">Nenhuma foto ainda.</li>';
   }
 
-  function inspPorId(id) { return st.insp.filter(function (x) { return x.id === id; })[0]; }
-
   $("#lista-insp").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-acao]");
     if (!b) return;
-    var x = inspPorId(b.closest("[data-id]").dataset.id);
+    var x = produtoPorId(b.closest("[data-id]").dataset.id);
     var acao = b.dataset.acao;
-    if (acao === "subir" || acao === "descer") {
-      if (!mover(st.insp, x, acao === "subir" ? -1 : 1)) return;
-      ocupado(b, gravarOrdem("inspiracoes", st.insp).then(desenharInspiracoes)
+    if (acao === "editar") abrirProduto(x);
+    else if (acao === "subir" || acao === "descer") {
+      var lista = inspiracoes();
+      if (!mover(lista, x, acao === "subir" ? -1 : 1)) return;
+      ocupado(b, gravarOrdem("produtos", lista).then(desenharInspiracoes)
         .catch(function (er) { falhou(er); return carregarTudo(); }));
-    } else if (acao === "excluir") {
-      confirmar("Remover esta foto da galeria?", "Remover").then(function (sim) {
-        if (!sim) return;
-        return sb.from("inspiracoes").delete().eq("id", x.id).then(ok).then(function () {
-          apagarFoto(x.imagem);
-          st.insp = st.insp.filter(function (y) { return y !== x; });
-          desenharInspiracoes();
-          desenharCategorias();
-          avisar("Foto removida.");
-        });
-      }).catch(falhou);
-    }
-  });
-
-  $("#lista-insp").addEventListener("change", function (e) {
-    if (e.target.dataset.acao !== "legenda") return;
-    var x = inspPorId(e.target.closest("[data-id]").dataset.id);
-    sb.from("inspiracoes").update({ legenda: e.target.value }).eq("id", x.id).then(ok).then(function () {
-      x.legenda = e.target.value;
-      avisar("Legenda salva.");
-    }).catch(falhou);
+    } else if (acao === "excluir") excluirProduto(x);
   });
 
   $("#fotos-insp").addEventListener("change", function (e) {
     var arquivos = Array.prototype.slice.call(e.target.files);
     e.target.value = "";
     if (!arquivos.length) return;
+    var g = categoriaGaleria();
+    if (!g) { avisar("A categoria de inspirações não foi encontrada.", true); return; }
     var legenda = $("#legenda-nova").value;
-    var ordem = st.insp.reduce(function (m, x) { return Math.max(m, x.ordem); }, 0);
+    var ordem = inspiracoes().reduce(function (m, x) { return Math.max(m, x.ordem); }, 0);
     var feitas = 0;
     avisar("Enviando " + arquivos.length + (arquivos.length === 1 ? " foto…" : " fotos…"));
     arquivos.reduce(function (cadeia, arq) {
       return cadeia.then(function () {
         return reduzirFoto(arq).then(function (b) { return enviarFoto("inspiracoes", b); }).then(function (caminho) {
           ordem += 1;
-          return sb.from("inspiracoes").insert({ imagem: caminho, legenda: legenda, ordem: ordem }).select().single().then(ok);
+          return sb.from("produtos").insert({ categoria_id: g.id, nome: "Decoração completa", descricao: legenda, imagem: caminho, ordem: ordem })
+            .select().single().then(function (r) {
+              if (r.error) apagarFoto(caminho);
+              return ok(r);
+            });
         }).then(function (nova) {
-          st.insp.push(nova);
+          st.prods.push(nova);
           feitas += 1;
           desenharInspiracoes();
         }).catch(function (er) { falhou(er); });
       });
     }, Promise.resolve()).then(function () {
       desenharCategorias();
-      if (feitas) avisar(feitas + (feitas === 1 ? " foto adicionada." : " fotos adicionadas."));
+      preencherFiltroCategorias();
+      desenharProdutos();
+      if (feitas) avisar(feitas + (feitas === 1 ? " foto adicionada." : " fotos adicionadas.") + ' Toque em "Editar" para colocar nome e preço.');
     });
   });
 
@@ -758,13 +755,12 @@
     ocupado(b, carregarTudo().then(function () {
       var copia = {
         sistema: "catalogo-top-fest",
-        versao: 2,
+        versao: 3,
         exportado_em: new Date().toISOString(),
         endereco_fotos: fotoUrl("x").replace(/x$/, ""),
         configuracoes: st.conf,
         categorias: st.cats,
         produtos: st.prods,
-        inspiracoes: st.insp,
         clientes: st.clientes,
         orcamentos: st.orcs
       };
@@ -786,12 +782,12 @@
     arq.text().then(function (txt) {
       var c;
       try { c = JSON.parse(txt); } catch (er) { throw new Error("Esse arquivo não é uma cópia válida."); }
-      if (!c || c.sistema !== "catalogo-top-fest" || !Array.isArray(c.categorias) || !Array.isArray(c.produtos) || !Array.isArray(c.inspiracoes)) {
+      if (!c || c.sistema !== "catalogo-top-fest" || !Array.isArray(c.categorias) || !Array.isArray(c.produtos)) {
         throw new Error("Esse arquivo não é uma cópia do catálogo Top Fest.");
       }
       var quando = c.exportado_em ? new Date(c.exportado_em).toLocaleString("pt-BR") : "data desconhecida";
       return confirmar("Restaurar a cópia de " + quando + "? (" + c.categorias.length + " categorias, " +
-        c.produtos.length + " produtos, " + c.inspiracoes.length + " fotos de inspiração" +
+        c.produtos.length + " produtos" + (c.inspiracoes && c.inspiracoes.length ? ", " + c.inspiracoes.length + " fotos de inspiração" : "") +
         (c.clientes ? ", " + c.clientes.length + " clientes, " + (c.orcamentos || []).length + " orçamentos" : "") + ")", "Restaurar").then(function (sim) {
         if (sim) return restaurar(c);
       });
@@ -827,9 +823,15 @@
         return linha;
       }), { onConflict: "id", defaultToNull: false }).then(ok);
     }).then(function () {
-      return sb.from("inspiracoes").upsert(c.inspiracoes.map(function (x) {
-        return { id: x.id, imagem: x.imagem, legenda: x.legenda || "", ordem: x.ordem };
-      }), { onConflict: "id" }).then(ok);
+      // Cópias antigas (até a versão 2): as inspirações vinham separadas; viram produtos da galeria.
+      if (!c.inspiracoes || !c.inspiracoes.length) return;
+      return carregarTudo().then(function () {
+        var g = categoriaGaleria();
+        if (!g) return;
+        return sb.from("produtos").upsert(c.inspiracoes.map(function (x) {
+          return { id: x.id, categoria_id: g.id, nome: "Decoração completa", descricao: x.legenda || "", imagem: x.imagem, ordem: x.ordem };
+        }), { onConflict: "id", ignoreDuplicates: true, defaultToNull: false }).then(ok);
+      });
     }).then(function () {
       if (!c.clientes || !c.clientes.length) return;
       return sb.from("clientes").upsert(c.clientes.map(function (x) {

@@ -47,8 +47,8 @@ Tabelas em `public`:
 |---|---|---|---|
 | `configuracoes` (1 linha) | Nome, WhatsApp dos orçamentos, telefones, `mostrar_precos` | todos | admin |
 | `categorias` | Nome, ícone, `tipo` (`produtos` ou `galeria`), `ordem` | todos | admin |
-| `produtos` | `codigo`, nome, descrição, foto, `ativo`, `ordem`, `preco`, `mostrar_preco` | todos (só ativos; **sem a coluna `preco`**) | admin |
-| `inspiracoes` | Fotos da galeria, legenda, ordem | todos | admin |
+| `produtos` | `codigo`, nome, descrição, foto, `ativo`, `ordem`, `preco`, `mostrar_preco`. As fotos de inspiração também ficam aqui (categoria do tipo `galeria`) | todos (só ativos; **sem a coluna `preco`**) | admin |
+| `inspiracoes` | **Não é mais usada** (01/11/2026: as fotos viraram produtos da categoria galeria) | todos | admin |
 | `clientes` | Cadastro de clientes (dados pessoais) | **só admin** | admin |
 | `orcamentos` | `numero`, cliente, data do evento, `itens` (jsonb), desconto, taxa de entrega | **só admin** | admin |
 | `admins` | `user_id` de quem pode administrar | a própria pessoa | ninguém pelo site |

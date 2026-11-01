@@ -296,3 +296,16 @@ create or replace view public.precos_publicos as
   where p.ativo and p.mostrar_preco and p.preco is not null
     and exists (select 1 from public.configuracoes c where c.id = 1 and c.mostrar_precos);
 grant select on public.precos_publicos to anon, authenticated;
+
+-- ---------- Inspirações viram itens com código, preço e orçamento (01/11/2026) ----------
+-- Cada foto da galeria passa a ser um produto da categoria do tipo "galeria".
+-- A legenda vira a descrição. As fotos continuam no mesmo lugar do Storage.
+-- Pode rodar de novo: só move o que ainda estiver na tabela antiga.
+insert into public.produtos (id, categoria_id, nome, descricao, imagem, ativo, ordem)
+select i.id, g.id, 'Decoração completa', i.legenda, i.imagem, true, i.ordem
+from public.inspiracoes i
+cross join (select id from public.categorias where tipo = 'galeria' order by ordem, id limit 1) g
+where not exists (select 1 from public.produtos p where p.id = i.id)
+order by i.ordem, i.id;
+
+delete from public.inspiracoes i where exists (select 1 from public.produtos p where p.id = i.id);

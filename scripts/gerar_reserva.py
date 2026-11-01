@@ -51,7 +51,6 @@ def main():
         "configuracoes": tabela("configuracoes", "select=*&id=eq.1")[0],
         "categorias": tabela("categorias", "select=id,nome,icone,tipo,ordem&order=ordem,id"),
         "produtos": tabela("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ativo,ordem&ativo=is.true&order=ordem,nome"),
-        "inspiracoes": tabela("inspiracoes", "select=id,imagem,legenda,ordem&order=ordem,id"),
     }
     # Só os preços que a administradora deixou aparecer no site.
     precos = {x["id"]: x["preco"] for x in tabela("precos_publicos", "select=id,preco")}
@@ -61,7 +60,7 @@ def main():
         sys.exit("O banco voltou vazio; a reserva não foi alterada.")
 
     usadas = set()
-    for item in dados["produtos"] + dados["inspiracoes"]:
+    for item in dados["produtos"]:
         caminho = item.get("imagem")
         if not caminho:
             continue
@@ -86,8 +85,8 @@ def main():
         print("Reserva atualizada.")
     else:
         print("Reserva já estava em dia.")
-    print(f"{len(dados['categorias'])} categorias, {len(dados['produtos'])} produtos, "
-          f"{len(dados['inspiracoes'])} inspirações, {len(usadas)} fotos.")
+    print(f"{len(dados['categorias'])} categorias, {len(dados['produtos'])} produtos "
+          f"(inspirações incluídas), {len(usadas)} fotos.")
 
 
 if __name__ == "__main__":
