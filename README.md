@@ -31,6 +31,7 @@ Navegador ──► Cloudflare Pages (arquivos estáticos da pasta site/)
 | `site/js/config.js` | URL do Supabase e chave **pública** (publishable) |
 | `site/admin/` | Área da administradora (`index.html`, `admin.js`, `admin.css`) |
 | `site/admin/imprimir.*` | Folha do orçamento para imprimir ou salvar em PDF |
+| `site/admin/contrato.*` | Contrato do orçamento aprovado: folha para imprimir/PDF e geração do Word (.docx) no próprio navegador, sem biblioteca |
 | `site/_headers` | Cabeçalhos de segurança (CSP etc.) do Cloudflare Pages |
 | `site/reserva/` | Cópia de reserva (gerada, não editar à mão) |
 | `supabase/schema.sql` | Estrutura do banco, regras de segurança e bucket de fotos. **Pode rodar de novo** sem apagar dados |
@@ -50,7 +51,8 @@ Tabelas em `public`:
 | `produtos` | `codigo`, nome, descrição, foto, `ativo`, `ordem`, `preco`, `mostrar_preco`. As fotos de inspiração também ficam aqui (categoria do tipo `galeria`) | todos (só ativos; **sem a coluna `preco`**) | admin |
 | `inspiracoes` | **Não é mais usada** (01/11/2026: as fotos viraram produtos da categoria galeria) | todos | admin |
 | `clientes` | Cadastro de clientes (dados pessoais) | **só admin** | admin |
-| `orcamentos` | `numero`, cliente, data do evento, `itens` (jsonb), desconto, taxa de entrega | **só admin** | admin |
+| `orcamentos` | `numero`, cliente, data do evento, `itens` (jsonb), desconto, taxa de entrega, `situacao` (aberto/aprovado/cancelado), datas de retirada e devolução | **só admin** | admin |
+| `contrato_modelo` (1 linha) | Título, cláusulas e % do sinal do contrato. **As cláusulas não ficam no `schema.sql`** (o repositório é público e elas têm o endereço) | **só admin** | admin |
 | `admins` | `user_id` de quem pode administrar | a própria pessoa | ninguém pelo site |
 
 Detalhes importantes:

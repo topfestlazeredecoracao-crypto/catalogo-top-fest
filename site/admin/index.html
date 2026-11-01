@@ -81,6 +81,12 @@
       </div>
       <div class="filtros">
         <input id="busca-orc" type="search" placeholder="Buscar por cliente ou número" aria-label="Buscar orçamento">
+        <select id="filtro-situacao" aria-label="Filtrar por situação">
+          <option value="">Todas as situações</option>
+          <option value="aberto">Em aberto</option>
+          <option value="aprovado">Aprovados</option>
+          <option value="cancelado">Cancelados</option>
+        </select>
       </div>
       <ul id="lista-orcamentos" class="lista"></ul>
     </div>
@@ -138,6 +144,16 @@
         <small class="abaixo-check">Liga ou desliga os preços de todos os produtos. Com ele ligado, aparecem só os produtos que têm preço e estão com "Mostrar o preço deste produto no site" marcado.</small>
         <button class="btn pri grande" type="submit">Salvar configurações</button>
       </form>
+      <form id="form-contrato" class="cartao">
+        <h2>Contrato</h2>
+        <p class="dica">Usado no botão <b>📄 Contrato</b> dos orçamentos aprovados. Só você vê este texto (ele não aparece no site).</p>
+        <label>Título<input name="titulo" maxlength="150" required></label>
+        <label>Sinal para reservar (% do total)<input name="percentual_sinal" type="number" min="0" max="100" inputmode="numeric" required>
+          <small>O contrato mostra o sinal e o restante a pagar. Use 0 para não mostrar.</small></label>
+        <label>Cláusulas<textarea name="clausulas" rows="14" maxlength="10000"></textarea>
+          <small>Uma cláusula por parágrafo, separadas por uma linha em branco.</small></label>
+        <button class="btn pri grande" type="submit">Salvar contrato</button>
+      </form>
       <form id="form-senha" class="cartao">
         <h2>Trocar minha senha</h2>
         <label>Senha nova (mínimo 8 caracteres)<input type="password" name="senha" autocomplete="new-password" minlength="8" required></label>
@@ -149,7 +165,7 @@
     <div id="aba-backup" class="aba" hidden>
       <div class="cartao">
         <h2>Baixar cópia de segurança</h2>
-        <p>Baixa um arquivo <b>.json</b> com todas as categorias, produtos, inspirações, configurações, clientes e orçamentos. Guarde no computador ou no Google Drive.</p>
+        <p>Baixa um arquivo <b>.json</b> com todas as categorias, produtos, inspirações, configurações, clientes, orçamentos e o modelo do contrato. Guarde no computador ou no Google Drive.</p>
         <p class="dica">⚠️ O arquivo tem dados pessoais dos clientes (telefone, CPF, endereço). Não envie para outras pessoas.</p>
         <button class="btn pri grande" id="exportar" type="button">⬇️ Baixar cópia agora</button>
       </div>
@@ -219,6 +235,7 @@
     <label>Nome<input name="nome" required maxlength="150" autocomplete="off"></label>
     <label>WhatsApp / telefone<input name="whatsapp" inputmode="tel" placeholder="(19) 99999-9999" autocomplete="off"></label>
     <label>CPF ou CNPJ<input name="documento" maxlength="20" placeholder="Opcional" autocomplete="off"></label>
+    <label>RG<input name="rg" maxlength="20" placeholder="Opcional" autocomplete="off"></label>
     <label>E-mail<input name="email" type="email" maxlength="150" autocomplete="off"></label>
     <label>CEP<input name="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="off"></label>
     <label>Endereço (rua, número, complemento)<input name="endereco" maxlength="200" autocomplete="off"></label>
@@ -241,7 +258,18 @@
       <button class="btn" type="button" id="orc-novo-cliente">➕ Cadastrar cliente</button>
     </div>
     <p class="dica" id="orc-aviso-cliente" hidden></p>
+    <label>Situação
+      <select name="situacao">
+        <option value="aberto">Em aberto</option>
+        <option value="aprovado">Aprovado (libera o contrato)</option>
+        <option value="cancelado">Cancelado</option>
+      </select>
+    </label>
     <label>Data do evento<input name="data_evento" type="date"></label>
+    <div class="valores">
+      <label>Data da retirada<input name="data_retirada" type="date"></label>
+      <label>Data da devolução<input name="data_devolucao" type="date"></label>
+    </div>
 
     <h3>Itens</h3>
     <label>Adicionar produto (digite o código ou o nome)

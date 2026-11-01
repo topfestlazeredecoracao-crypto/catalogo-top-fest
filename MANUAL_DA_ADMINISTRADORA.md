@@ -275,7 +275,7 @@ Na aba **👥 Clientes** você guarda os dados de quem aluga com você. **Só vo
 
 ### 10.1 Cadastrar um cliente
 1. Toque em **➕ Novo cliente**.
-2. Preencha o **Nome** (obrigatório) e o que tiver: **WhatsApp**, **CPF ou CNPJ**, **E-mail**, **CEP**, **Endereço**, **Bairro**, **Cidade** e **Observações**.
+2. Preencha o **Nome** (obrigatório) e o que tiver: **WhatsApp**, **CPF ou CNPJ**, **RG**, **E-mail**, **CEP**, **Endereço**, **Bairro**, **Cidade** e **Observações**.
 3. Toque em **Salvar**.
 
 O sistema confere se o **CPF/CNPJ** está correto (pode digitar com ou sem pontos). Se aparecer **"Esse CPF não é válido"**, confira os números com o cliente.
@@ -316,6 +316,38 @@ Na lista de orçamentos:
 - **✏️ Abrir:** muda o orçamento. **📄 Copiar:** cria um orçamento novo com os mesmos itens. **🗑️ Excluir:** apaga.
 
 > O orçamento guarda o nome e o valor dos itens do dia em que foi feito. Se você mudar o produto depois, o orçamento antigo não muda.
+
+### 11.4 Situação do orçamento
+Dentro do orçamento, o campo **Situação** tem três opções:
+
+| Situação | Quando usar |
+|---|---|
+| **Em aberto** | Orçamento enviado, esperando a resposta do cliente (é o padrão). |
+| **Aprovado** | O cliente fechou. Libera o botão **📄 Contrato**. |
+| **Cancelado** | O cliente desistiu. O orçamento fica guardado, mas riscado. |
+
+Na lista, use **"Todas as situações"** para ver só os em aberto, os aprovados ou os cancelados.
+
+### 11.5 Gerar o contrato
+1. Abra o orçamento (**✏️ Abrir**) e confira:
+   - a **Situação** está em **Aprovado**;
+   - a **Data da retirada** e a **Data da devolução** estão preenchidas (se ficarem vazias, o contrato sai com a linha em branco para escrever à mão).
+2. Confira se o **cliente** tem endereço, bairro, telefone, CPF e **RG** no cadastro (aba 👥 Clientes). O que faltar sai em branco no contrato.
+3. Toque em **Salvar orçamento**.
+4. Na lista, toque em **📄 Contrato**. Abre o contrato preenchido, com:
+   - os dados do cliente;
+   - as datas de retirada e devolução;
+   - a tabela com os itens e serviços aprovados;
+   - o valor total, o **sinal** (50%) e o **restante** a pagar na retirada;
+   - as cláusulas e as linhas de assinatura.
+5. Escolha:
+   - **🖨️ Imprimir / Salvar em PDF**: para imprimir e assinar, ou mandar o PDF para o cliente;
+   - **📝 Baixar em Word**: baixa o contrato em Word, para mudar algum detalhe antes de imprimir.
+
+### 11.6 Mudar as cláusulas do contrato
+Em **⚙️ Configurações → Contrato** você muda o **título**, o **sinal** (% do total) e as **cláusulas**. Escreva uma cláusula por parágrafo, deixando uma **linha em branco** entre elas. Toque em **Salvar contrato**. Os próximos contratos já saem com o texto novo.
+
+> As cláusulas têm o endereço da chácara. Por isso elas **só aparecem para você e no contrato**, nunca no site.
 
 ---
 

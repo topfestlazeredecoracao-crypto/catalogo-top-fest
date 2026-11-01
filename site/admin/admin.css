@@ -91,3 +91,7 @@ a.btn{text-decoration:none}
 .galeria .insp-info b{color:var(--tx);font-size:14px;overflow-wrap:anywhere}
 .galeria li.oculto{opacity:.65;border-style:dashed}
 .galeria .item-acoes .btn[data-acao="editar"]{flex:1 0 100%}
+.sit{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:4px;vertical-align:middle}
+.sit-aberto{background:var(--tile);color:var(--tx)}
+.sit-aprovado{background:var(--ok);color:#fff}
+.sit-cancelado{background:var(--bd);color:var(--mu);text-decoration:line-through}

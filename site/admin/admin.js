@@ -11,7 +11,7 @@
   var MAX_ENVIO = 15 * 1024 * 1024;   // arquivo original escolhido
   var MAX_LADO = 800;                 // lado maior depois de reduzir
 
-  var st = { cats: [], prods: [], conf: null, clientes: [], orcs: [] };
+  var st = { cats: [], prods: [], conf: null, clientes: [], orcs: [], contrato: null };
   var produtoEditando = null;
   var fotoNova = null;      // Blob já reduzido
   var removerFoto = false;
@@ -238,13 +238,15 @@
       sb.from("produtos").select("*").order("ordem").order("nome"),
       sb.from("configuracoes").select("*").eq("id", 1).single(),
       sb.from("clientes").select("*").order("nome"),
-      sb.from("orcamentos").select("*").order("numero", { ascending: false })
+      sb.from("orcamentos").select("*").order("numero", { ascending: false }),
+      sb.from("contrato_modelo").select("*").eq("id", 1).maybeSingle()
     ]).then(function (r) {
       st.cats = ok(r[0]);
       st.prods = ok(r[1]);
       st.conf = ok(r[2]);
       st.clientes = ok(r[3]);
       st.orcs = ok(r[4]);
+      st.contrato = ok(r[5]);
       desenharTudo();
     }).catch(falhou);
   }
@@ -255,6 +257,7 @@
     desenharCategorias();
     desenharInspiracoes();
     preencherConfig();
+    preencherContrato();
     desenharClientes();
     desenharOrcamentos();
   }
@@ -749,6 +752,32 @@
     ocupado($('button[type="submit"]', formCfg), acao.catch(falhou));
   });
 
+  // ---------- Modelo do contrato ----------
+  var formCt = $("#form-contrato");
+
+  function preencherContrato() {
+    var c = st.contrato || { titulo: "", clausulas: "", percentual_sinal: 50 };
+    formCt.titulo.value = c.titulo;
+    formCt.clausulas.value = c.clausulas;
+    formCt.percentual_sinal.value = c.percentual_sinal;
+  }
+
+  formCt.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var acao = Promise.resolve().then(function () {
+      var pct = Number(formCt.percentual_sinal.value);
+      if (!Number.isInteger(pct) || pct < 0 || pct > 100) throw new Error("O sinal deve ser um número de 0 a 100.");
+      var dados = { id: 1, titulo: formCt.titulo.value.trim(), clausulas: formCt.clausulas.value.trim(), percentual_sinal: pct };
+      if (!dados.titulo) throw new Error("Preencha o título do contrato.");
+      return sb.from("contrato_modelo").upsert(dados, { onConflict: "id" }).select().single().then(ok);
+    }).then(function (c) {
+      st.contrato = c;
+      preencherContrato();
+      avisar("Contrato salvo.");
+    });
+    ocupado($('button[type="submit"]', formCt), acao.catch(falhou));
+  });
+
   // ---------- Cópia de segurança ----------
   $("#exportar").addEventListener("click", function (e) {
     var b = e.currentTarget;
@@ -762,7 +791,8 @@
         categorias: st.cats,
         produtos: st.prods,
         clientes: st.clientes,
-        orcamentos: st.orcs
+        orcamentos: st.orcs,
+        contrato_modelo: st.contrato
       };
       var blob = new Blob([JSON.stringify(copia, null, 2)], { type: "application/json" });
       var a = document.createElement("a");
@@ -838,7 +868,7 @@
         return {
           id: x.id, nome: x.nome, whatsapp: x.whatsapp || "", documento: x.documento || "", email: x.email || "",
           cep: x.cep || "", endereco: x.endereco || "", bairro: x.bairro || "", cidade: x.cidade || "",
-          observacoes: x.observacoes || ""
+          observacoes: x.observacoes || "", rg: x.rg || ""
         };
       }), { onConflict: "id" }).then(ok);
     }).then(function () {
@@ -847,9 +877,14 @@
         return {
           id: x.id, numero: x.numero, cliente_id: x.cliente_id || null, cliente_nome: x.cliente_nome || "",
           data_evento: x.data_evento || null, itens: x.itens || [], desconto: x.desconto || 0,
-          taxa_entrega: x.taxa_entrega || 0, observacoes: x.observacoes || "", criado_em: x.criado_em
+          taxa_entrega: x.taxa_entrega || 0, observacoes: x.observacoes || "", criado_em: x.criado_em,
+          situacao: x.situacao || "aberto", data_retirada: x.data_retirada || null, data_devolucao: x.data_devolucao || null
         };
       }), { onConflict: "id" }).then(ok);
+    }).then(function () {
+      var ct = c.contrato_modelo;
+      if (!ct) return;
+      return sb.from("contrato_modelo").upsert({ id: 1, titulo: ct.titulo, clausulas: ct.clausulas || "", percentual_sinal: ct.percentual_sinal }, { onConflict: "id" }).then(ok);
     }).then(carregarTudo).then(function () { avisar("Cópia restaurada com sucesso!"); });
   }
 
@@ -967,7 +1002,7 @@
     formCli.reset();
     $("#dlg-cliente-tit").textContent = c ? "Editar cliente" : "Novo cliente";
     var v = c || preenchido || {};
-    ["nome", "email", "cep", "endereco", "bairro", "cidade", "observacoes"].forEach(function (k) { formCli[k].value = v[k] || ""; });
+    ["nome", "rg", "email", "cep", "endereco", "bairro", "cidade", "observacoes"].forEach(function (k) { formCli[k].value = v[k] || ""; });
     formCli.whatsapp.value = telBR(v.whatsapp);
     formCli.documento.value = docBR(v.documento);
     $("#dlg-cliente").showModal();
@@ -980,6 +1015,7 @@
         nome: formCli.nome.value.trim(),
         whatsapp: lerWhatsCliente(formCli.whatsapp.value),
         documento: lerDocumento(formCli.documento.value),
+        rg: formCli.rg.value.trim(),
         email: formCli.email.value.trim(),
         cep: lerCep(formCli.cep.value),
         endereco: formCli.endereco.value.trim(),
@@ -1062,7 +1098,9 @@
 
   function desenharOrcamentos() {
     var t = $("#busca-orc").value.trim().toLowerCase();
+    var sit = $("#filtro-situacao").value;
     var lista = st.orcs.filter(function (o) {
+      if (sit && o.situacao !== sit) return false;
       return !t || String(o.numero) === t.replace(/^n[º°o]?\s*/, "") || (nomeCliente(o) || "").toLowerCase().indexOf(t) >= 0;
     });
     $("#lista-orcamentos").innerHTML = lista.map(function (o) {
@@ -1072,10 +1110,14 @@
         .filter(Boolean).join(" · ");
       return '<li class="item" data-id="' + esc(o.id) + '">' +
         '<div class="mini">🧾</div>' +
-        '<div class="item-info"><b>Nº ' + o.numero + " · " + esc(nomeCliente(o) || "Sem cliente") + "</b><span>" + esc(info) + "</span></div>" +
+        '<div class="item-info"><b>Nº ' + o.numero + " · " + esc(nomeCliente(o) || "Sem cliente") +
+        ' <span class="sit sit-' + esc(o.situacao) + '">' + (SITUACOES[o.situacao] || "") + "</span></b><span>" + esc(info) + "</span></div>" +
         '<div class="item-acoes">' +
         '<button class="btn" data-acao="abrir">✏️ Abrir</button>' +
         '<a class="btn" href="imprimir.html?id=' + encodeURIComponent(o.id) + '" target="_blank" rel="noopener">🖨️ Imprimir / PDF</a>' +
+        (o.situacao === "aprovado"
+          ? '<a class="btn pri" href="contrato.html?id=' + encodeURIComponent(o.id) + '" target="_blank" rel="noopener">📄 Contrato</a>'
+          : "") +
         (c && c.whatsapp
           ? '<a class="btn" href="' + esc(linkWhats(c.whatsapp, msgOrcamento(o))) + '" target="_blank" rel="noopener">💬 Enviar no WhatsApp</a>'
           : '<button class="btn" data-acao="sem-whats">💬 Enviar no WhatsApp</button>') +
@@ -1085,7 +1127,10 @@
     }).join("") || '<li class="dica">' + (st.orcs.length ? "Nenhum orçamento encontrado." : "Nenhum orçamento ainda.") + "</li>";
   }
 
+  var SITUACOES = { aberto: "Em aberto", aprovado: "Aprovado", cancelado: "Cancelado" };
+
   $("#busca-orc").addEventListener("input", desenharOrcamentos);
+  $("#filtro-situacao").addEventListener("change", desenharOrcamentos);
   $("#novo-orcamento").addEventListener("click", function () { abrirOrcamento(null); });
 
   $("#lista-orcamentos").addEventListener("click", function (e) {
@@ -1146,6 +1191,10 @@
     $("#dlg-orcamento-tit").textContent = base ? "Orçamento nº " + base.numero : "Novo orçamento";
     opcoesCliente();
     formO.data_evento.value = orc.data_evento;
+    // Situação e datas da locação vêm só do orçamento salvo (uma cópia começa "Em aberto").
+    formO.situacao.value = (base && base.situacao) || "aberto";
+    formO.data_retirada.value = (base && base.data_retirada) || "";
+    formO.data_devolucao.value = (base && base.data_devolucao) || "";
     formO.desconto.value = numCampo(orc.desconto);
     formO.taxa_entrega.value = numCampo(orc.taxa_entrega);
     formO.observacoes.value = orc.observacoes;
@@ -1311,8 +1360,13 @@
       if (isNaN(it.preco)) throw new Error('Valor inválido em "' + nome + '". Use só números, ex.: 35,00');
       return { tipo: it.tipo, produto_id: it.produto_id || null, codigo: it.codigo == null ? null : it.codigo, nome: nome, quantidade: q, preco: Number(it.preco) || 0 };
     });
+    var retirada = formO.data_retirada.value || null, devolucao = formO.data_devolucao.value || null;
+    if (retirada && devolucao && devolucao < retirada) throw new Error("A data da devolução é antes da data da retirada.");
     var c = cliente(orc.cliente_id);
     var dados = {
+      situacao: formO.situacao.value,
+      data_retirada: retirada,
+      data_devolucao: devolucao,
       cliente_id: c ? c.id : null,
       cliente_nome: c ? c.nome : (orcOriginal ? orcOriginal.cliente_nome : nomePedido),
       data_evento: formO.data_evento.value || null,

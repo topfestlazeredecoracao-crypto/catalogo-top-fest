@@ -309,3 +309,36 @@ where not exists (select 1 from public.produtos p where p.id = i.id)
 order by i.ordem, i.id;
 
 delete from public.inspiracoes i where exists (select 1 from public.produtos p where p.id = i.id);
+
+-- ---------- Contrato a partir do orçamento aprovado (01/11/2026) ----------
+alter table public.clientes add column if not exists rg text not null default '';
+
+alter table public.orcamentos add column if not exists situacao text not null default 'aberto';
+alter table public.orcamentos drop constraint if exists orcamentos_situacao_check;
+alter table public.orcamentos add constraint orcamentos_situacao_check
+  check (situacao in ('aberto', 'aprovado', 'cancelado'));
+alter table public.orcamentos add column if not exists data_retirada date;
+alter table public.orcamentos add column if not exists data_devolucao date;
+
+-- Modelo do contrato (uma linha só). Só a administradora lê e altera:
+-- as cláusulas têm o endereço da chácara, que não deve ficar público.
+-- O texto das cláusulas é cadastrado pela área da administradora (não fica neste arquivo).
+create table if not exists public.contrato_modelo (
+  id int primary key default 1 check (id = 1),
+  titulo text not null default 'CONTRATO DE LOCAÇÃO – ARTIGOS PARA DECORAÇÃO',
+  clausulas text not null default '',
+  percentual_sinal int not null default 50 check (percentual_sinal between 0 and 100),
+  atualizado_em timestamptz not null default now()
+);
+insert into public.contrato_modelo (id) values (1) on conflict (id) do nothing;
+
+drop trigger if exists tocar_atualizado_em on public.contrato_modelo;
+create trigger tocar_atualizado_em before update on public.contrato_modelo
+  for each row execute function public.tocar_atualizado_em();
+
+alter table public.contrato_modelo enable row level security;
+drop policy if exists "somente admin" on public.contrato_modelo;
+create policy "somente admin" on public.contrato_modelo for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+revoke all on public.contrato_modelo from anon;
+grant select, insert, update on public.contrato_modelo to authenticated;
