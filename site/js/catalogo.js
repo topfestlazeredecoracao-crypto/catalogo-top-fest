@@ -102,20 +102,38 @@
   }
 
   function chips() {
-    var h = '<button class="chip' + (cat === "Todos" ? " on" : "") + '" data-c="Todos" aria-pressed="' + (cat === "Todos") + '">✨ Todos</button>';
-    cats.forEach(function (c) {
-      var on = cat === c.chave;
-      h += '<button class="chip' + (on ? " on" : "") + '" data-c="' + esc(c.chave) + '" aria-pressed="' + on + '">' +
-        esc(c.icone) + " " + esc(c.nome) + "</button>";
-    });
+    var botao = function (chave, icone, nome, extra) {
+      var on = cat === chave;
+      return '<button class="chip' + (on ? " on" : "") + (extra || "") + '" data-c="' + esc(chave) + '" aria-pressed="' + on + '">' +
+        '<span class="ic" aria-hidden="true">' + esc(icone) + "</span><span>" + esc(nome) + "</span></button>";
+    };
+    // A galeria de inspirações vem primeiro, em destaque.
+    var h = "";
+    cats.forEach(function (c) { if (c.tipo === GALERIA) h += botao(c.chave, c.icone, c.nome, " destaque"); });
+    h += botao("Todos", "✨", "Todos");
+    cats.forEach(function (c) { if (c.tipo !== GALERIA) h += botao(c.chave, c.icone, c.nome); });
     $("#chips").innerHTML = h;
   }
 
-  function ctl(id, nomeItem) {
+  function ctlInterno(id, nomeItem) {
     var n = cart[id] || 0;
     if (!n) return '<button class="add" data-a="+" data-i="' + esc(id) + '">Adicionar ao orçamento</button>';
     return '<div class="qty"><button data-a="-" data-i="' + esc(id) + '" aria-label="Diminuir quantidade de ' + esc(nomeItem) + '">−</button>' +
       '<b aria-live="polite">' + n + '</b><button data-a="+" data-i="' + esc(id) + '" aria-label="Aumentar quantidade de ' + esc(nomeItem) + '">+</button></div>';
+  }
+
+  function ctl(id, nomeItem) {
+    return '<div data-ctl="' + esc(id) + '">' + ctlInterno(id, nomeItem) + "</div>";
+  }
+
+  // Atualiza só o botão do produto (sem redesenhar a lista toda e sem pular a tela).
+  function atualizarCartao(id) {
+    var el = document.querySelector('[data-ctl="' + CSS.escape(id) + '"]');
+    if (!el) return;
+    var foco = el.contains(document.activeElement) ? document.activeElement.dataset.a : null;
+    el.innerHTML = ctlInterno(id, porId[id].nome);
+    var alvo = foco && (el.querySelector('[data-a="' + foco + '"]') || el.querySelector("button"));
+    if (alvo) alvo.focus();
   }
 
   function preco(p) {
@@ -135,21 +153,42 @@
       return;
     }
     var t = q.trim().toLowerCase();
-    var h = "";
+    var h = !c && !t ? destaqueInspiracoes() : "";
+    var ultimaCat = null;
     prods.forEach(function (p) {
       var pc = catPorId(p.categoria_id);
       if (!pc || pc.tipo === GALERIA) return;
       if (c && p.categoria_id !== c.id) return;
       if (t && (cod(p) + " " + p.nome + " " + p.descricao).toLowerCase().indexOf(t) < 0) return;
+      // Em "Todos", um título antes de cada categoria.
+      if (!c && pc !== ultimaCat) {
+        ultimaCat = pc;
+        h += '<h2 class="sec-tit">' + esc(pc.icone) + " " + esc(pc.nome) + "</h2>";
+      }
       var foto = fotoUrl(p.imagem);
       h += '<div class="card"><div class="tile">' +
         (foto ? '<img src="' + esc(foto) + '" alt="' + esc(p.nome) + '" loading="lazy" decoding="async" width="230" height="170">'
               : '<span role="img" aria-label="' + esc(pc.nome) + '">' + esc(pc.icone) + "</span>") +
-        '</div><div class="body"><span class="cat">' + esc(pc.nome) + "</span>" +
+        // O nome da categoria só aparece na busca (fora dela, o título da seção já mostra).
+        '</div><div class="body">' + (t ? '<span class="cat">' + esc(pc.nome) + "</span>" : "") +
         (cod(p) ? '<span class="cod">Cód. ' + cod(p) + "</span>" : "") + "<h3>" + esc(p.nome) + "</h3><p>" +
         esc(p.descricao) + "</p>" + preco(p) + ctl(p.id, p.nome) + "</div></div>";
     });
     $("#grid").innerHTML = aviso + (h || '<div class="empty">Nenhum item encontrado.</div>');
+  }
+
+  // Faixa com fotos de festas montadas, no começo de "Todos".
+  function destaqueInspiracoes() {
+    var g = cats.filter(function (c) { return c.tipo === GALERIA; })[0];
+    if (!g || !insp.length) return "";
+    return '<section class="destaque" aria-labelledby="dest-tit">' +
+      '<h2 id="dest-tit">' + esc(g.icone) + " " + esc(g.nome) + "</h2>" +
+      "<p>Festas montadas com os nossos itens. Toque na foto para ampliar.</p>" +
+      '<div class="fila">' + insp.slice(0, 10).map(function (x, i) {
+        return '<button class="ins" data-z="' + i + '" aria-label="Ampliar foto de inspiração ' + (i + 1) + '">' +
+          '<img src="' + esc(fotoUrl(x.imagem)) + '" alt="Inspiração de decoração ' + (i + 1) + '" loading="lazy" decoding="async" width="132" height="132"></button>';
+      }).join("") + "</div>" +
+      '<button class="ver-todas" data-c="' + esc(g.chave) + '">Ver todas as ' + insp.length + " fotos ›</button></section>";
   }
 
   function total() {
@@ -162,7 +201,8 @@
     var n = total();
     var b = $("#fab");
     b.hidden = !n;
-    b.textContent = "🛒 Ver orçamento (" + n + ")";
+    document.body.classList.toggle("com-carrinho", !!n);
+    b.innerHTML = "<span>🛒 " + n + (n === 1 ? " item" : " itens") + ' no orçamento</span><span class="ver">Ver e enviar ›</span>';
   }
 
   function chg(id, d) {
@@ -171,7 +211,7 @@
     if (cart[id] <= 0) delete cart[id];
     salvarCarrinho();
     fab();
-    grid();
+    atualizarCartao(id);
     if (!$("#ov").hidden) panel();
   }
 
@@ -240,12 +280,27 @@
     if (e.target.closest("#lb")) { fecharFoto(); return; }
     var t = e.target.closest("[data-a],[data-c]");
     if (!t) { if (e.target.id === "ov") fecharPainel(); return; }
-    if (t.dataset.c) { cat = t.dataset.c; chips(); grid(); return; }
+    if (t.dataset.c) {
+      cat = t.dataset.c;
+      chips();
+      grid();
+      // Volta para o começo da lista da categoria escolhida.
+      var topo = $(".layout").getBoundingClientRect().top + window.pageYOffset - $(".busca").offsetHeight;
+      if (window.pageYOffset > topo) window.scrollTo(0, topo);
+      return;
+    }
     var a = t.dataset.a;
     if (a === "+") chg(t.dataset.i, 1);
     else if (a === "-") chg(t.dataset.i, -1);
     else if (a === "x") fecharPainel();
-    else if (a === "clr") { cart = {}; salvarCarrinho(); fab(); grid(); panel(); }
+    else if (a === "clr") {
+      var ids = Object.keys(cart);
+      cart = {};
+      salvarCarrinho();
+      fab();
+      ids.forEach(atualizarCartao);
+      panel();
+    }
   });
 
   document.addEventListener("keydown", function (e) {

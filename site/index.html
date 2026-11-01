@@ -24,12 +24,14 @@
     <p>Chácara Top Fest · Lazer, eventos e decorações</p>
   </div>
 </header>
-<main class="wrap">
+<div class="busca">
   <label class="sr" for="q">Buscar item</label>
   <input id="q" type="search" placeholder="Buscar item ou código (ex.: arco, 080)" autocomplete="off">
+</div>
+<div class="layout">
+  <main id="grid" aria-live="polite"><div class="empty">Carregando o catálogo…</div></main>
   <nav id="chips" aria-label="Categorias"></nav>
-  <div id="grid" aria-live="polite"><div class="empty">Carregando o catálogo…</div></div>
-</main>
+</div>
 <footer>Escolha os itens, monte seu pedido e envie pelo WhatsApp para receber o orçamento.<br>Valores e disponibilidade sob consulta.</footer>
 <button id="fab" type="button" hidden></button>
 <div id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden></div>
