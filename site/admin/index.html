@@ -54,6 +54,8 @@
   <section id="tela-painel" hidden>
     <nav class="abas" role="tablist">
       <button role="tab" data-aba="produtos" class="on">📦 Produtos</button>
+      <button role="tab" data-aba="orcamentos">🧾 Orçamentos</button>
+      <button role="tab" data-aba="clientes">👥 Clientes</button>
       <button role="tab" data-aba="categorias">🗂️ Categorias</button>
       <button role="tab" data-aba="inspiracoes">📸 Inspirações</button>
       <button role="tab" data-aba="config">⚙️ Configurações</button>
@@ -70,6 +72,28 @@
       </div>
       <p class="dica" id="dica-ordem"></p>
       <ul id="lista-produtos" class="lista"></ul>
+    </div>
+
+    <div id="aba-orcamentos" class="aba" hidden>
+      <div class="barra botoes">
+        <button class="btn pri" id="novo-orcamento" type="button">➕ Novo orçamento</button>
+        <button class="btn" id="colar-pedido" type="button">📋 Colar pedido do WhatsApp</button>
+      </div>
+      <div class="filtros">
+        <input id="busca-orc" type="search" placeholder="Buscar por cliente ou número" aria-label="Buscar orçamento">
+      </div>
+      <ul id="lista-orcamentos" class="lista"></ul>
+    </div>
+
+    <div id="aba-clientes" class="aba" hidden>
+      <div class="barra">
+        <button class="btn pri" id="novo-cliente" type="button">➕ Novo cliente</button>
+      </div>
+      <div class="filtros">
+        <input id="busca-cliente" type="search" placeholder="Buscar por nome, telefone, CPF/CNPJ ou cidade" aria-label="Buscar cliente">
+      </div>
+      <p class="dica">Os dados dos clientes só aparecem aqui, para você. O site público não mostra nada disso.</p>
+      <ul id="lista-clientes" class="lista"></ul>
     </div>
 
     <div id="aba-categorias" class="aba" hidden>
@@ -110,7 +134,8 @@
         <label>Telefone secundário
           <input name="telefone_secundario" inputmode="tel" placeholder="(19) 99113-8624">
         </label>
-        <label class="check"><input type="checkbox" name="mostrar_precos"> Mostrar preços no site (só para produtos que tiverem preço)</label>
+        <label class="check"><input type="checkbox" name="mostrar_precos"> Mostrar preços no site</label>
+        <small class="abaixo-check">Liga ou desliga os preços de todos os produtos. Com ele ligado, aparecem só os produtos que têm preço e estão com "Mostrar o preço deste produto no site" marcado.</small>
         <button class="btn pri grande" type="submit">Salvar configurações</button>
       </form>
       <form id="form-senha" class="cartao">
@@ -124,7 +149,8 @@
     <div id="aba-backup" class="aba" hidden>
       <div class="cartao">
         <h2>Baixar cópia de segurança</h2>
-        <p>Baixa um arquivo <b>.json</b> com todas as categorias, produtos, inspirações e configurações. Guarde no computador ou no Google Drive.</p>
+        <p>Baixa um arquivo <b>.json</b> com todas as categorias, produtos, inspirações, configurações, clientes e orçamentos. Guarde no computador ou no Google Drive.</p>
+        <p class="dica">⚠️ O arquivo tem dados pessoais dos clientes (telefone, CPF, endereço). Não envie para outras pessoas.</p>
         <button class="btn pri grande" id="exportar" type="button">⬇️ Baixar cópia agora</button>
       </div>
       <div class="cartao">
@@ -154,6 +180,8 @@
         <small>JPG, PNG ou WebP. A foto é reduzida automaticamente.</small>
       </div>
     </div>
+    <label>Código<input name="codigo" type="number" min="1" max="99999" inputmode="numeric" placeholder="Automático">
+      <small>Deixe vazio para o sistema dar o próximo número. O cliente vê este código no site.</small></label>
     <label>Nome<input name="nome" required maxlength="150"></label>
     <label>Descrição<textarea name="descricao" rows="3" maxlength="600"></textarea></label>
     <label>Categoria<select name="categoria_id" required></select></label>
@@ -162,7 +190,9 @@
       <label>Ícone (um emoji)<input name="nova_cat_icone" maxlength="8" value="🎉"></label>
     </div>
     <label>Preço (opcional)<input name="preco" inputmode="decimal" placeholder="Ex.: 35,00">
-      <small>Só aparece no site se "Mostrar preços" estiver ligado em Configurações.</small></label>
+      <small>Também é usado como valor inicial nos orçamentos.</small></label>
+    <label class="check"><input type="checkbox" name="mostrar_preco" checked> Mostrar o preço deste produto no site</label>
+    <small class="abaixo-check">Só vale se "Mostrar preços no site" estiver ligado em Configurações.</small>
     <label class="check"><input type="checkbox" name="ativo" checked> Visível no site</label>
     <div class="acoes">
       <button class="btn" value="cancelar" type="button" data-fechar>Cancelar</button>
@@ -180,6 +210,73 @@
     <div class="acoes">
       <button class="btn" type="button" data-fechar>Cancelar</button>
       <button class="btn pri" type="submit">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Formulário de cliente -->
+<dialog id="dlg-cliente" aria-labelledby="dlg-cliente-tit">
+  <form id="form-cliente" method="dialog">
+    <h2 id="dlg-cliente-tit">Cliente</h2>
+    <label>Nome<input name="nome" required maxlength="150" autocomplete="off"></label>
+    <label>WhatsApp / telefone<input name="whatsapp" inputmode="tel" placeholder="(19) 99999-9999" autocomplete="off"></label>
+    <label>CPF ou CNPJ<input name="documento" maxlength="20" placeholder="Opcional" autocomplete="off"></label>
+    <label>E-mail<input name="email" type="email" maxlength="150" autocomplete="off"></label>
+    <label>CEP<input name="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="off"></label>
+    <label>Endereço (rua, número, complemento)<input name="endereco" maxlength="200" autocomplete="off"></label>
+    <label>Bairro<input name="bairro" maxlength="100" autocomplete="off"></label>
+    <label>Cidade<input name="cidade" maxlength="100" autocomplete="off"></label>
+    <label>Observações<textarea name="observacoes" rows="3" maxlength="1000"></textarea></label>
+    <div class="acoes">
+      <button class="btn" type="button" data-fechar>Cancelar</button>
+      <button class="btn pri" type="submit">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Formulário de orçamento -->
+<dialog id="dlg-orcamento" class="largo" aria-labelledby="dlg-orcamento-tit">
+  <form id="form-orcamento" method="dialog">
+    <h2 id="dlg-orcamento-tit">Orçamento</h2>
+    <label>Cliente<select name="cliente_id"></select></label>
+    <div class="botoes">
+      <button class="btn" type="button" id="orc-novo-cliente">➕ Cadastrar cliente</button>
+    </div>
+    <p class="dica" id="orc-aviso-cliente" hidden></p>
+    <label>Data do evento<input name="data_evento" type="date"></label>
+
+    <h3>Itens</h3>
+    <label>Adicionar produto (digite o código ou o nome)
+      <input id="orc-busca" type="search" autocomplete="off" placeholder="Ex.: 080 ou boleira">
+    </label>
+    <ul id="orc-sugestoes" class="sugestoes"></ul>
+    <div class="botoes">
+      <button class="btn" type="button" id="orc-servico">➕ Serviço (montagem, entrega…)</button>
+    </div>
+    <ul id="orc-itens" class="orc-itens"></ul>
+
+    <div class="valores">
+      <label>Desconto (R$)<input name="desconto" inputmode="decimal" placeholder="0,00"></label>
+      <label>Taxa de entrega / frete (R$)<input name="taxa_entrega" inputmode="decimal" placeholder="0,00"></label>
+    </div>
+    <div id="orc-totais" class="totais"></div>
+    <label>Observações (aparecem no orçamento)<textarea name="observacoes" rows="3" maxlength="2000" placeholder="Ex.: local, horário, forma de pagamento"></textarea></label>
+    <div class="acoes">
+      <button class="btn" type="button" data-fechar>Cancelar</button>
+      <button class="btn pri" type="submit">Salvar orçamento</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Colar pedido do WhatsApp -->
+<dialog id="dlg-colar" aria-labelledby="dlg-colar-tit">
+  <form id="form-colar" method="dialog">
+    <h2 id="dlg-colar-tit">Colar pedido do WhatsApp</h2>
+    <p class="dica">No WhatsApp, toque e segure a mensagem do cliente, escolha <b>Copiar</b> e cole aqui. O sistema encontra os produtos pelos códigos.</p>
+    <label>Mensagem do cliente<textarea name="texto" rows="8" required></textarea></label>
+    <div class="acoes">
+      <button class="btn" type="button" data-fechar>Cancelar</button>
+      <button class="btn pri" type="submit">Montar orçamento</button>
     </div>
   </form>
 </dialog>

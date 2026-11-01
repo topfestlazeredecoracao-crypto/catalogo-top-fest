@@ -63,3 +63,27 @@ dialog form{padding:20px}
 #aviso{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 24px);background:var(--tx);color:var(--bg);padding:12px 18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.3);z-index:50;font-weight:600}
 #aviso.erro{background:var(--erro);color:#fff}
 :focus-visible{outline:3px solid var(--pr);outline-offset:2px}
+.botoes{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.abaixo-check{margin:-8px 0 14px 34px}
+h3{font-size:17px;margin:18px 0 10px}
+dialog.largo{width:min(760px,100vw - 20px)}
+.sugestoes{list-style:none;margin:-8px 0 14px;padding:0;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.sugestoes:empty{display:none}
+.sugestoes button{display:flex;gap:8px;width:100%;text-align:left;padding:12px;border:0;border-bottom:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;font-size:15px;cursor:pointer}
+.sugestoes li:last-child button{border-bottom:0}
+.sugestoes button:hover,.sugestoes button:focus-visible{background:var(--tile)}
+.cod{font-size:13px;font-weight:700;color:var(--mu);white-space:nowrap}
+.orc-itens{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:8px}
+.orc-item{border:1px solid var(--bd);border-radius:12px;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;align-items:end}
+.orc-item.servico{border-style:dashed}
+.orc-item .orc-nome{grid-column:1/-1;font-weight:600}
+.orc-item label{margin:0;font-size:13px}
+.orc-item input{padding:9px}
+.orc-sub{font-weight:700}
+.orc-item .btn{min-height:40px;padding:6px 12px;font-size:14px;justify-self:end}
+@media(min-width:640px){.orc-item{grid-template-columns:1fr 90px 130px 110px auto}.orc-item .orc-nome{grid-column:auto;align-self:center}}
+.valores{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.totais{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.totais div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
+.totais .total{font-size:20px;font-weight:700;border-top:1px solid var(--bd);margin-top:6px;padding-top:8px}
+a.btn{text-decoration:none}

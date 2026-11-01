@@ -50,9 +50,13 @@ def main():
     dados = {
         "configuracoes": tabela("configuracoes", "select=*&id=eq.1")[0],
         "categorias": tabela("categorias", "select=id,nome,icone,tipo,ordem&order=ordem,id"),
-        "produtos": tabela("produtos", "select=id,categoria_id,nome,descricao,imagem,ativo,ordem,preco&ativo=is.true&order=ordem,nome"),
+        "produtos": tabela("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ativo,ordem&ativo=is.true&order=ordem,nome"),
         "inspiracoes": tabela("inspiracoes", "select=id,imagem,legenda,ordem&order=ordem,id"),
     }
+    # Só os preços que a administradora deixou aparecer no site.
+    precos = {x["id"]: x["preco"] for x in tabela("precos_publicos", "select=id,preco")}
+    for p in dados["produtos"]:
+        p["preco"] = precos.get(p["id"])
     if not dados["categorias"] or not dados["produtos"]:
         sys.exit("O banco voltou vazio; a reserva não foi alterada.")
 

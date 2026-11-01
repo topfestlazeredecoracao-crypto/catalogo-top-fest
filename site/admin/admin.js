@@ -12,7 +12,7 @@
   var MAX_LADO = 800;                 // lado maior depois de reduzir
   var LEGENDA_CLIENTE = "Montado pela cliente (pegue e monte)";
 
-  var st = { cats: [], prods: [], insp: [], conf: null };
+  var st = { cats: [], prods: [], insp: [], conf: null, clientes: [], orcs: [] };
   var produtoEditando = null;
   var fotoNova = null;      // Blob já reduzido
   var removerFoto = false;
@@ -29,6 +29,45 @@
 
   function fotoUrl(caminho) {
     return caminho ? sb.storage.from(BUCKET).getPublicUrl(caminho).data.publicUrl : "";
+  }
+
+  // Código com 3 dígitos: 7 -> "007".
+  function cod(n) { return n == null ? "" : String(n).padStart(3, "0"); }
+
+  function brl(n) { return Number(n || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); }
+
+  // "2026-12-20" -> "20/12/2026"
+  function dataBR(iso) { return iso ? iso.split("-").reverse().join("/") : ""; }
+
+  // Lê valores como "35", "35,50", "1.500,00", "R$ 35.50". Vazio = 0. Inválido = NaN.
+  function lerNumero(txt) {
+    txt = String(txt == null ? "" : txt).replace(/R\$|\s/g, "");
+    if (!txt) return 0;
+    if (txt.indexOf(",") >= 0) txt = txt.replace(/\./g, "").replace(",", ".");
+    else if (/\.\d{3}$/.test(txt)) txt = txt.replace(/\./g, "");
+    var n = Number(txt);
+    return isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : NaN;
+  }
+
+  function lerValor(txt, campo) {
+    var n = lerNumero(txt);
+    if (isNaN(n)) throw new Error(campo + " inválido. Use só números, ex.: 35,00");
+    return n;
+  }
+
+  // Número para o campo de digitação: 35 -> "35,00"; 0 -> "".
+  function numCampo(n) { return n ? Number(n).toFixed(2).replace(".", ",") : ""; }
+
+  // "5519991616329" -> "(19) 99161-6329"
+  function telBR(d) {
+    d = String(d || "").replace(/\D/g, "").replace(/^55(?=\d{10,11}$)/, "");
+    if (d.length === 11) return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
+    if (d.length === 10) return "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6);
+    return d;
+  }
+
+  function linkWhats(numero, texto) {
+    return "https://wa.me/" + numero + (texto ? "?text=" + encodeURIComponent(texto) : "");
   }
 
   // ---------- Avisos e erros ----------
@@ -54,6 +93,7 @@
     if (/should be different/i.test(m)) return "A senha nova precisa ser diferente da atual.";
     if (/Password should be at least/i.test(m)) return "A senha precisa ter pelo menos 8 caracteres.";
     if (/weak|pwned/i.test(m)) return "Essa senha é fácil de adivinhar. Escolha outra.";
+    if (code === "23505" && /codigo/.test(m)) return "Já existe um produto com esse código. Escolha outro ou deixe vazio.";
     if (code === "23505") return "Já existe um item com esse nome.";
     if (code === "23503") return "Não dá para excluir: ainda há produtos nessa categoria.";
     if (code === "42501" || /row-level security|permission denied|Unauthorized|JWT/i.test(m)) return "Sem permissão. Saia e entre de novo.";
@@ -198,12 +238,16 @@
       sb.from("categorias").select("*").order("ordem").order("id"),
       sb.from("produtos").select("*").order("ordem").order("nome"),
       sb.from("inspiracoes").select("*").order("ordem").order("id"),
-      sb.from("configuracoes").select("*").eq("id", 1).single()
+      sb.from("configuracoes").select("*").eq("id", 1).single(),
+      sb.from("clientes").select("*").order("nome"),
+      sb.from("orcamentos").select("*").order("numero", { ascending: false })
     ]).then(function (r) {
       st.cats = ok(r[0]);
       st.prods = ok(r[1]);
       st.insp = ok(r[2]);
       st.conf = ok(r[3]);
+      st.clientes = ok(r[4]);
+      st.orcs = ok(r[5]);
       desenharTudo();
     }).catch(falhou);
   }
@@ -214,6 +258,8 @@
     desenharCategorias();
     desenharInspiracoes();
     preencherConfig();
+    desenharClientes();
+    desenharOrcamentos();
   }
 
   function cat(id) {
@@ -247,7 +293,7 @@
     st.cats.forEach(function (c, i) { posCat[c.id] = i; });
     var lista = st.prods.filter(function (p) {
       if (filtro && p.categoria_id !== filtro) return false;
-      return !t || (p.nome + " " + p.descricao).toLowerCase().indexOf(t) >= 0;
+      return !t || (cod(p.codigo) + " " + p.nome + " " + p.descricao).toLowerCase().indexOf(t) >= 0;
     }).sort(function (a, b) {
       return posCat[a.categoria_id] - posCat[b.categoria_id] || a.ordem - b.ordem || a.nome.localeCompare(b.nome);
     });
@@ -255,8 +301,10 @@
       var c = cat(p.categoria_id) || { nome: "?", icone: "❔" };
       return '<li class="item' + (p.ativo ? "" : " oculto") + '" data-id="' + esc(p.id) + '">' +
         '<div class="mini">' + (p.imagem ? '<img src="' + esc(fotoUrl(p.imagem)) + '" alt="" loading="lazy">' : esc(c.icone)) + "</div>" +
-        '<div class="item-info"><b>' + esc(p.nome) + (p.ativo ? "" : ' <span class="selo">OCULTO</span>') + "</b>" +
-        "<span>" + esc(c.nome) + "</span></div>" +
+        '<div class="item-info"><b><span class="cod">Cód. ' + cod(p.codigo) + "</span> " + esc(p.nome) +
+        (p.ativo ? "" : ' <span class="selo">OCULTO</span>') + "</b>" +
+        "<span>" + esc(c.nome) + (p.preco != null ? " · " + brl(p.preco) + (p.mostrar_preco ? "" : " (preço escondido no site)") : "") +
+        "</span></div>" +
         '<div class="item-acoes">' +
         '<button class="btn" data-acao="editar">✏️ Editar</button>' +
         '<button class="btn" data-acao="alternar">' + (p.ativo ? "🙈 Ocultar" : "👁️ Mostrar") + "</button>" +
@@ -354,7 +402,9 @@
     formP.reset();
     $("#dlg-produto-tit").textContent = p ? "Editar produto" : "Novo produto";
     opcoesCategoria(p ? p.categoria_id : Number($("#filtro-cat").value) || null);
+    formP.mostrar_preco.checked = p ? p.mostrar_preco !== false : true;
     if (p) {
+      formP.codigo.value = p.codigo == null ? "" : p.codigo;
       formP.nome.value = p.nome;
       formP.descricao.value = p.descricao || "";
       formP.preco.value = p.preco == null ? "" : String(p.preco).replace(".", ",");
@@ -395,11 +445,17 @@
   });
 
   function lerPreco(txt) {
+    if (!txt.trim()) return null;
+    return lerValor(txt, "Preço");
+  }
+
+  // Vazio = o banco escolhe o próximo número.
+  function lerCodigo(txt) {
     txt = txt.trim();
     if (!txt) return null;
-    var n = Number(txt.replace(/[R$\s.]/g, "").replace(",", "."));
-    if (!isFinite(n) || n < 0) throw new Error("Preço inválido. Use só números, ex.: 35,00");
-    return Math.round(n * 100) / 100;
+    var n = Number(txt);
+    if (!Number.isInteger(n) || n < 1 || n > 99999) throw new Error("Código inválido. Use só números, ex.: 216");
+    return n;
   }
 
   formP.addEventListener("submit", function (e) {
@@ -413,10 +469,13 @@
       nome: formP.nome.value.trim(),
       descricao: formP.descricao.value.trim(),
       ativo: formP.ativo.checked,
-      preco: lerPreco(formP.preco.value)
+      preco: lerPreco(formP.preco.value),
+      mostrar_preco: formP.mostrar_preco.checked
     };
     if (!dados.nome) throw new Error("Preencha o nome do produto.");
     var p = produtoEditando;
+    var codigo = lerCodigo(formP.codigo.value);
+    if (codigo != null) dados.codigo = codigo;
     var fotoAntiga = p && p.imagem;
 
     return obterCategoria().then(function (catId) {
@@ -702,13 +761,15 @@
     ocupado(b, carregarTudo().then(function () {
       var copia = {
         sistema: "catalogo-top-fest",
-        versao: 1,
+        versao: 2,
         exportado_em: new Date().toISOString(),
         endereco_fotos: fotoUrl("x").replace(/x$/, ""),
         configuracoes: st.conf,
         categorias: st.cats,
         produtos: st.prods,
-        inspiracoes: st.insp
+        inspiracoes: st.insp,
+        clientes: st.clientes,
+        orcamentos: st.orcs
       };
       var blob = new Blob([JSON.stringify(copia, null, 2)], { type: "application/json" });
       var a = document.createElement("a");
@@ -733,7 +794,8 @@
       }
       var quando = c.exportado_em ? new Date(c.exportado_em).toLocaleString("pt-BR") : "data desconhecida";
       return confirmar("Restaurar a cópia de " + quando + "? (" + c.categorias.length + " categorias, " +
-        c.produtos.length + " produtos, " + c.inspiracoes.length + " fotos de inspiração)", "Restaurar").then(function (sim) {
+        c.produtos.length + " produtos, " + c.inspiracoes.length + " fotos de inspiração" +
+        (c.clientes ? ", " + c.clientes.length + " clientes, " + (c.orcamentos || []).length + " orçamentos" : "") + ")", "Restaurar").then(function (sim) {
         if (sim) return restaurar(c);
       });
     }).catch(falhou);
@@ -757,18 +819,573 @@
       var porNome = {};
       cats.forEach(function (x) { porNome[x.nome] = x.id; });
       c.categorias.forEach(function (x) { idNovo[x.id] = porNome[x.nome]; });
+      // Cópias antigas (versão 1) não têm código: o banco numera sozinho (defaultToNull: false).
       return sb.from("produtos").upsert(c.produtos.map(function (p) {
-        return {
+        var linha = {
           id: p.id, categoria_id: idNovo[p.categoria_id], nome: p.nome, descricao: p.descricao || "",
-          imagem: p.imagem, ativo: p.ativo !== false, ordem: p.ordem, preco: p.preco == null ? null : p.preco
+          imagem: p.imagem, ativo: p.ativo !== false, ordem: p.ordem, preco: p.preco == null ? null : p.preco,
+          mostrar_preco: p.mostrar_preco !== false
         };
-      }), { onConflict: "id" }).then(ok);
+        if (p.codigo != null) linha.codigo = p.codigo;
+        return linha;
+      }), { onConflict: "id", defaultToNull: false }).then(ok);
     }).then(function () {
       return sb.from("inspiracoes").upsert(c.inspiracoes.map(function (x) {
         return { id: x.id, imagem: x.imagem, legenda: x.legenda || "", ordem: x.ordem };
       }), { onConflict: "id" }).then(ok);
+    }).then(function () {
+      if (!c.clientes || !c.clientes.length) return;
+      return sb.from("clientes").upsert(c.clientes.map(function (x) {
+        return {
+          id: x.id, nome: x.nome, whatsapp: x.whatsapp || "", documento: x.documento || "", email: x.email || "",
+          cep: x.cep || "", endereco: x.endereco || "", bairro: x.bairro || "", cidade: x.cidade || "",
+          observacoes: x.observacoes || ""
+        };
+      }), { onConflict: "id" }).then(ok);
+    }).then(function () {
+      if (!c.orcamentos || !c.orcamentos.length) return;
+      return sb.from("orcamentos").upsert(c.orcamentos.map(function (x) {
+        return {
+          id: x.id, numero: x.numero, cliente_id: x.cliente_id || null, cliente_nome: x.cliente_nome || "",
+          data_evento: x.data_evento || null, itens: x.itens || [], desconto: x.desconto || 0,
+          taxa_entrega: x.taxa_entrega || 0, observacoes: x.observacoes || "", criado_em: x.criado_em
+        };
+      }), { onConflict: "id" }).then(ok);
     }).then(carregarTudo).then(function () { avisar("Cópia restaurada com sucesso!"); });
   }
+
+  // ---------- Clientes ----------
+  function cliente(id) {
+    for (var i = 0; i < st.clientes.length; i++) if (st.clientes[i].id === id) return st.clientes[i];
+    return null;
+  }
+
+  function ordenarClientes() {
+    st.clientes.sort(function (a, b) { return a.nome.localeCompare(b.nome, "pt-BR"); });
+  }
+
+  // CPF: 11 números. CNPJ: 14 caracteres (desde 2026 pode ter letras nas 12 primeiras posições).
+  function cpfOk(d) {
+    if (/^(\d)\1+$/.test(d)) return false;
+    for (var j = 9; j < 11; j++) {
+      var s = 0;
+      for (var i = 0; i < j; i++) s += Number(d[i]) * (j + 1 - i);
+      if ((s * 10) % 11 % 10 !== Number(d[j])) return false;
+    }
+    return true;
+  }
+
+  function cnpjOk(d) {
+    if (/^(\d)\1+$/.test(d)) return false;
+    var pesos = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    for (var j = 12; j < 14; j++) {
+      var s = 0;
+      for (var i = 0; i < j; i++) s += (d.charCodeAt(i) - 48) * pesos[i + 13 - j];
+      var r = s % 11;
+      if ((r < 2 ? 0 : 11 - r) !== Number(d[j])) return false;
+    }
+    return true;
+  }
+
+  function lerDocumento(txt) {
+    var d = txt.toUpperCase().replace(/[\s.\-\/]/g, "");
+    if (!d) return "";
+    if (/^\d{11}$/.test(d)) {
+      if (!cpfOk(d)) throw new Error("Esse CPF não é válido. Confira os números.");
+      return d;
+    }
+    if (/^[0-9A-Z]{12}\d{2}$/.test(d)) {
+      if (!cnpjOk(d)) throw new Error("Esse CNPJ não é válido. Confira os números.");
+      return d;
+    }
+    throw new Error("O CPF tem 11 números e o CNPJ tem 14. Confira o que foi digitado.");
+  }
+
+  function docBR(d) {
+    if (!d) return "";
+    if (d.length === 11) return d.slice(0, 3) + "." + d.slice(3, 6) + "." + d.slice(6, 9) + "-" + d.slice(9);
+    if (d.length === 14) return d.slice(0, 2) + "." + d.slice(2, 5) + "." + d.slice(5, 8) + "/" + d.slice(8, 12) + "-" + d.slice(12);
+    return d;
+  }
+
+  function lerWhatsCliente(txt) {
+    if (!txt.replace(/\D/g, "")) return "";
+    try { return normalizarWhats(txt); } catch (e) {
+      throw new Error("WhatsApp do cliente inválido. Digite com DDD, ex.: (19) 99999-9999");
+    }
+  }
+
+  function lerCep(txt) {
+    var d = txt.replace(/\D/g, "");
+    if (!d) return "";
+    if (d.length !== 8) throw new Error("O CEP tem 8 números. Ex.: 13000-000");
+    return d.slice(0, 5) + "-" + d.slice(5);
+  }
+
+  function desenharClientes() {
+    var t = $("#busca-cliente").value.trim().toLowerCase();
+    var td = t.replace(/\D/g, "");
+    var lista = st.clientes.filter(function (c) {
+      if (!t) return true;
+      if ((c.nome + " " + c.cidade + " " + c.bairro + " " + c.email).toLowerCase().indexOf(t) >= 0) return true;
+      return td.length >= 3 && (c.whatsapp + " " + c.documento).indexOf(td) >= 0;
+    });
+    $("#lista-clientes").innerHTML = lista.map(function (c) {
+      var info = [telBR(c.whatsapp), c.cidade, docBR(c.documento)].filter(Boolean).join(" · ");
+      return '<li class="item" data-id="' + esc(c.id) + '">' +
+        '<div class="mini">👤</div>' +
+        '<div class="item-info"><b>' + esc(c.nome) + "</b><span>" + esc(info || "Sem telefone") + "</span></div>" +
+        '<div class="item-acoes">' +
+        '<button class="btn" data-acao="editar">✏️ Editar</button>' +
+        '<button class="btn" data-acao="orcamento">🧾 Novo orçamento</button>' +
+        (c.whatsapp ? '<a class="btn" href="' + esc(linkWhats(c.whatsapp)) + '" target="_blank" rel="noopener">💬 WhatsApp</a>' : "") +
+        '<button class="btn" data-acao="excluir">🗑️ Excluir</button>' +
+        "</div></li>";
+    }).join("") || '<li class="dica">' + (st.clientes.length ? "Nenhum cliente encontrado." : "Nenhum cliente cadastrado ainda.") + "</li>";
+  }
+
+  $("#busca-cliente").addEventListener("input", desenharClientes);
+  $("#novo-cliente").addEventListener("click", function () { abrirCliente(null); });
+
+  $("#lista-clientes").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-acao]");
+    if (!b) return;
+    var c = cliente(b.closest("[data-id]").dataset.id);
+    var acao = b.dataset.acao;
+    if (acao === "editar") abrirCliente(c);
+    else if (acao === "orcamento") abrirOrcamento(null, { cliente_id: c.id });
+    else if (acao === "excluir") excluirCliente(c);
+  });
+
+  var formCli = $("#form-cliente");
+  var clienteEditando = null;
+  var aoSalvarCliente = null;
+
+  // preenchido: valores iniciais (ex.: nome vindo do pedido); aoSalvar: chamado com o cliente salvo.
+  function abrirCliente(c, preenchido, aoSalvar) {
+    clienteEditando = c || null;
+    aoSalvarCliente = aoSalvar || null;
+    formCli.reset();
+    $("#dlg-cliente-tit").textContent = c ? "Editar cliente" : "Novo cliente";
+    var v = c || preenchido || {};
+    ["nome", "email", "cep", "endereco", "bairro", "cidade", "observacoes"].forEach(function (k) { formCli[k].value = v[k] || ""; });
+    formCli.whatsapp.value = telBR(v.whatsapp);
+    formCli.documento.value = docBR(v.documento);
+    $("#dlg-cliente").showModal();
+  }
+
+  formCli.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var acao = Promise.resolve().then(function () {
+      var dados = {
+        nome: formCli.nome.value.trim(),
+        whatsapp: lerWhatsCliente(formCli.whatsapp.value),
+        documento: lerDocumento(formCli.documento.value),
+        email: formCli.email.value.trim(),
+        cep: lerCep(formCli.cep.value),
+        endereco: formCli.endereco.value.trim(),
+        bairro: formCli.bairro.value.trim(),
+        cidade: formCli.cidade.value.trim(),
+        observacoes: formCli.observacoes.value.trim()
+      };
+      if (!dados.nome) throw new Error("Preencha o nome do cliente.");
+      var c = clienteEditando;
+      var req = c ? sb.from("clientes").update(dados).eq("id", c.id) : sb.from("clientes").insert(dados);
+      return req.select().single().then(ok).then(function (novo) {
+        if (c) Object.assign(c, novo); else st.clientes.push(novo);
+        ordenarClientes();
+        $("#dlg-cliente").close();
+        desenharClientes();
+        desenharOrcamentos();
+        avisar(c ? "Cliente salvo." : "Cliente cadastrado.");
+        if (aoSalvarCliente) aoSalvarCliente(c || novo);
+      });
+    });
+    ocupado($('button[type="submit"]', formCli), acao.catch(falhou));
+  });
+
+  function excluirCliente(c) {
+    var n = st.orcs.filter(function (o) { return o.cliente_id === c.id; }).length;
+    confirmar('Excluir o cliente "' + c.nome + '"?' + (n ? " Os " + n + " orçamento(s) dele continuam salvos, só com o nome." : ""), "Excluir").then(function (sim) {
+      if (!sim) return;
+      return sb.from("clientes").delete().eq("id", c.id).then(ok).then(function () {
+        st.clientes = st.clientes.filter(function (x) { return x !== c; });
+        st.orcs.forEach(function (o) { if (o.cliente_id === c.id) o.cliente_id = null; });
+        desenharClientes();
+        desenharOrcamentos();
+        avisar("Cliente excluído.");
+      });
+    }).catch(falhou);
+  }
+
+  // ---------- Orçamentos ----------
+  function orcPorId(id) { return st.orcs.filter(function (o) { return o.id === id; })[0]; }
+  function produtoPorId(id) { return st.prods.filter(function (p) { return p.id === id; })[0]; }
+  function produtoPorCodigo(n) { return st.prods.filter(function (p) { return p.codigo === n; })[0]; }
+
+  function contas(o) {
+    var itens = 0, servicos = 0;
+    (o.itens || []).forEach(function (it) {
+      var v = (Number(it.quantidade) || 0) * (Number(it.preco) || 0);
+      if (it.tipo === "servico") servicos += v; else itens += v;
+    });
+    var desconto = Number(o.desconto) || 0, taxa = Number(o.taxa_entrega) || 0;
+    return { itens: itens, servicos: servicos, desconto: desconto, taxa: taxa, total: Math.max(0, itens + servicos - desconto + taxa) };
+  }
+
+  function nomeCliente(o) {
+    var c = cliente(o.cliente_id);
+    return c ? c.nome : o.cliente_nome;
+  }
+
+  function linhaItem(it) {
+    var q = Number(it.quantidade) || 0, p = Number(it.preco) || 0;
+    return "- " + q + "x " + (it.codigo != null ? "(Cód. " + cod(it.codigo) + ") " : "") + it.nome + " – " +
+      (q > 1 ? brl(p) + " cada = " + brl(q * p) : brl(p));
+  }
+
+  function msgOrcamento(o) {
+    var primeiro = (nomeCliente(o) || "").trim().split(/\s+/)[0];
+    var v = contas(o);
+    var prods = o.itens.filter(function (it) { return it.tipo !== "servico"; });
+    var servs = o.itens.filter(function (it) { return it.tipo === "servico"; });
+    var m = "Olá" + (primeiro ? ", " + primeiro : "") + "! Segue o orçamento nº " + o.numero + " da " + st.conf.nome + ":\n";
+    if (o.data_evento) m += "\nData do evento: " + dataBR(o.data_evento) + "\n";
+    if (prods.length) m += "\nItens:\n" + prods.map(linhaItem).join("\n") + "\n";
+    if (servs.length) m += "\nServiços:\n" + servs.map(linhaItem).join("\n") + "\n";
+    if (v.desconto || v.taxa) m += "\nSubtotal: " + brl(v.itens + v.servicos);
+    if (v.desconto) m += "\nDesconto: - " + brl(v.desconto);
+    if (v.taxa) m += "\nTaxa de entrega: " + brl(v.taxa);
+    m += "\nTotal: " + brl(v.total) + "\n";
+    if (o.observacoes) m += "\nObservações: " + o.observacoes + "\n";
+    return m + "\nObrigado!";
+  }
+
+  function desenharOrcamentos() {
+    var t = $("#busca-orc").value.trim().toLowerCase();
+    var lista = st.orcs.filter(function (o) {
+      return !t || String(o.numero) === t.replace(/^n[º°o]?\s*/, "") || (nomeCliente(o) || "").toLowerCase().indexOf(t) >= 0;
+    });
+    $("#lista-orcamentos").innerHTML = lista.map(function (o) {
+      var c = cliente(o.cliente_id);
+      var n = o.itens.length;
+      var info = [o.data_evento ? "Evento: " + dataBR(o.data_evento) : "", n + (n === 1 ? " item" : " itens"), "Total: " + brl(contas(o).total)]
+        .filter(Boolean).join(" · ");
+      return '<li class="item" data-id="' + esc(o.id) + '">' +
+        '<div class="mini">🧾</div>' +
+        '<div class="item-info"><b>Nº ' + o.numero + " · " + esc(nomeCliente(o) || "Sem cliente") + "</b><span>" + esc(info) + "</span></div>" +
+        '<div class="item-acoes">' +
+        '<button class="btn" data-acao="abrir">✏️ Abrir</button>' +
+        '<a class="btn" href="imprimir.html?id=' + encodeURIComponent(o.id) + '" target="_blank" rel="noopener">🖨️ Imprimir / PDF</a>' +
+        (c && c.whatsapp
+          ? '<a class="btn" href="' + esc(linkWhats(c.whatsapp, msgOrcamento(o))) + '" target="_blank" rel="noopener">💬 Enviar no WhatsApp</a>'
+          : '<button class="btn" data-acao="sem-whats">💬 Enviar no WhatsApp</button>') +
+        '<button class="btn" data-acao="copiar">📄 Copiar</button>' +
+        '<button class="btn" data-acao="excluir">🗑️ Excluir</button>' +
+        "</div></li>";
+    }).join("") || '<li class="dica">' + (st.orcs.length ? "Nenhum orçamento encontrado." : "Nenhum orçamento ainda.") + "</li>";
+  }
+
+  $("#busca-orc").addEventListener("input", desenharOrcamentos);
+  $("#novo-orcamento").addEventListener("click", function () { abrirOrcamento(null); });
+
+  $("#lista-orcamentos").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-acao]");
+    if (!b) return;
+    var o = orcPorId(b.closest("[data-id]").dataset.id);
+    var acao = b.dataset.acao;
+    if (acao === "abrir") abrirOrcamento(o);
+    else if (acao === "copiar") {
+      // Novo orçamento com os mesmos itens (ex.: para outro cliente ou outra data).
+      abrirOrcamento(null, { cliente_id: o.cliente_id, itens: o.itens, desconto: o.desconto, taxa_entrega: o.taxa_entrega, observacoes: o.observacoes });
+    } else if (acao === "sem-whats") {
+      avisar("Este cliente não tem WhatsApp cadastrado. Abra o orçamento e cadastre ou escolha o cliente.", true);
+    } else if (acao === "excluir") {
+      confirmar("Excluir o orçamento nº " + o.numero + "?", "Excluir").then(function (sim) {
+        if (!sim) return;
+        return sb.from("orcamentos").delete().eq("id", o.id).then(ok).then(function () {
+          st.orcs = st.orcs.filter(function (x) { return x !== o; });
+          desenharOrcamentos();
+          avisar("Orçamento excluído.");
+        });
+      }).catch(falhou);
+    }
+  });
+
+  // ----- Formulário do orçamento -----
+  var formO = $("#form-orcamento");
+  var orc = null;           // orçamento em edição (cópia de trabalho)
+  var orcOriginal = null;
+
+  function avisoOrc(texto) {
+    var p = $("#orc-aviso-cliente");
+    p.textContent = texto || "";
+    p.hidden = !texto;
+  }
+
+  function opcoesCliente() {
+    formO.cliente_id.innerHTML = '<option value="">— Escolha o cliente —</option>' + st.clientes.map(function (c) {
+      return '<option value="' + esc(c.id) + '">' + esc(c.nome + (c.whatsapp ? " – " + telBR(c.whatsapp) : "")) + "</option>";
+    }).join("");
+    formO.cliente_id.value = orc.cliente_id || "";
+  }
+
+  // base: orçamento salvo (editar) ou null (novo); inicial: valores para um novo orçamento.
+  function abrirOrcamento(base, inicial) {
+    orcOriginal = base || null;
+    nomePedido = "";
+    var v = base || inicial || {};
+    orc = {
+      cliente_id: v.cliente_id || null,
+      data_evento: v.data_evento || "",
+      itens: JSON.parse(JSON.stringify(v.itens || [])),
+      desconto: Number(v.desconto) || 0,
+      taxa_entrega: Number(v.taxa_entrega) || 0,
+      observacoes: v.observacoes || ""
+    };
+    formO.reset();
+    $("#dlg-orcamento-tit").textContent = base ? "Orçamento nº " + base.numero : "Novo orçamento";
+    opcoesCliente();
+    formO.data_evento.value = orc.data_evento;
+    formO.desconto.value = numCampo(orc.desconto);
+    formO.taxa_entrega.value = numCampo(orc.taxa_entrega);
+    formO.observacoes.value = orc.observacoes;
+    $("#orc-sugestoes").innerHTML = "";
+    avisoOrc("");
+    listaServicos();
+    desenharItensOrc();
+    $("#dlg-orcamento").showModal();
+  }
+
+  // Sugere nomes de serviços já usados em outros orçamentos.
+  function listaServicos() {
+    var nomes = {};
+    st.orcs.forEach(function (o) {
+      o.itens.forEach(function (it) { if (it.tipo === "servico" && it.nome) nomes[it.nome] = true; });
+    });
+    var dl = $("#lista-servicos");
+    if (!dl) {
+      dl = document.createElement("datalist");
+      dl.id = "lista-servicos";
+      formO.appendChild(dl);
+    }
+    dl.innerHTML = Object.keys(nomes).sort().map(function (n) { return '<option value="' + esc(n) + '">'; }).join("");
+  }
+
+  function desenharItensOrc() {
+    $("#orc-itens").innerHTML = orc.itens.map(function (it, i) {
+      var serv = it.tipo === "servico";
+      return '<li class="orc-item' + (serv ? " servico" : "") + '" data-i="' + i + '">' +
+        (serv
+          ? '<label class="orc-nome">Serviço<input data-campo="nome" maxlength="150" list="lista-servicos" placeholder="Ex.: Montagem" value="' + esc(it.nome) + '"></label>'
+          : '<div class="orc-nome">' + (it.codigo != null ? '<span class="cod">Cód. ' + cod(it.codigo) + "</span> " : "") + esc(it.nome) + "</div>") +
+        '<label>Qtd<input data-campo="quantidade" type="number" min="1" max="9999" inputmode="numeric" value="' + esc(it.quantidade) + '"></label>' +
+        '<label>Valor unit. (R$)<input data-campo="preco" inputmode="decimal" placeholder="0,00" value="' + esc(numCampo(it.preco)) + '"></label>' +
+        '<span class="orc-sub" data-sub>' + brl((Number(it.quantidade) || 0) * (Number(it.preco) || 0)) + "</span>" +
+        '<button class="btn" type="button" data-acao="remover" aria-label="Remover ' + esc(it.nome || "serviço") + '">✖ Remover</button></li>';
+    }).join("") || '<li class="dica">Nenhum item ainda. Procure um produto acima ou adicione um serviço.</li>';
+    desenharTotais();
+  }
+
+  function desenharTotais() {
+    var v = contas(orc);
+    var linha = function (rotulo, valor, cls) {
+      return "<div" + (cls ? ' class="' + cls + '"' : "") + "><span>" + rotulo + "</span><span>" + valor + "</span></div>";
+    };
+    $("#orc-totais").innerHTML = linha("Itens", brl(v.itens)) +
+      (v.servicos ? linha("Serviços", brl(v.servicos)) : "") +
+      (v.desconto ? linha("Desconto", "- " + brl(v.desconto)) : "") +
+      (v.taxa ? linha("Taxa de entrega", brl(v.taxa)) : "") +
+      linha("Total", brl(v.total), "total");
+  }
+
+  function adicionarProduto(p, quantidade) {
+    var q = quantidade || 1;
+    var ja = orc.itens.filter(function (it) { return it.produto_id === p.id; })[0];
+    if (ja) ja.quantidade = (Number(ja.quantidade) || 0) + q;
+    else orc.itens.push({ tipo: "produto", produto_id: p.id, codigo: p.codigo, nome: p.nome, quantidade: q, preco: Number(p.preco) || 0 });
+  }
+
+  function sugestoes() {
+    var t = $("#orc-busca").value.trim().toLowerCase();
+    if (!t) return [];
+    var num = /^\d+$/.test(t) ? Number(t) : null;
+    var exato = num != null ? produtoPorCodigo(num) : null;
+    var lista = st.prods.filter(function (p) {
+      return p !== exato && (cod(p.codigo).indexOf(t) === 0 || p.nome.toLowerCase().indexOf(t) >= 0);
+    }).slice(0, 8);
+    return exato ? [exato].concat(lista.slice(0, 7)) : lista;
+  }
+
+  function desenharSugestoes() {
+    $("#orc-sugestoes").innerHTML = sugestoes().map(function (p) {
+      return '<li><button type="button" data-id="' + esc(p.id) + '"><span class="cod">Cód. ' + cod(p.codigo) + "</span><span>" +
+        esc(p.nome) + (p.ativo ? "" : " (oculto)") + (p.preco != null ? " · " + brl(p.preco) : "") + "</span></button></li>";
+    }).join("");
+  }
+
+  function escolherSugestao(p) {
+    adicionarProduto(p);
+    $("#orc-busca").value = "";
+    $("#orc-sugestoes").innerHTML = "";
+    desenharItensOrc();
+    $("#orc-busca").focus();
+  }
+
+  $("#orc-busca").addEventListener("input", desenharSugestoes);
+  $("#orc-sugestoes").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-id]");
+    if (b) escolherSugestao(produtoPorId(b.dataset.id));
+  });
+
+  // Enter não salva o formulário sem querer; na busca, adiciona a primeira sugestão.
+  formO.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" || e.target.tagName !== "INPUT") return;
+    e.preventDefault();
+    if (e.target.id === "orc-busca") {
+      var s = sugestoes()[0];
+      if (s) escolherSugestao(s);
+    }
+  });
+
+  $("#orc-servico").addEventListener("click", function () {
+    orc.itens.push({ tipo: "servico", produto_id: null, codigo: null, nome: "", quantidade: 1, preco: 0 });
+    desenharItensOrc();
+    var campos = $$('#orc-itens [data-campo="nome"]');
+    if (campos.length) campos[campos.length - 1].focus();
+  });
+
+  $("#orc-itens").addEventListener("input", function (e) {
+    var li = e.target.closest("[data-i]");
+    if (!li) return;
+    var it = orc.itens[Number(li.dataset.i)];
+    var campo = e.target.dataset.campo;
+    if (campo === "nome") it.nome = e.target.value;
+    else if (campo === "quantidade") it.quantidade = parseInt(e.target.value, 10) || 0;
+    else if (campo === "preco") it.preco = lerNumero(e.target.value);
+    $("[data-sub]", li).textContent = isNaN(it.preco) ? "valor inválido" : brl((Number(it.quantidade) || 0) * it.preco);
+    desenharTotais();
+  });
+
+  $("#orc-itens").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-acao=remover]");
+    if (!b) return;
+    orc.itens.splice(Number(b.closest("[data-i]").dataset.i), 1);
+    desenharItensOrc();
+  });
+
+  ["desconto", "taxa_entrega"].forEach(function (k) {
+    formO[k].addEventListener("input", function () {
+      orc[k] = lerNumero(formO[k].value);
+      desenharTotais();
+    });
+  });
+
+  formO.cliente_id.addEventListener("change", function () {
+    orc.cliente_id = formO.cliente_id.value || null;
+    if (orc.cliente_id) avisoOrc("");
+  });
+
+  var nomePedido = "";   // nome que veio no pedido colado, para sugerir no cadastro
+
+  $("#orc-novo-cliente").addEventListener("click", function () {
+    abrirCliente(null, { nome: nomePedido }, function (c) {
+      orc.cliente_id = c.id;
+      opcoesCliente();
+      avisoOrc("");
+    });
+  });
+
+  formO.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var botao = $('button[type="submit"]', formO);
+    ocupado(botao, Promise.resolve().then(salvarOrcamento)).catch(falhou);
+  });
+
+  function salvarOrcamento() {
+    if (!orc.itens.length) throw new Error("Adicione pelo menos um produto ou serviço.");
+    var itens = orc.itens.map(function (it) {
+      var nome = String(it.nome || "").trim();
+      if (!nome) throw new Error("Escreva o nome de cada serviço.");
+      var q = Number(it.quantidade);
+      if (!Number.isInteger(q) || q < 1) throw new Error('Quantidade inválida em "' + nome + '".');
+      if (isNaN(it.preco)) throw new Error('Valor inválido em "' + nome + '". Use só números, ex.: 35,00');
+      return { tipo: it.tipo, produto_id: it.produto_id || null, codigo: it.codigo == null ? null : it.codigo, nome: nome, quantidade: q, preco: Number(it.preco) || 0 };
+    });
+    var c = cliente(orc.cliente_id);
+    var dados = {
+      cliente_id: c ? c.id : null,
+      cliente_nome: c ? c.nome : (orcOriginal ? orcOriginal.cliente_nome : nomePedido),
+      data_evento: formO.data_evento.value || null,
+      itens: itens,
+      desconto: lerValor(formO.desconto.value, "Desconto"),
+      taxa_entrega: lerValor(formO.taxa_entrega.value, "Taxa de entrega"),
+      observacoes: formO.observacoes.value.trim()
+    };
+    var o = orcOriginal;
+    var req = o ? sb.from("orcamentos").update(dados).eq("id", o.id) : sb.from("orcamentos").insert(dados);
+    return req.select().single().then(ok).then(function (novo) {
+      if (o) Object.assign(o, novo); else st.orcs.unshift(novo);
+      st.orcs.sort(function (a, b) { return b.numero - a.numero; });
+      nomePedido = "";
+      $("#dlg-orcamento").close();
+      $("#busca-orc").value = "";
+      desenharOrcamentos();
+      avisar("Orçamento nº " + novo.numero + " salvo. Agora você pode imprimir ou enviar no WhatsApp.");
+    });
+  }
+
+  // ----- Colar pedido do WhatsApp -----
+  var formCol = $("#form-colar");
+
+  $("#colar-pedido").addEventListener("click", function () {
+    formCol.reset();
+    $("#dlg-colar").showModal();
+  });
+
+  // Entende a mensagem que o site manda: "- 2x (Cód. 080) Nome", "Nome: …", "Data do evento: dd/mm/aaaa".
+  function lerPedido(txt) {
+    var r = { itens: [], nome: "", data: "", faltou: [] };
+    var guarda = orc;
+    orc = { itens: r.itens };
+    txt.split(/\r?\n/).forEach(function (l) {
+      l = l.trim();
+      var mn = l.match(/^nome:\s*(.+)$/i);
+      var md = l.match(/^data do evento:\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/i);
+      var mi = l.match(/^[-•*]?\s*(\d+)\s*x\s+(.+)$/i);
+      if (mn) r.nome = mn[1].trim();
+      else if (md) r.data = md[3] + "-" + md[2].padStart(2, "0") + "-" + md[1].padStart(2, "0");
+      else if (mi) {
+        var resto = mi[2].trim();
+        var mc = resto.match(/^\(?\s*c[óo]d\.?\s*(\d+)\s*\)?\s*(.*)$/i);
+        var nome = (mc ? mc[2] : resto).trim().toLowerCase();
+        var p = mc ? produtoPorCodigo(Number(mc[1])) : null;
+        if (!p) p = st.prods.filter(function (x) { return x.nome.toLowerCase() === nome; })[0];
+        if (p) adicionarProduto(p, Number(mi[1]) || 1);
+        else r.faltou.push(l);
+      }
+    });
+    orc = guarda;
+    return r;
+  }
+
+  formCol.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var r = lerPedido(formCol.texto.value);
+    if (!r.itens.length) {
+      avisar("Não encontrei itens nessa mensagem. Confira se colou o pedido inteiro.", true);
+      return;
+    }
+    var nome = r.nome.toLowerCase();
+    var c = nome ? st.clientes.filter(function (x) { return x.nome.toLowerCase() === nome; })[0] : null;
+    $("#dlg-colar").close();
+    abrirOrcamento(null, { cliente_id: c ? c.id : null, data_evento: r.data, itens: r.itens });
+    nomePedido = r.nome;
+    var avisos = [];
+    if (r.nome && !c) avisos.push('O pedido veio com o nome "' + r.nome + '", que não está cadastrado. Escolha o cliente ou toque em "Cadastrar cliente".');
+    if (r.faltou.length) avisos.push("Não encontrei no catálogo: " + r.faltou.join(" | ") + ". Adicione manualmente.");
+    avisoOrc(avisos.join(" "));
+  });
 
   iniciar();
 })();

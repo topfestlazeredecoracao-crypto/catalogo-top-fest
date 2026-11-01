@@ -56,9 +56,14 @@
     return Promise.all([
       api("configuracoes", "select=*&id=eq.1"),
       api("categorias", "select=id,nome,icone,tipo,ordem&order=ordem,id"),
-      api("produtos", "select=id,categoria_id,nome,descricao,imagem,ordem,preco&ativo=is.true&order=ordem,nome"),
-      api("inspiracoes", "select=id,imagem,legenda,ordem&order=ordem,id")
+      api("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ordem&ativo=is.true&order=ordem,nome"),
+      api("inspiracoes", "select=id,imagem,legenda,ordem&order=ordem,id"),
+      // Só os preços que a administradora deixou aparecer.
+      api("precos_publicos", "select=id,preco")
     ]).then(function (r) {
+      var precos = {};
+      r[4].forEach(function (x) { precos[x.id] = x.preco; });
+      r[2].forEach(function (p) { p.preco = p.id in precos ? precos[p.id] : null; });
       return { configuracoes: r[0][0], categorias: r[1], produtos: r[2], inspiracoes: r[3] };
     });
   }
@@ -84,6 +89,11 @@
     // Remove do orçamento itens que saíram do catálogo.
     Object.keys(cart).forEach(function (k) { if (!porId[k]) delete cart[k]; });
     salvarCarrinho();
+  }
+
+  // Código com 3 dígitos: 7 -> "007".
+  function cod(p) {
+    return p.codigo == null ? "" : String(p.codigo).padStart(3, "0");
   }
 
   function catPorId(id) {
@@ -130,12 +140,13 @@
       var pc = catPorId(p.categoria_id);
       if (!pc || pc.tipo === GALERIA) return;
       if (c && p.categoria_id !== c.id) return;
-      if (t && (p.nome + " " + p.descricao).toLowerCase().indexOf(t) < 0) return;
+      if (t && (cod(p) + " " + p.nome + " " + p.descricao).toLowerCase().indexOf(t) < 0) return;
       var foto = fotoUrl(p.imagem);
       h += '<div class="card"><div class="tile">' +
         (foto ? '<img src="' + esc(foto) + '" alt="' + esc(p.nome) + '" loading="lazy" decoding="async" width="230" height="170">'
               : '<span role="img" aria-label="' + esc(pc.nome) + '">' + esc(pc.icone) + "</span>") +
-        '</div><div class="body"><span class="cat">' + esc(pc.nome) + "</span><h3>" + esc(p.nome) + "</h3><p>" +
+        '</div><div class="body"><span class="cat">' + esc(pc.nome) + "</span>" +
+        (cod(p) ? '<span class="cod">Cód. ' + cod(p) + "</span>" : "") + "<h3>" + esc(p.nome) + "</h3><p>" +
         esc(p.descricao) + "</p>" + preco(p) + ctl(p.id, p.nome) + "</div></div>";
     });
     $("#grid").innerHTML = aviso + (h || '<div class="empty">Nenhum item encontrado.</div>');
@@ -166,7 +177,10 @@
 
   function msg() {
     var m = "Olá! Gostaria de um orçamento de locação dos itens abaixo:\n\n";
-    Object.keys(cart).forEach(function (id) { m += "- " + cart[id] + "x " + porId[id].nome + "\n"; });
+    Object.keys(cart).forEach(function (id) {
+      var p = porId[id];
+      m += "- " + cart[id] + "x " + (cod(p) ? "(Cód. " + cod(p) + ") " : "") + p.nome + "\n";
+    });
     var n = nome.trim();
     if (n) m += "\nNome: " + n;
     if (data) m += "\nData do evento: " + data.split("-").reverse().join("/");
@@ -179,7 +193,7 @@
     if (!ids.length) h += '<p class="empty">Nenhum item ainda.</p>';
     ids.forEach(function (id) {
       var p = porId[id];
-      h += '<div class="row"><span>' + esc(p.nome) + '</span><div class="qty">' +
+      h += '<div class="row"><span>' + (cod(p) ? '<small class="cod">Cód. ' + cod(p) + "</small> " : "") + esc(p.nome) + '</span><div class="qty">' +
         '<button data-a="-" data-i="' + esc(id) + '" aria-label="Diminuir quantidade de ' + esc(p.nome) + '">−</button><b>' + cart[id] + "</b>" +
         '<button data-a="+" data-i="' + esc(id) + '" aria-label="Aumentar quantidade de ' + esc(p.nome) + '">+</button></div></div>';
     });

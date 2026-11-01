@@ -1,0 +1,36 @@
+*{box-sizing:border-box}
+body{margin:0;background:#e9e6df;color:#1d2733;font:15px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+.barra-tela{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;padding:12px;background:#8f6d14;color:#fff;font-size:14px}
+.barra-tela button{font:inherit;font-size:16px;font-weight:700;padding:12px 18px;border:0;border-radius:12px;background:#fff;color:#1d2733;cursor:pointer}
+.barra-tela button:disabled{opacity:.6;cursor:wait}
+#folha{background:#fff;max-width:800px;margin:16px auto;padding:28px;border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.msg{text-align:center;color:#5d6b78}
+.cab{display:flex;gap:16px;align-items:center;border-bottom:3px solid #b8902f;padding-bottom:14px;margin-bottom:16px}
+.cab img{width:84px;height:84px;flex:none}
+.cab h1{font:700 22px/1.2 Georgia,"Times New Roman",serif;margin:0}
+.cab p{margin:2px 0 0;color:#5d6b78;font-size:13.5px}
+.tit{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:baseline;margin-bottom:14px}
+.tit h2{font:700 20px Georgia,serif;margin:0;color:#0f5f85}
+.tit span{color:#5d6b78;font-size:13.5px}
+.bloco{border:1px solid #e3ddd0;border-radius:8px;padding:10px 14px;margin-bottom:14px}
+.bloco h3{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:#8a6a1f}
+.bloco p{margin:2px 0}
+table{width:100%;border-collapse:collapse;margin-bottom:14px}
+caption{text-align:left;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:#8a6a1f;padding:0 0 6px}
+th,td{padding:7px 8px;border-bottom:1px solid #e3ddd0;text-align:left;vertical-align:top}
+th{background:#f6f4ef;font-size:13px}
+.n{text-align:right;white-space:nowrap}
+.c{white-space:nowrap;color:#5d6b78}
+.totais{margin-left:auto;max-width:320px}
+.totais div{display:flex;justify-content:space-between;padding:3px 0}
+.totais .total{font-size:19px;font-weight:700;border-top:2px solid #1d2733;margin-top:6px;padding-top:8px}
+.obs{white-space:pre-wrap}
+.rodape{margin-top:22px;color:#5d6b78;font-size:12.5px;text-align:center}
+@media(max-width:560px){#folha{margin:0;border-radius:0;padding:16px}th,td{padding:6px 4px;font-size:13.5px}.cab img{width:64px;height:64px}}
+@media print{
+  body{background:#fff}
+  .barra-tela{display:none}
+  #folha{box-shadow:none;margin:0;max-width:none;padding:0}
+  @page{margin:14mm}
+  tr{break-inside:avoid}
+}
