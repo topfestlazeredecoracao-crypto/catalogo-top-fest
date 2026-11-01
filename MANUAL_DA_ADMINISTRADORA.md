@@ -227,8 +227,18 @@ Os itens criados **depois** da cópia **não** são apagados. Se precisar, exclu
 
 ## 9. Como o cliente pede orçamento (para você entender)
 
-1. O cliente abre o site e toca em **"Adicionar ao orçamento"** nos itens que quer.
-2. Toca no botão verde **"🛒 Ver orçamento"**, coloca o **nome** e a **data do evento**.
+Como o site aparece para o cliente:
+
+- **Coluna de categorias à esquerda.** A primeira é **Inspirações de decoração**, com borda dourada. A categoria escolhida fica **azul**.
+- **Botão ☰** (ao lado da busca): esconde a coluna de categorias para as fotos ficarem maiores. Tocando de novo, a coluna volta.
+- **Busca** por nome ou **código** do produto (ex.: `080`).
+- **Botão verde "💬 Dúvidas"**: abre o seu WhatsApp para o cliente tirar dúvidas, sem lista de itens.
+- No começo da página aparece uma **faixa com fotos das inspirações**, com o botão **"Ver todas as fotos"**.
+
+Para pedir orçamento:
+
+1. O cliente toca em **"Adicionar ao orçamento"** nos itens que quer.
+2. Toca na **barra verde** que aparece embaixo (**"🛒 3 itens no orçamento · Ver e enviar"**), coloca o **nome** e a **data do evento**.
 3. Toca em **"Enviar orçamento pelo WhatsApp"**.
 4. Você recebe no WhatsApp uma mensagem assim:
 
@@ -243,8 +253,6 @@ Data do evento: 20/12/2026
 
 Obrigado!
 ```
-
----
 
 Com essa mensagem você pode montar o orçamento em segundos: veja o item 11.2.
 
