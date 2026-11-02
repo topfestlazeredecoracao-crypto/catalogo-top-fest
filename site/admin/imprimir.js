@@ -59,7 +59,7 @@
     document.title = "Orçamento " + o.numero + " – " + (c ? c.nome : o.cliente_nome || "Chácara Top Fest");
     folha.innerHTML =
       '<header class="cab"><img src="../img/logo.png" alt="Chácara Top Fest"><div>' +
-      "<h1>" + esc(conf.nome) + "</h1><p>" + esc(conf.slogan) + "</p>" + (contato ? "<p>" + esc(contato) + "</p>" : "") + "</div></header>" +
+      "<h1>TOP FEST DECORAÇÕES</h1><p>" + esc(conf.slogan) + "</p>" + (contato ? "<p>" + esc(contato) + "</p>" : "") + "</div></header>" +
       '<div class="tit"><h2>Orçamento nº ' + esc(o.numero) + "</h2><span>Emitido em " + new Date(o.criado_em).toLocaleDateString("pt-BR") + "</span></div>" +
       '<section class="bloco"><h3>Cliente</h3>' +
       "<p><b>" + esc(c ? c.nome : o.cliente_nome || "—") + "</b></p>" +
