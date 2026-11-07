@@ -1746,6 +1746,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 265,
+   "descricao": "",
+   "id": "p0504ee2e04",
+   "imagem": "reserva/fotos/produtos/mvykifd4-oohbwm.webp",
+   "nome": "Kit completo - Santa Rita de Cássia",
+   "ordem": 25,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 4,
    "codigo": 57,
    "descricao": "Capas lisas nas cores pink e laranja para arco romano e cilindros.",
