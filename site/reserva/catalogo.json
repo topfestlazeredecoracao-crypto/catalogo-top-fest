@@ -1152,6 +1152,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 13,
+   "codigo": 301,
+   "descricao": "",
+   "id": "p30f15e421b",
+   "imagem": "reserva/fotos/produtos/mw9p5x7i-esfjjr.webp",
+   "nome": "Cesto Vaso Cachepot Fibra Natural Decorativo Palha Chic",
+   "ordem": 14,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 2,
    "codigo": 246,
    "descricao": "Montado pela cliente (pegue e monte)",
@@ -2411,7 +2422,7 @@
    "descricao": "Uma com 20 cm de diâmetro e 22 cm de altura; outra com 23 cm e 24 cm de altura.",
    "id": "p037",
    "imagem": "reserva/fotos/produtos/p037.jpg",
-   "nome": "Bandejas douradas com espelho",
+   "nome": "Kit com 2 bandejas douradas com espelho",
    "ordem": 134,
    "preco": null
   },
