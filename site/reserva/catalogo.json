@@ -87,7 +87,7 @@
   {
    "icone": "🎉",
    "id": 14,
-   "nome": "Displays e elementos decorativos",
+   "nome": "Elementos decorativos",
    "ordem": 13,
    "tipo": "produtos"
   },
@@ -124,6 +124,13 @@
    "id": 55,
    "nome": "Personagens e pelúcias",
    "ordem": 18,
+   "tipo": "produtos"
+  },
+  {
+   "icone": "🎉",
+   "id": 56,
+   "nome": "Displays",
+   "ordem": 19,
    "tipo": "produtos"
   }
  ],
@@ -195,6 +202,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 56,
+   "codigo": 167,
+   "descricao": "6 peças.",
+   "id": "p065",
+   "imagem": "reserva/fotos/produtos/p065.jpg",
+   "nome": "Kit display MDF Roblox",
+   "ordem": 1,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 9,
    "codigo": 108,
    "descricao": "Arco 1,5 m, arco romano 2 m e mesas G 80x39x39, M 70x35x35 e P 60x30x30 cm. Pode ser locado separado.",
@@ -212,6 +230,17 @@
    "id": "p029",
    "imagem": "reserva/fotos/produtos/p029.jpg",
    "nome": "Kit: toalha de mesa e cobre-mancha ( nas cores disponíveis no catálogo)",
+   "ordem": 1,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 124,
+   "descricao": "Quadro com letras, números e símbolos.",
+   "id": "p058",
+   "imagem": "reserva/fotos/produtos/p058.jpg",
+   "nome": "Luminária letreiro LED A4 para escrita",
    "ordem": 1,
    "preco": null
   },
@@ -294,6 +323,28 @@
   },
   {
    "ativo": true,
+   "categoria_id": 56,
+   "codigo": 168,
+   "descricao": "5 peças.",
+   "id": "p066",
+   "imagem": "reserva/fotos/produtos/p066.jpg",
+   "nome": "Kit display MDF pintado: Futebol",
+   "ordem": 2,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 127,
+   "descricao": "2 unidades disponíveis.",
+   "id": "p175",
+   "imagem": "reserva/fotos/produtos/p175.jpg",
+   "nome": "Luminárias pendentes de macramê",
+   "ordem": 2,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 9,
    "codigo": 109,
    "descricao": "Para painel de festa: cortina, banner, lona, balões ou flores. Altura 1,1 a 3 m e largura 1,8 a 3 m.",
@@ -349,12 +400,34 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 347,
+   "descricao": "",
+   "id": "p6ad7ed7be2",
+   "imagem": "reserva/fotos/produtos/mwhv2ajt-i42mvv.webp",
+   "nome": "Kit 3 Luminária Vela De Led Cilíndrica Chama Em Movimento Decorativa 10cm/12.5cm/15cm",
+   "ordem": 3,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 3,
    "codigo": 3,
    "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
    "id": "p082",
    "imagem": "reserva/fotos/produtos/p082.jpg",
    "nome": "Kit completo – Futebol",
+   "ordem": 3,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 56,
+   "codigo": 169,
+   "descricao": "6 peças.",
+   "id": "p067",
+   "imagem": "reserva/fotos/produtos/p067.jpg",
+   "nome": "Kit display MDF pintado: Palmeiras",
    "ordem": 3,
    "preco": null
   },
@@ -432,6 +505,28 @@
    "id": "p083",
    "imagem": "reserva/fotos/produtos/p083.jpg",
    "nome": "Kit completo – Vingadores",
+   "ordem": 4,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 56,
+   "codigo": 170,
+   "descricao": "5 peças.",
+   "id": "p068",
+   "imagem": "reserva/fotos/produtos/p068.jpg",
+   "nome": "Kit display MDF: Tênis",
+   "ordem": 4,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 274,
+   "descricao": "",
+   "id": "p60776966fd",
+   "imagem": "reserva/fotos/produtos/mvzqyig7-q6ihtd.webp",
+   "nome": "Luminária nº 0 -  LED 3D, luz quente, 22 cm",
    "ordem": 4,
    "preco": null
   },
@@ -536,6 +631,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 275,
+   "descricao": "2 unidades",
+   "id": "pd0a73ce8a4",
+   "imagem": "reserva/fotos/produtos/mvzr0rew-7z7gvs.webp",
+   "nome": "Luminária nº 1 -  LED 3D, luz quente, 22 cm",
+   "ordem": 5,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 8,
    "codigo": 97,
    "descricao": "48 x 43 x 20 cm.",
@@ -564,6 +670,17 @@
    "id": "p164",
    "imagem": "reserva/fotos/produtos/p164.jpg",
    "nome": "Painel romano 2 x 1 m dupla face – bege (areia)",
+   "ordem": 5,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 56,
+   "codigo": 171,
+   "descricao": "14 cm mais base.",
+   "id": "p069",
+   "imagem": "reserva/fotos/produtos/p069.jpg",
+   "nome": "Totem Demon Slayer: Kanao Tsuyuri",
    "ordem": 5,
    "preco": null
   },
@@ -619,6 +736,17 @@
    "id": "p085",
    "imagem": "reserva/fotos/produtos/p085.jpg",
    "nome": "Kit completo – Moana",
+   "ordem": 6,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 276,
+   "descricao": "",
+   "id": "p4d3380688f",
+   "imagem": "reserva/fotos/produtos/mvzqzqgh-sn77xf.webp",
+   "nome": "Luminária nº 2 -  LED 3D, luz quente, 22 cm",
    "ordem": 6,
    "preco": null
   },
@@ -734,6 +862,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 277,
+   "descricao": "",
+   "id": "pcaeb6fc552",
+   "imagem": "reserva/fotos/produtos/mvzr08mk-zerco7.webp",
+   "nome": "Luminária nº 3 -  LED 3D, luz quente, 22 cm",
+   "ordem": 7,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 8,
    "codigo": 100,
    "descricao": "Para vestir com o tema desejado. Temos 2 unidades de cada.",
@@ -822,6 +961,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 278,
+   "descricao": "",
+   "id": "p8b038d0fc6",
+   "imagem": "reserva/fotos/produtos/mvzr1dce-ki014q.webp",
+   "nome": "Luminária nº 4 -  LED 3D, luz quente, 22 cm",
+   "ordem": 8,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 4,
    "codigo": 43,
    "descricao": "Painel romano dupla face.",
@@ -905,6 +1055,17 @@
    "id": "p088",
    "imagem": "reserva/fotos/produtos/p088.jpg",
    "nome": "Kit completo – Stitch",
+   "ordem": 9,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 279,
+   "descricao": "",
+   "id": "pde12e2bca8",
+   "imagem": "reserva/fotos/produtos/mvzr2257-nzypl2.webp",
+   "nome": "Luminária nº 5 -  LED 3D, luz quente, 22 cm",
    "ordem": 9,
    "preco": null
   },
@@ -1009,6 +1170,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 280,
+   "descricao": "",
+   "id": "p96a5813ef9",
+   "imagem": "reserva/fotos/produtos/mvzr2jn5-pypnli.webp",
+   "nome": "Luminária nº 6 -  LED 3D, luz quente, 22 cm",
+   "ordem": 10,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 13,
    "codigo": 163,
    "descricao": "",
@@ -1081,6 +1253,17 @@
    "id": "p090",
    "imagem": "reserva/fotos/produtos/p090.jpg",
    "nome": "Kit completo – Borboletas e flores",
+   "ordem": 11,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 281,
+   "descricao": "",
+   "id": "p94a9acaf18",
+   "imagem": "reserva/fotos/produtos/mvzr2xrl-g75yhc.webp",
+   "nome": "Luminária nº 7 -  LED 3D, luz quente, 22 cm",
    "ordem": 11,
    "preco": null
   },
@@ -1185,6 +1368,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 282,
+   "descricao": "",
+   "id": "pf514445bed",
+   "imagem": "reserva/fotos/produtos/mvzr3dyo-8vn0bb.webp",
+   "nome": "Luminária nº 8 -  LED 3D, luz quente, 22 cm",
+   "ordem": 12,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 9,
    "codigo": 123,
    "descricao": "Arco montável em formato de flor, com 1,8 m.",
@@ -1246,6 +1440,17 @@
    "id": "p092",
    "imagem": "reserva/fotos/produtos/p092.jpg",
    "nome": "Kit completo – Boteco",
+   "ordem": 13,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 283,
+   "descricao": "",
+   "id": "p2e527e9e02",
+   "imagem": "reserva/fotos/produtos/mvzr3ybq-101r12.webp",
+   "nome": "Luminária nº 9 -  LED 3D, luz quente, 22 cm",
    "ordem": 13,
    "preco": null
   },
@@ -1339,6 +1544,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 284,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "p35a09c8e63",
+   "imagem": "reserva/fotos/produtos/mvzrcgg4-c5w57n.webp",
+   "nome": "Número de Neon Led -  nº 0 - 50 cm",
+   "ordem": 14,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 9,
    "codigo": 266,
    "descricao": "",
@@ -1400,6 +1616,17 @@
    "id": "p094",
    "imagem": "reserva/fotos/produtos/p094.jpg",
    "nome": "Kit completo – Chá de bebê",
+   "ordem": 15,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 285,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "pc6964f9d4c",
+   "imagem": "reserva/fotos/produtos/mvzrcybj-0n7coi.webp",
+   "nome": "Número de Neon Led -  nº 0 - 50 cm",
    "ordem": 15,
    "preco": null
   },
@@ -1493,6 +1720,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 286,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "p95b6f7640e",
+   "imagem": "reserva/fotos/produtos/mvzrdh0h-0qqjsq.webp",
+   "nome": "Número de Neon Led -  nº 2 - 50 cm",
+   "ordem": 16,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 9,
    "codigo": 267,
    "descricao": "2 unidades",
@@ -1581,6 +1819,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 287,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "pf2e06fd39b",
+   "imagem": "reserva/fotos/produtos/mvzre3ss-6t5zat.webp",
+   "nome": "Número de Neon Led -  nº 3 - 50 cm",
+   "ordem": 17,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 13,
    "codigo": 318,
    "descricao": "2 unidades",
@@ -1631,6 +1880,17 @@
    "id": "p097",
    "imagem": "reserva/fotos/produtos/p097.jpg",
    "nome": "Kit completo – Festa junina",
+   "ordem": 18,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 288,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "p1e6b5f0f89",
+   "imagem": "reserva/fotos/produtos/mvzrekan-pqy9ak.webp",
+   "nome": "Número de Neon Led -  nº 4 - 50 cm",
    "ordem": 18,
    "preco": null
   },
@@ -1702,6 +1962,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 289,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "p3fbf0a2f92",
+   "imagem": "reserva/fotos/produtos/mvzrf39q-cjiowd.webp",
+   "nome": "Número de Neon Led -  nº 5 - 50 cm",
+   "ordem": 19,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 9,
    "codigo": 118,
    "descricao": "Consulte o número de hastes disponíveis.",
@@ -1763,6 +2034,17 @@
    "id": "p099",
    "imagem": "reserva/fotos/produtos/p099.jpg",
    "nome": "Kit completo – Branco",
+   "ordem": 20,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 290,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "pe2733c0e18",
+   "imagem": "reserva/fotos/produtos/mvzrfkve-cduf7r.webp",
+   "nome": "Número de Neon Led -  nº 6 - 50 cm",
    "ordem": 20,
    "preco": null
   },
@@ -1834,6 +2116,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 291,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "p2d7a7a39ac",
+   "imagem": "reserva/fotos/produtos/mvzrj7cr-gu4pri.webp",
+   "nome": "Número de Neon Led -  nº 7 - 50 cm",
+   "ordem": 21,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 13,
    "codigo": 322,
    "descricao": "2 unidades",
@@ -1889,6 +2182,17 @@
   },
   {
    "ativo": true,
+   "categoria_id": 10,
+   "codigo": 292,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "pe64df4af4b",
+   "imagem": "reserva/fotos/produtos/mvzrglye-hr19rq.webp",
+   "nome": "Número de Neon Led -  nº 8 - 50 cm",
+   "ordem": 22,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 13,
    "codigo": 323,
    "descricao": "2 unidades",
@@ -1939,6 +2243,17 @@
    "id": "p148",
    "imagem": "reserva/fotos/produtos/p148.jpg",
    "nome": "Kit de arco e cilindros – Formatura",
+   "ordem": 23,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 10,
+   "codigo": 293,
+   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
+   "id": "p945bfa8877",
+   "imagem": "reserva/fotos/produtos/mvzrh21s-ko4vey.webp",
+   "nome": "Número de Neon Led -  nº 9 - 50 cm",
    "ordem": 23,
    "preco": null
   },
@@ -2164,17 +2479,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 24,
-   "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p100",
-   "imagem": "reserva/fotos/produtos/p100.jpg",
-   "nome": "Capa para arco 1,5 m – Stitch Milk",
-   "ordem": 28,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 2,
    "codigo": 247,
    "descricao": "Montado pela cliente (pegue e monte)",
@@ -2187,11 +2491,22 @@
   {
    "ativo": true,
    "categoria_id": 3,
-   "codigo": 25,
+   "codigo": 348,
+   "descricao": "",
+   "id": "pa93fa5b570",
+   "imagem": "reserva/fotos/produtos/mwhvajra-yixd0q.webp",
+   "nome": "Kit completo Heróis baby",
+   "ordem": 28,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 24,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p101",
-   "imagem": "reserva/fotos/produtos/p101.jpg",
-   "nome": "Capa para arco 1,5 m – 15 anos",
+   "id": "p100",
+   "imagem": "reserva/fotos/produtos/p100.jpg",
+   "nome": "Capa para arco 1,5 m – Stitch Milk",
    "ordem": 29,
    "preco": null
   },
@@ -2209,11 +2524,11 @@
   {
    "ativo": true,
    "categoria_id": 3,
-   "codigo": 26,
+   "codigo": 25,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p102",
-   "imagem": "reserva/fotos/produtos/p102.jpg",
-   "nome": "Capa para arco 1,5 m – Kanao Tsuyuri (Demon Slayer)",
+   "id": "p101",
+   "imagem": "reserva/fotos/produtos/p101.jpg",
+   "nome": "Capa para arco 1,5 m – 15 anos",
    "ordem": 30,
    "preco": null
   },
@@ -2231,11 +2546,11 @@
   {
    "ativo": true,
    "categoria_id": 3,
-   "codigo": 27,
+   "codigo": 26,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p103",
-   "imagem": "reserva/fotos/produtos/p103.jpg",
-   "nome": "Capa para arco 1,5 m – Jujutsu Kaisen",
+   "id": "p102",
+   "imagem": "reserva/fotos/produtos/p102.jpg",
+   "nome": "Capa para arco 1,5 m – Kanao Tsuyuri (Demon Slayer)",
    "ordem": 31,
    "preco": null
   },
@@ -2253,11 +2568,11 @@
   {
    "ativo": true,
    "categoria_id": 3,
-   "codigo": 28,
+   "codigo": 27,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p104",
-   "imagem": "reserva/fotos/produtos/p104.jpg",
-   "nome": "Capa para arco 1,5 m – Bolofofos",
+   "id": "p103",
+   "imagem": "reserva/fotos/produtos/p103.jpg",
+   "nome": "Capa para arco 1,5 m – Jujutsu Kaisen",
    "ordem": 32,
    "preco": null
   },
@@ -2275,11 +2590,11 @@
   {
    "ativo": true,
    "categoria_id": 3,
-   "codigo": 29,
+   "codigo": 28,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p105",
-   "imagem": "reserva/fotos/produtos/p105.jpg",
-   "nome": "Capa para arco 1,5 m – Corinthians",
+   "id": "p104",
+   "imagem": "reserva/fotos/produtos/p104.jpg",
+   "nome": "Capa para arco 1,5 m – Bolofofos",
    "ordem": 33,
    "preco": null
   },
@@ -2297,11 +2612,11 @@
   {
    "ativo": true,
    "categoria_id": 3,
-   "codigo": 30,
+   "codigo": 29,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p106",
-   "imagem": "reserva/fotos/produtos/p106.jpg",
-   "nome": "Capa para arco 1,5 m – Palmeiras",
+   "id": "p105",
+   "imagem": "reserva/fotos/produtos/p105.jpg",
+   "nome": "Capa para arco 1,5 m – Corinthians",
    "ordem": 34,
    "preco": null
   },
@@ -2319,12 +2634,23 @@
   {
    "ativo": true,
    "categoria_id": 3,
+   "codigo": 30,
+   "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
+   "id": "p106",
+   "imagem": "reserva/fotos/produtos/p106.jpg",
+   "nome": "Capa para arco 1,5 m – Palmeiras",
+   "ordem": 35,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
    "codigo": 31,
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p107",
    "imagem": "reserva/fotos/produtos/p107.jpg",
    "nome": "Capa para arco 1,5 m – São Paulo",
-   "ordem": 35,
+   "ordem": 36,
    "preco": null
   },
   {
@@ -2335,7 +2661,7 @@
    "id": "p108",
    "imagem": "reserva/fotos/produtos/p108.jpg",
    "nome": "Capa para arco 1,5 m – Feliz aniversário",
-   "ordem": 36,
+   "ordem": 37,
    "preco": null
   },
   {
@@ -2346,7 +2672,7 @@
    "id": "p109",
    "imagem": "reserva/fotos/produtos/p109.jpg",
    "nome": "Capa para arco 1,5 m – Tenista",
-   "ordem": 37,
+   "ordem": 38,
    "preco": null
   },
   {
@@ -2357,7 +2683,7 @@
    "id": "p110",
    "imagem": "reserva/fotos/produtos/p110.jpg",
    "nome": "Capa para arco 1,5 m – Academia",
-   "ordem": 38,
+   "ordem": 39,
    "preco": null
   },
   {
@@ -2368,7 +2694,7 @@
    "id": "p111",
    "imagem": "reserva/fotos/produtos/p111.jpg",
    "nome": "Capa para arco 1,5 m – Happy Birthday",
-   "ordem": 39,
+   "ordem": 40,
    "preco": null
   },
   {
@@ -2379,7 +2705,7 @@
    "id": "pd64c3b85ed",
    "imagem": "reserva/fotos/produtos/mvyjjsne-y3njc7.webp",
    "nome": "Capa para arco redondo 1,5m - Diário de uma princesa desastrada",
-   "ordem": 40,
+   "ordem": 41,
    "preco": null
   },
   {
@@ -2390,7 +2716,7 @@
    "id": "pb14123347d",
    "imagem": "reserva/fotos/produtos/mvyjnc8k-iulxf0.webp",
    "nome": "Capa para arco redondo 1,5m - Escolha o seu tema que encomendamos",
-   "ordem": 41,
+   "ordem": 42,
    "preco": null
   },
   {
@@ -2615,28 +2941,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 124,
-   "descricao": "Quadro com letras, números e símbolos.",
-   "id": "p058",
-   "imagem": "reserva/fotos/produtos/p058.jpg",
-   "nome": "Luminária letreiro LED A4 para escrita",
-   "ordem": 124,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 127,
-   "descricao": "2 unidades disponíveis.",
-   "id": "p175",
-   "imagem": "reserva/fotos/produtos/p175.jpg",
-   "nome": "Luminárias pendentes de macramê",
-   "ordem": 127,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 11,
    "codigo": 128,
    "descricao": "Serve em todos os tipos de painel.",
@@ -2648,17 +2952,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 274,
-   "descricao": "",
-   "id": "p60776966fd",
-   "imagem": "reserva/fotos/produtos/mvzqyig7-q6ihtd.webp",
-   "nome": "Luminária nº 0 -  LED 3D, luz quente, 22 cm",
-   "ordem": 129,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 11,
    "codigo": 129,
    "descricao": "Serve em todos os tipos de painel.",
@@ -2666,17 +2959,6 @@
    "imagem": "reserva/fotos/produtos/p063.jpg",
    "nome": "Placa Happy Birthday 60 x 40 cm, branco e prata",
    "ordem": 129,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 275,
-   "descricao": "2 unidades",
-   "id": "pd0a73ce8a4",
-   "imagem": "reserva/fotos/produtos/mvzr0rew-7z7gvs.webp",
-   "nome": "Luminária nº 1 -  LED 3D, luz quente, 22 cm",
-   "ordem": 130,
    "preco": null
   },
   {
@@ -2703,34 +2985,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 276,
-   "descricao": "",
-   "id": "p4d3380688f",
-   "imagem": "reserva/fotos/produtos/mvzqzqgh-sn77xf.webp",
-   "nome": "Luminária nº 2 -  LED 3D, luz quente, 22 cm",
-   "ordem": 131,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 132,
    "descricao": "40 cm de diâmetro e 15 cm de altura.",
    "id": "p035",
    "imagem": "reserva/fotos/produtos/p035.jpg",
    "nome": "Boleira de ferro em argolas, pé alto, dourada",
-   "ordem": 132,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 277,
-   "descricao": "",
-   "id": "pcaeb6fc552",
-   "imagem": "reserva/fotos/produtos/mvzr08mk-zerco7.webp",
-   "nome": "Luminária nº 3 -  LED 3D, luz quente, 22 cm",
    "ordem": 132,
    "preco": null
   },
@@ -2747,34 +3007,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 278,
-   "descricao": "",
-   "id": "p8b038d0fc6",
-   "imagem": "reserva/fotos/produtos/mvzr1dce-ki014q.webp",
-   "nome": "Luminária nº 4 -  LED 3D, luz quente, 22 cm",
-   "ordem": 133,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 134,
    "descricao": "Uma com 20 cm de diâmetro e 22 cm de altura; outra com 23 cm e 24 cm de altura.",
    "id": "p037",
    "imagem": "reserva/fotos/produtos/p037.jpg",
    "nome": "Kit com 2 bandejas douradas com espelho",
-   "ordem": 134,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 279,
-   "descricao": "",
-   "id": "pde12e2bca8",
-   "imagem": "reserva/fotos/produtos/mvzr2257-nzypl2.webp",
-   "nome": "Luminária nº 5 -  LED 3D, luz quente, 22 cm",
    "ordem": 134,
    "preco": null
   },
@@ -2791,34 +3029,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 280,
-   "descricao": "",
-   "id": "p96a5813ef9",
-   "imagem": "reserva/fotos/produtos/mvzr2jn5-pypnli.webp",
-   "nome": "Luminária nº 6 -  LED 3D, luz quente, 22 cm",
-   "ordem": 135,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 136,
    "descricao": "2 andares, 30 x 15 x 33 cm.",
    "id": "p039",
    "imagem": "reserva/fotos/produtos/p039.jpg",
    "nome": "Bandeja roda gigante dourada com espelho",
-   "ordem": 136,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 281,
-   "descricao": "",
-   "id": "p94a9acaf18",
-   "imagem": "reserva/fotos/produtos/mvzr2xrl-g75yhc.webp",
-   "nome": "Luminária nº 7 -  LED 3D, luz quente, 22 cm",
    "ordem": 136,
    "preco": null
   },
@@ -2835,34 +3051,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 282,
-   "descricao": "",
-   "id": "pf514445bed",
-   "imagem": "reserva/fotos/produtos/mvzr3dyo-8vn0bb.webp",
-   "nome": "Luminária nº 8 -  LED 3D, luz quente, 22 cm",
-   "ordem": 137,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 138,
    "descricao": "1 boleira de 20 cm e 22 cm de altura, 2 bandejas redondas de 20 cm e 2 de 17 cm.",
    "id": "p041",
    "imagem": "reserva/fotos/produtos/p041.jpg",
    "nome": "Kit prateado com espelhos",
-   "ordem": 138,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 283,
-   "descricao": "",
-   "id": "p2e527e9e02",
-   "imagem": "reserva/fotos/produtos/mvzr3ybq-101r12.webp",
-   "nome": "Luminária nº 9 -  LED 3D, luz quente, 22 cm",
    "ordem": 138,
    "preco": null
   },
@@ -2879,34 +3073,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 284,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "p35a09c8e63",
-   "imagem": "reserva/fotos/produtos/mvzrcgg4-c5w57n.webp",
-   "nome": "Número de Neon Led -  nº 0 - 50 cm",
-   "ordem": 139,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 140,
    "descricao": "1 boleira caracol 25 cm, 2 bandejas imperial 20 cm e 2 bandejas retangulares 20 x 15 cm.",
    "id": "p043",
    "imagem": "reserva/fotos/produtos/p043.jpg",
    "nome": "Kit Rose Gold",
-   "ordem": 140,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 285,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "pc6964f9d4c",
-   "imagem": "reserva/fotos/produtos/mvzrcybj-0n7coi.webp",
-   "nome": "Número de Neon Led -  nº 0 - 50 cm",
    "ordem": 140,
    "preco": null
   },
@@ -2923,34 +3095,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 286,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "p95b6f7640e",
-   "imagem": "reserva/fotos/produtos/mvzrdh0h-0qqjsq.webp",
-   "nome": "Número de Neon Led -  nº 2 - 50 cm",
-   "ordem": 141,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 142,
    "descricao": "Conjunto completo na cor preta.",
    "id": "p045",
    "imagem": "reserva/fotos/produtos/p045.jpg",
    "nome": "Kit preto: 3 boleiras, 2 vasos, 2 bandejas e escadinha",
-   "ordem": 142,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 287,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "pf2e06fd39b",
-   "imagem": "reserva/fotos/produtos/mvzre3ss-6t5zat.webp",
-   "nome": "Número de Neon Led -  nº 3 - 50 cm",
    "ordem": 142,
    "preco": null
   },
@@ -2967,34 +3117,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 288,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "p1e6b5f0f89",
-   "imagem": "reserva/fotos/produtos/mvzrekan-pqy9ak.webp",
-   "nome": "Número de Neon Led -  nº 4 - 50 cm",
-   "ordem": 143,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 144,
    "descricao": "1 boleira plus, 2 vasos Popi, 2 mini boleiras e bandejas.",
    "id": "p047",
    "imagem": "reserva/fotos/produtos/p047.jpg",
    "nome": "Kit lilás candy: boleira plus, 2 vasos Popi e mini boleiras",
-   "ordem": 144,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 289,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "p3fbf0a2f92",
-   "imagem": "reserva/fotos/produtos/mvzrf39q-cjiowd.webp",
-   "nome": "Número de Neon Led -  nº 5 - 50 cm",
    "ordem": 144,
    "preco": null
   },
@@ -3011,34 +3139,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 290,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "pe2733c0e18",
-   "imagem": "reserva/fotos/produtos/mvzrfkve-cduf7r.webp",
-   "nome": "Número de Neon Led -  nº 6 - 50 cm",
-   "ordem": 145,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 146,
    "descricao": "1 boleira plus, 2 vasos Popi, 2 mini boleiras e bandejas.",
    "id": "p049",
    "imagem": "reserva/fotos/produtos/p049.jpg",
    "nome": "Kit azul candy: boleira plus, 2 vasos Popi e mini boleiras",
-   "ordem": 146,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 291,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "p2d7a7a39ac",
-   "imagem": "reserva/fotos/produtos/mvzrj7cr-gu4pri.webp",
-   "nome": "Número de Neon Led -  nº 7 - 50 cm",
    "ordem": 146,
    "preco": null
   },
@@ -3055,34 +3161,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 10,
-   "codigo": 292,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "pe64df4af4b",
-   "imagem": "reserva/fotos/produtos/mvzrglye-hr19rq.webp",
-   "nome": "Número de Neon Led -  nº 8 - 50 cm",
-   "ordem": 147,
-   "preco": null
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 148,
    "descricao": "Kit com bandejas, vasos e boleiras na cor rose gold.",
    "id": "p157",
    "imagem": "reserva/fotos/produtos/p157.jpg",
    "nome": "Kit rose gold: bandejas, vasos e boleiras",
-   "ordem": 148,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 10,
-   "codigo": 293,
-   "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
-   "id": "p945bfa8877",
-   "imagem": "reserva/fotos/produtos/mvzrh21s-ko4vey.webp",
-   "nome": "Número de Neon Led -  nº 9 - 50 cm",
    "ordem": 148,
    "preco": null
   },
@@ -3143,6 +3227,138 @@
   },
   {
    "ativo": true,
+   "categoria_id": 12,
+   "codigo": 329,
+   "descricao": "",
+   "id": "pc398b25ee7",
+   "imagem": "reserva/fotos/produtos/mwgjjnhl-lfnddr.webp",
+   "nome": "Bandeja mesinha pink",
+   "ordem": 154,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 330,
+   "descricao": "",
+   "id": "p0025de7a46",
+   "imagem": "reserva/fotos/produtos/mwgjkbxq-23lnya.webp",
+   "nome": "Bandeja mesinha lilás",
+   "ordem": 155,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 331,
+   "descricao": "",
+   "id": "pf52a163f98",
+   "imagem": "reserva/fotos/produtos/mwgjkt4e-aerzg1.webp",
+   "nome": "Bandeja mesinha verde oliva",
+   "ordem": 156,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 332,
+   "descricao": "",
+   "id": "pced454b744",
+   "imagem": "reserva/fotos/produtos/mwgjlafa-kskb4m.webp",
+   "nome": "Bandeja mesinha verde água",
+   "ordem": 157,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 333,
+   "descricao": "",
+   "id": "pec99a5da4e",
+   "imagem": "reserva/fotos/produtos/mwgjlrbe-6dz4ej.webp",
+   "nome": "Bandeja mesinha amarela",
+   "ordem": 158,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 334,
+   "descricao": "",
+   "id": "p7e0b9ab178",
+   "imagem": "reserva/fotos/produtos/mwgjm8do-tihd8o.webp",
+   "nome": "Bandeja mesinha azul",
+   "ordem": 159,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 335,
+   "descricao": "",
+   "id": "p5602dd5458",
+   "imagem": "reserva/fotos/produtos/mwgjmoce-1zknqa.webp",
+   "nome": "Bandeja mesinha verde escuro",
+   "ordem": 160,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 336,
+   "descricao": "",
+   "id": "p9c5479afab",
+   "imagem": "reserva/fotos/produtos/mwgjn25t-c0qlbp.webp",
+   "nome": "Bandeja mesinha branca",
+   "ordem": 161,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 337,
+   "descricao": "",
+   "id": "p95ecf9be72",
+   "imagem": "reserva/fotos/produtos/mwgjnhvw-zkpg72.webp",
+   "nome": "Bandeja mesinha vermelha",
+   "ordem": 162,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 338,
+   "descricao": "",
+   "id": "p4571d0928f",
+   "imagem": "reserva/fotos/produtos/mwgjo0ro-no0nh5.webp",
+   "nome": "Bandeja mesinha azul escuro",
+   "ordem": 163,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 339,
+   "descricao": "",
+   "id": "pb98f012584",
+   "imagem": "reserva/fotos/produtos/mwgjoglz-ew317k.webp",
+   "nome": "Bandeja mesinha rosa",
+   "ordem": 164,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 340,
+   "descricao": "",
+   "id": "p9d17a4a985",
+   "imagem": "reserva/fotos/produtos/mwgjp1ha-hguzfh.webp",
+   "nome": "Bandeja mesinha azul",
+   "ordem": 165,
+   "preco": null
+  },
+  {
+   "ativo": true,
    "categoria_id": 14,
    "codigo": 165,
    "descricao": "Para decoração de mesa.",
@@ -3150,6 +3366,17 @@
    "imagem": "reserva/fotos/produtos/p050.jpg",
    "nome": "Gaiola dourada com espelho e passarinho",
    "ordem": 165,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 341,
+   "descricao": "",
+   "id": "p087e81b758",
+   "imagem": "reserva/fotos/produtos/mwgjpjiw-2hjawi.webp",
+   "nome": "Bandeja mesinha verde",
+   "ordem": 166,
    "preco": null
   },
   {
@@ -3165,57 +3392,13 @@
   },
   {
    "ativo": true,
-   "categoria_id": 14,
-   "codigo": 167,
-   "descricao": "6 peças.",
-   "id": "p065",
-   "imagem": "reserva/fotos/produtos/p065.jpg",
-   "nome": "Kit display MDF Roblox",
+   "categoria_id": 12,
+   "codigo": 342,
+   "descricao": "",
+   "id": "peb8ce97514",
+   "imagem": "reserva/fotos/produtos/mwgjq05i-oi4jan.webp",
+   "nome": "Bandeja mesinha laranja",
    "ordem": 167,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 14,
-   "codigo": 168,
-   "descricao": "5 peças.",
-   "id": "p066",
-   "imagem": "reserva/fotos/produtos/p066.jpg",
-   "nome": "Kit display MDF pintado: Futebol",
-   "ordem": 168,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 14,
-   "codigo": 169,
-   "descricao": "6 peças.",
-   "id": "p067",
-   "imagem": "reserva/fotos/produtos/p067.jpg",
-   "nome": "Kit display MDF pintado: Palmeiras",
-   "ordem": 169,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 14,
-   "codigo": 170,
-   "descricao": "5 peças.",
-   "id": "p068",
-   "imagem": "reserva/fotos/produtos/p068.jpg",
-   "nome": "Kit display MDF: Tênis",
-   "ordem": 170,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 14,
-   "codigo": 171,
-   "descricao": "14 cm mais base.",
-   "id": "p069",
-   "imagem": "reserva/fotos/produtos/p069.jpg",
-   "nome": "Totem Demon Slayer: Kanao Tsuyuri",
-   "ordem": 171,
    "preco": null
   },
   {
@@ -3497,7 +3680,7 @@
    "ativo": true,
    "categoria_id": 18,
    "codigo": 198,
-   "descricao": "Planta artificial.",
+   "descricao": "4 unidades",
    "id": "p057",
    "imagem": "reserva/fotos/produtos/p057.jpg",
    "nome": "Buchinho 18 cm",
@@ -3563,10 +3746,10 @@
    "ativo": true,
    "categoria_id": 18,
    "codigo": 204,
-   "descricao": "24 unidades disponíveis.",
+   "descricao": "1 buquê com 24 rosas",
    "id": "p079",
    "imagem": "reserva/fotos/produtos/p079.jpg",
-   "nome": "Rosas – Pink",
+   "nome": "Buquê de rosas na cor pink",
    "ordem": 204,
    "preco": null
   },
@@ -3585,10 +3768,10 @@
    "ativo": true,
    "categoria_id": 18,
    "codigo": 206,
-   "descricao": "Flores artificiais para arranjos.",
+   "descricao": "1 buquê com 24 rosas",
    "id": "p171",
    "imagem": "reserva/fotos/produtos/p171.jpg",
-   "nome": "Buquê de rosas lilás",
+   "nome": "Buquê de rosas na cor lilás",
    "ordem": 206,
    "preco": null
   },
@@ -3596,10 +3779,10 @@
    "ativo": true,
    "categoria_id": 18,
    "codigo": 207,
-   "descricao": "Flores artificiais para arranjos.",
+   "descricao": "3 buquês juntos fomando 1 só",
    "id": "p173",
    "imagem": "reserva/fotos/produtos/p173.jpg",
-   "nome": "Rosas e crisântemos brancos",
+   "nome": "Buquê de rosas e crisântemos brancos",
    "ordem": 207,
    "preco": null
   },
@@ -3607,32 +3790,21 @@
    "ativo": true,
    "categoria_id": 18,
    "codigo": 208,
-   "descricao": "Plantas artificiais em formato de meia-lua.",
+   "descricao": "2 unidades",
    "id": "p174",
    "imagem": "reserva/fotos/produtos/p174.jpg",
-   "nome": "Plantas meia-lua brancas",
+   "nome": "Buquê meia bola branca e amarela",
    "ordem": 208,
    "preco": null
   },
   {
    "ativo": true,
    "categoria_id": 18,
-   "codigo": 209,
-   "descricao": "24 unidades disponíveis.",
-   "id": "p191",
-   "imagem": "reserva/fotos/produtos/p191.jpg",
-   "nome": "Rosas – Marfim",
-   "ordem": 209,
-   "preco": null
-  },
-  {
-   "ativo": true,
-   "categoria_id": 18,
    "codigo": 210,
-   "descricao": "24 unidades disponíveis.",
+   "descricao": "1 buquê com 24 rosas.",
    "id": "p192",
    "imagem": "reserva/fotos/produtos/p192.jpg",
-   "nome": "Rosas – Rosa",
+   "nome": "Buquê de rosas na cor rosa",
    "ordem": 210,
    "preco": null
   },
@@ -3640,10 +3812,10 @@
    "ativo": true,
    "categoria_id": 18,
    "codigo": 211,
-   "descricao": "24 unidades disponíveis.",
+   "descricao": "1 buquê com 24 rosas",
    "id": "p193",
-   "imagem": "reserva/fotos/produtos/p193.jpg",
-   "nome": "Rosas – Champanhe",
+   "imagem": "reserva/fotos/produtos/mwh666s7-zv8w19.webp",
+   "nome": "Buquê de rosas na cor champanhe",
    "ordem": 211,
    "preco": null
   },
@@ -3651,10 +3823,10 @@
    "ativo": true,
    "categoria_id": 18,
    "codigo": 212,
-   "descricao": "24 unidades disponíveis.",
+   "descricao": "1 buquê com 24 rosas",
    "id": "p194",
    "imagem": "reserva/fotos/produtos/p194.jpg",
-   "nome": "Rosas – Verde",
+   "nome": "Buquê de rosas na cor verde",
    "ordem": 212,
    "preco": null
   },
@@ -3662,33 +3834,88 @@
    "ativo": true,
    "categoria_id": 18,
    "codigo": 213,
-   "descricao": "24 unidades disponíveis.",
+   "descricao": "Buquê com 24 rosas",
    "id": "p195",
    "imagem": "reserva/fotos/produtos/p195.jpg",
-   "nome": "Rosas – Amarelo",
+   "nome": "Buquê de rosas na cor amarelo",
    "ordem": 213,
    "preco": null
   },
   {
    "ativo": true,
    "categoria_id": 18,
-   "codigo": 214,
-   "descricao": "24 unidades disponíveis.",
-   "id": "p196",
-   "imagem": "reserva/fotos/produtos/p196.jpg",
-   "nome": "Rosas – Azul",
-   "ordem": 214,
+   "codigo": 215,
+   "descricao": "2 buquês com 24 rosas em cada",
+   "id": "p197",
+   "imagem": "reserva/fotos/produtos/p197.jpg",
+   "nome": "Buquê de rosas na cor vermelho",
+   "ordem": 215,
    "preco": null
   },
   {
    "ativo": true,
    "categoria_id": 18,
-   "codigo": 215,
-   "descricao": "24 unidades disponíveis.",
-   "id": "p197",
-   "imagem": "reserva/fotos/produtos/p197.jpg",
-   "nome": "Rosas – Vermelho",
-   "ordem": 215,
+   "codigo": 343,
+   "descricao": "2 buquês de 24 rosas em cada",
+   "id": "p9d51b63b9e",
+   "imagem": "reserva/fotos/produtos/mwh68auk-4rrttk.webp",
+   "nome": "Buquê de rosas na cor branca",
+   "ordem": 216,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 18,
+   "codigo": 344,
+   "descricao": "23 rosas avulsas",
+   "id": "pf58997dd65",
+   "imagem": "reserva/fotos/produtos/mwh7elke-8k9v47.webp",
+   "nome": "Rosa avulsa na cor champanhe",
+   "ordem": 217,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 18,
+   "codigo": 345,
+   "descricao": "24 rosas avulsas",
+   "id": "pf3bdbf0d4f",
+   "imagem": "reserva/fotos/produtos/mwh7s2uh-a8n6dm.webp",
+   "nome": "Rosa avulsa na cor vermelha",
+   "ordem": 218,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 18,
+   "codigo": 346,
+   "descricao": "23 rosas avulsas",
+   "id": "pf176f1a717",
+   "imagem": "reserva/fotos/produtos/mwh81o3m-loxh17.webp",
+   "nome": "Rosa avulsa na cor marfim",
+   "ordem": 219,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 18,
+   "codigo": 349,
+   "descricao": "21 unidades",
+   "id": "p1ce19b54b2",
+   "imagem": "reserva/fotos/produtos/mwik2ftt-rumlwp.webp",
+   "nome": "Rosa avulsa na cor azul",
+   "ordem": 220,
+   "preco": null
+  },
+  {
+   "ativo": true,
+   "categoria_id": 18,
+   "codigo": 350,
+   "descricao": "2 unidades",
+   "id": "p1b8eea6d26",
+   "imagem": "reserva/fotos/produtos/mwik79yy-c5j382.webp",
+   "nome": "Buquê meia bola vermelha e amarela",
+   "ordem": 221,
    "preco": null
   }
  ]
