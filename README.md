@@ -2,8 +2,8 @@
 
 Site do catálogo de locação de decoração da **Chácara Top Fest – Lazer, eventos e decorações**.
 
-- **Site público:** https://catalogo-top-fest.pages.dev. O visitante navega por categorias, monta um pedido e envia pelo WhatsApp.
-- **Área da administradora:** https://catalogo-top-fest.pages.dev/admin/. Tem login e permite cuidar de produtos, categorias, fotos, inspirações, configurações, **clientes** e **orçamentos**.
+- **Site público:** https://topfestdecoracoes.com.br (também em https://www.topfestdecoracoes.com.br e no endereço original https://catalogo-top-fest.pages.dev). O visitante navega por categorias, monta um pedido e envia pelo WhatsApp.
+- **Área da administradora:** https://topfestdecoracoes.com.br/admin/. Tem login e permite cuidar de produtos, categorias, fotos, inspirações, configurações, **clientes** e **orçamentos**.
 
 Este arquivo é para quem for mexer no código. A dona do catálogo usa o [MANUAL_DA_ADMINISTRADORA.md](MANUAL_DA_ADMINISTRADORA.md).
 
@@ -20,6 +20,7 @@ Navegador ──► Cloudflare Pages (arquivos estáticos da pasta site/)
 
 - **Não tem etapa de build.** É HTML, CSS e JavaScript puro (ES5, sem framework). O `supabase-js` fica copiado em `site/admin/vendor/`.
 - **Hospedagem:** Cloudflare Pages ligado ao repositório. A pasta de saída é `site` e não há comando de build. Cada `git push` na `main` publica. Outros branches viram uma prévia em `https://<branch>.catalogo-top-fest.pages.dev`.
+- **Domínio:** `topfestdecoracoes.com.br`, registrado no Registro.br, com DNS no Cloudflare (servidores `aragorn`/`karina.ns.cloudflare.com`). O domínio e o `www` estão ligados ao projeto em *Custom domains*. No Supabase, *Authentication → URL Configuration* tem o domínio novo como Site URL e os três endereços em Redirect URLs (necessário para o "esqueci minha senha").
 - **Dados:** Supabase, projeto `catalogo-top-fest` (região São Paulo, plano gratuito).
 - **Cópia de reserva:** `site/reserva/` guarda um JSON do catálogo e as fotos. O site público usa essa cópia se o Supabase estiver fora do ar ou pausado. Ela é atualizada a cada 3 dias por uma tarefa automática do GitHub (`.github/workflows/manter-ativo.yml`), que também evita que o plano gratuito pause por inatividade.
 

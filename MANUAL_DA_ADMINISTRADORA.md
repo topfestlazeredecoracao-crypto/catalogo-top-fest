@@ -8,8 +8,10 @@ Este manual explica, passo a passo, como cuidar do catálogo de decoração da *
 
 | O quê | Endereço |
 |---|---|
-| Site para os clientes | **https://catalogo-top-fest.pages.dev** |
-| Área da administradora | **https://catalogo-top-fest.pages.dev/admin/** |
+| Site para os clientes | **https://topfestdecoracoes.com.br** |
+| Área da administradora | **https://topfestdecoracoes.com.br/admin/** |
+
+> O endereço antigo (**catalogo-top-fest.pages.dev**) continua funcionando. Se o domínio novo der algum problema, use o antigo. Ele abre o mesmo site e a mesma área da administradora.
 
 > **Dica para o celular:** abra a área da administradora no navegador, toque nos **três pontinhos** (Android) ou no botão **Compartilhar** (iPhone) e escolha **"Adicionar à tela inicial"**. Vai aparecer um ícone com a logo, como se fosse um aplicativo.
 
@@ -19,7 +21,7 @@ Tudo o que você muda na área da administradora aparece no site **na hora**. N�
 
 ## 2. Entrar e sair
 
-1. Abra **https://catalogo-top-fest.pages.dev/admin/**
+1. Abra **https://topfestdecoracoes.com.br/admin/**
 2. Digite o **e-mail da Top Fest** e a **sua senha**.
 3. Toque em **Entrar**.
 
