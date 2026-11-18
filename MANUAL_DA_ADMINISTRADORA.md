@@ -75,14 +75,15 @@ Produtos ocultos aparecem com a borda tracejada e a etiqueta vermelha **OCULTO**
 3. Preencha o **Nome**, por exemplo: `Boleira dourada 30 cm`.
 4. Preencha a **Descrição**, com medidas e quantidades. Exemplo: `30 cm de diâmetro, 15 cm de altura. 2 unidades disponíveis.`
 5. Escolha a **Categoria**.
-6. Deixe marcado **"Visível no site"**.
-7. Toque em **Salvar**. Vai aparecer a mensagem **"Produto incluído."**
+6. Em **Quant**, digite quantas peças desse produto você tem (já vem com 1). Só você vê esse número; ele não aparece no site.
+7. Deixe marcado **"Visível no site"**.
+8. Toque em **Salvar**. Vai aparecer a mensagem **"Produto incluído."**
 
 O campo **Código** pode ficar vazio: o sistema dá sozinho o próximo número livre. Se quiser, digite um código seu (só números). O sistema não deixa repetir código.
 
 O produto novo entra **no fim** da categoria escolhida. Para mudar a posição, veja o item 4.6.
 
-### 4.3 Editar um produto (nome, descrição, categoria ou foto)
+### 4.3 Editar um produto (nome, descrição, categoria, quantidade ou foto)
 1. Encontre o produto e toque em **✏️ Editar**.
 2. Mude o que precisar.
 3. Toque em **Salvar**.
@@ -139,7 +140,7 @@ Cada produto tem um **código** de 3 números (ex.: **Cód. 080**). O cliente v�
 
 ### 4.10 Relatório de produtos (imprimir ou salvar em PDF)
 
-Serve para conferir o estoque ou ter uma lista em papel com **código, categoria, nome, descrição e valor** de cada produto. A folha sai deitada (paisagem), para caber tudo.
+Serve para conferir o estoque ou ter uma lista em papel com **código, categoria, nome, descrição, quantidade (Quant) e valor** de cada produto. A folha sai deitada (paisagem), para caber tudo.
 
 1. Na fileira de botões do alto, ao lado de **💾 Cópia de segurança**, toque em **📄 Relatório em PDF**. A lista abre em outra aba do navegador. No celular, se o botão não aparecer, arraste a fileira de botões para a esquerda.
    - Se você já tiver escolhido uma categoria no filtro da aba **📦 Produtos**, o relatório abre só com ela.
@@ -150,7 +151,7 @@ Serve para conferir o estoque ou ter uma lista em papel com **código, categoria
    - **Coluna para conferência:** coloca um quadradinho em cada linha para você marcar com caneta, e espaço para "Conferido por" e "Data" no final.
 3. Toque em **🖨️ Imprimir / Salvar em PDF**. Para ter o arquivo, escolha **"Salvar como PDF"** no lugar da impressora.
 
-No relatório, os produtos ocultos aparecem em cinza com a marca "oculto", e quem não tem valor cadastrado aparece com "—". No final, há o total de produtos, quantos estão ocultos e quantos estão sem valor.
+No relatório, os produtos ocultos aparecem em cinza com a marca "oculto", e quem não tem valor cadastrado aparece com "—". No final, há o total de produtos, a soma de todas as peças (Quant), quantos estão ocultos e quantos estão sem valor.
 
 ## 5. Categorias
 

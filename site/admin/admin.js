@@ -310,7 +310,7 @@
         '<div class="mini">' + (p.imagem ? '<img src="' + esc(fotoUrl(p.imagem)) + '" alt="" loading="lazy">' : "📷") + "</div>" +
         '<div class="item-info"><b><span class="cod">Cód. ' + cod(p.codigo) + "</span> " + esc(p.nome) +
         (p.ativo ? "" : ' <span class="selo">OCULTO</span>') + "</b>" +
-        "<span>" + esc(c.nome) + (p.preco != null ? " · " + brl(p.preco) + (p.mostrar_preco ? "" : " (preço escondido no site)") : "") +
+        "<span>" + esc(c.nome) + " · Quant: " + esc(p.quantidade == null ? 1 : p.quantidade) + (p.preco != null ? " · " + brl(p.preco) + (p.mostrar_preco ? "" : " (preço escondido no site)") : "") +
         "</span></div>" +
         '<div class="item-acoes">' +
         '<button class="btn" data-acao="editar">✏️ Editar</button>' +
@@ -423,6 +423,7 @@
       formP.descricao.value = p.descricao || "";
       formP.preco.value = p.preco == null ? "" : String(p.preco).replace(".", ",");
       formP.ativo.checked = p.ativo;
+      formP.quantidade.value = p.quantidade == null ? 1 : p.quantidade;
     }
     previa(p && p.imagem ? fotoUrl(p.imagem) : "");
     $("#dlg-produto").showModal();
@@ -461,6 +462,14 @@
     return lerValor(txt, "Preço");
   }
 
+  function lerQuantidade(txt) {
+    var n = Number(String(txt).trim());
+    if (String(txt).trim() === "" || !Number.isInteger(n) || n < 0 || n > 99999) {
+      throw new Error("Quant inválida. Use só números inteiros, ex.: 1, 2, 10");
+    }
+    return n;
+  }
+
   // Vazio = o banco escolhe o próximo número.
   function lerCodigo(txt) {
     txt = txt.trim();
@@ -482,7 +491,8 @@
       descricao: formP.descricao.value.trim(),
       ativo: formP.ativo.checked,
       preco: lerPreco(formP.preco.value),
-      mostrar_preco: formP.mostrar_preco.checked
+      mostrar_preco: formP.mostrar_preco.checked,
+      quantidade: lerQuantidade(formP.quantidade.value)
     };
     if (!dados.nome) throw new Error("Preencha o nome do produto.");
     var p = produtoEditando;
@@ -854,6 +864,7 @@
           imagem: p.imagem, ativo: p.ativo !== false, ordem: p.ordem, preco: p.preco == null ? null : p.preco,
           mostrar_preco: p.mostrar_preco !== false
         };
+        if (p.quantidade != null) linha.quantidade = p.quantidade;
         if (p.codigo != null) linha.codigo = p.codigo;
         return linha;
       }), { onConflict: "id", defaultToNull: false }).then(ok);

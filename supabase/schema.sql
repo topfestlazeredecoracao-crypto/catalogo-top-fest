@@ -63,6 +63,9 @@ create index if not exists produtos_categoria_ordem on public.produtos (categori
 alter table public.produtos add column if not exists codigo int;
 -- Mostrar o preço deste produto no site (vale só se o botão geral estiver ligado).
 alter table public.produtos add column if not exists mostrar_preco boolean not null default true;
+-- Quantidade de peças que a Top Fest tem (só a administradora vê; os produtos que já existem ficam com 1).
+alter table public.produtos add column if not exists quantidade int not null default 1
+  constraint produtos_quantidade_valida check (quantidade between 0 and 99999);
 
 -- Numera os produtos que ainda não têm código, na ordem do catálogo.
 with ordenados as (

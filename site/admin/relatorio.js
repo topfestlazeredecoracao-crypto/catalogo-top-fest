@@ -42,6 +42,7 @@
 
     var semValor = lista.filter(function (p) { return p.preco == null; }).length;
     var ocultos = lista.filter(function (p) { return !p.ativo; }).length;
+    var pecas = lista.reduce(function (s, p) { return s + (p.quantidade == null ? 1 : p.quantidade); }, 0);
     var filtros = [
       catId ? "Categoria: " + catPorId[catId].nome : "Todas as categorias",
       fSit.options[fSit.selectedIndex].text,
@@ -54,6 +55,7 @@
         '<td class="cat">' + esc(catPorId[p.categoria_id].nome) + "</td>" +
         "<td>" + esc(p.nome) + (p.ativo ? "" : ' <span class="selo">oculto</span>') + "</td>" +
         '<td class="desc">' + esc(p.descricao || "") + "</td>" +
+        '<td class="n">' + esc(p.quantidade == null ? 1 : p.quantidade) + "</td>" +
         '<td class="n">' + (p.preco == null ? '<span class="sem">—</span>' : brl(p.preco)) + "</td>" +
         (conferir ? '<td class="conf"><span class="caixinha"></span></td>' : "") +
         "</tr>";
@@ -68,11 +70,12 @@
       '<p class="filtros-rel">' + esc(filtros.join(" · ")) + "</p>" +
       (lista.length
         ? "<table><thead><tr>" +
-          '<th class="c">Cód.</th><th class="cat">Categoria</th><th>Nome</th><th>Descrição</th><th class="n">Valor</th>' +
+          '<th class="c">Cód.</th><th class="cat">Categoria</th><th>Nome</th><th>Descrição</th><th class="n">Quant</th><th class="n">Valor</th>' +
           (conferir ? '<th class="conf">Conf.</th>' : "") +
           "</tr></thead><tbody>" + linhas + "</tbody></table>"
         : '<p class="msg">Nenhum produto com esses filtros.</p>') +
       '<div class="resumo"><span><b>' + lista.length + "</b> produto(s)</span>" +
+      "<span><b>" + pecas + "</b> peça(s) no total (soma da Quant)</span>" +
       (ocultos ? "<span><b>" + ocultos + "</b> oculto(s) no site</span>" : "") +
       (semValor ? "<span><b>" + semValor + "</b> sem valor cadastrado</span>" : "") + "</div>" +
       (conferir ? '<div class="assinaturas"><div><span></span>Conferido por</div><div><span></span>Data</div></div>' : "");
@@ -86,7 +89,7 @@
     if (!r.data.session) { erro("Entre na área da administradora primeiro e depois abra o relatório de novo."); return; }
     return Promise.all([
       sb.from("categorias").select("*").order("ordem").order("id"),
-      sb.from("produtos").select("id, codigo, categoria_id, nome, descricao, preco, ativo, ordem"),
+      sb.from("produtos").select("id, codigo, categoria_id, nome, descricao, quantidade, preco, ativo, ordem"),
       sb.from("configuracoes").select("*").eq("id", 1).single()
     ]).then(function (res) {
       res.forEach(function (x) { if (x.error) throw x.error; });
