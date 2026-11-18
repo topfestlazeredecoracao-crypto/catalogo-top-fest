@@ -137,6 +137,10 @@
  "configuracoes": {
   "atualizado_em": "2026-11-01T13:25:07.009165+00:00",
   "id": 1,
+  "indicacao_ativa": true,
+  "indicacao_credito_pct": 10,
+  "indicacao_desconto_pct": 5,
+  "indicacao_validade_meses": 6,
   "mostrar_precos": false,
   "nome": "Chácara Top Fest",
   "slogan": "Lazer, eventos e decorações",
@@ -231,18 +235,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 1,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p080",
-   "imagem": "reserva/fotos/produtos/p080.jpg",
-   "nome": "Kit completo – Neon",
-   "ordem": 1,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 56,
    "codigo": 167,
    "descricao": "6 peças.",
@@ -285,6 +277,18 @@
    "id": "p058",
    "imagem": "reserva/fotos/produtos/p058.jpg",
    "nome": "Luminária letreiro LED A4 para escrita",
+   "ordem": 1,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 1,
+   "descricao": "",
+   "id": "p080",
+   "imagem": "reserva/fotos/produtos/p080.jpg",
+   "nome": "Neon",
    "ordem": 1,
    "preco": null,
    "quantidade": 1
@@ -411,24 +415,24 @@
   },
   {
    "ativo": true,
-   "categoria_id": 12,
-   "codigo": 134,
-   "descricao": "Uma com 20 cm de diâmetro e 22 cm de altura; outra com 23 cm e 24 cm de altura.",
-   "id": "p037",
-   "imagem": "reserva/fotos/produtos/p037.jpg",
-   "nome": "Kit com 2 bandejas douradas com espelho",
+   "categoria_id": 3,
+   "codigo": 2,
+   "descricao": "",
+   "id": "p081",
+   "imagem": "reserva/fotos/produtos/p081.jpg",
+   "nome": "Gamer",
    "ordem": 2,
    "preco": null,
    "quantidade": 1
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 2,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p081",
-   "imagem": "reserva/fotos/produtos/p081.jpg",
-   "nome": "Kit completo – Gamer",
+   "categoria_id": 12,
+   "codigo": 134,
+   "descricao": "Uma com 20 cm de diâmetro e 22 cm de altura; outra com 23 cm e 24 cm de altura.",
+   "id": "p037",
+   "imagem": "reserva/fotos/produtos/p037.jpg",
+   "nome": "Kit com 2 bandejas douradas com espelho",
    "ordem": 2,
    "preco": null,
    "quantidade": 1
@@ -555,6 +559,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 3,
+   "descricao": "",
+   "id": "p082",
+   "imagem": "reserva/fotos/produtos/p082.jpg",
+   "nome": "Futebol",
+   "ordem": 3,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 10,
    "codigo": 347,
    "descricao": "",
@@ -585,18 +601,6 @@
    "id": "p038",
    "imagem": "reserva/fotos/produtos/p038.jpg",
    "nome": "Kit com 5 peças douradas com espelhos",
-   "ordem": 3,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 3,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p082",
-   "imagem": "reserva/fotos/produtos/p082.jpg",
-   "nome": "Kit completo – Futebol",
    "ordem": 3,
    "preco": null,
    "quantidade": 1
@@ -747,18 +751,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 4,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p083",
-   "imagem": "reserva/fotos/produtos/p083.jpg",
-   "nome": "Kit completo – Vingadores",
-   "ordem": 4,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 56,
    "codigo": 170,
    "descricao": "5 peças.",
@@ -867,6 +859,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 4,
+   "descricao": "",
+   "id": "p083",
+   "imagem": "reserva/fotos/produtos/p083.jpg",
+   "nome": "Vingadores",
+   "ordem": 4,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 12,
    "codigo": 132,
    "descricao": "40 cm de diâmetro e 15 cm de altura.",
@@ -939,18 +943,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 5,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p084",
-   "imagem": "reserva/fotos/produtos/p084.jpg",
-   "nome": "Kit completo – Policial",
-   "ordem": 5,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 10,
    "codigo": 275,
    "descricao": "2 unidades",
@@ -1005,6 +997,18 @@
    "id": "p6b8285095c",
    "imagem": "reserva/fotos/produtos/mwl57nar-09nv6s.webp",
    "nome": "Pelúcia Anjinho urso",
+   "ordem": 5,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 5,
+   "descricao": "",
+   "id": "p084",
+   "imagem": "reserva/fotos/produtos/p084.jpg",
+   "nome": "Policial",
    "ordem": 5,
    "preco": null,
    "quantidade": 1
@@ -1119,18 +1123,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 6,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p085",
-   "imagem": "reserva/fotos/produtos/p085.jpg",
-   "nome": "Kit completo – Moana",
-   "ordem": 6,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 13,
    "codigo": 159,
    "descricao": "2 kits disponíveis. Alturas de 17 cm e 15 cm.",
@@ -1161,6 +1153,18 @@
    "id": "p020",
    "imagem": "reserva/fotos/produtos/p020.jpg",
    "nome": "Mesa cavalete desmontável branca com cru",
+   "ordem": 6,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 6,
+   "descricao": "",
+   "id": "p085",
+   "imagem": "reserva/fotos/produtos/p085.jpg",
+   "nome": "Moana",
    "ordem": 6,
    "preco": null,
    "quantidade": 1
@@ -1299,24 +1303,24 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 7,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p086",
-   "imagem": "reserva/fotos/produtos/p086.jpg",
-   "nome": "Kit completo – Mulher-Maravilha",
-   "ordem": 7,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 10,
    "codigo": 277,
    "descricao": "",
    "id": "pcaeb6fc552",
    "imagem": "reserva/fotos/produtos/mvzr08mk-zerco7.webp",
    "nome": "Luminária nº 3 -  LED 3D, luz quente, 22 cm",
+   "ordem": 7,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 7,
+   "descricao": "",
+   "id": "p086",
+   "imagem": "reserva/fotos/produtos/p086.jpg",
+   "nome": "Mulher-Maravilha",
    "ordem": 7,
    "preco": null,
    "quantidade": 1
@@ -1443,24 +1447,24 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 8,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p087",
-   "imagem": "reserva/fotos/produtos/p087.jpg",
-   "nome": "Kit completo – Meninas Superpoderosas",
-   "ordem": 8,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 10,
    "codigo": 278,
    "descricao": "",
    "id": "p8b038d0fc6",
    "imagem": "reserva/fotos/produtos/mvzr1dce-ki014q.webp",
    "nome": "Luminária nº 4 -  LED 3D, luz quente, 22 cm",
+   "ordem": 8,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 8,
+   "descricao": "",
+   "id": "p087",
+   "imagem": "reserva/fotos/produtos/p087.jpg",
+   "nome": "Meninas Superpoderosas",
    "ordem": 8,
    "preco": null,
    "quantidade": 1
@@ -1599,18 +1603,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 9,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p088",
-   "imagem": "reserva/fotos/produtos/p088.jpg",
-   "nome": "Kit completo – Stitch",
-   "ordem": 9,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 10,
    "codigo": 279,
    "descricao": "",
@@ -1659,6 +1651,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 9,
+   "descricao": "",
+   "id": "p088",
+   "imagem": "reserva/fotos/produtos/p088.jpg",
+   "nome": "Stitch",
+   "ordem": 9,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 13,
    "codigo": 162,
    "descricao": "",
@@ -1689,6 +1693,18 @@
    "id": "p144",
    "imagem": "reserva/fotos/produtos/p144.jpg",
    "nome": "Bolo fake – Preto com glitter",
+   "ordem": 10,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 10,
+   "descricao": "",
+   "id": "p089",
+   "imagem": "reserva/fotos/produtos/p089.jpg",
+   "nome": "Borboletas azuis",
    "ordem": 10,
    "preco": null,
    "quantidade": 1
@@ -1749,18 +1765,6 @@
    "id": "p040",
    "imagem": "reserva/fotos/produtos/p040.jpg",
    "nome": "Kit com 2 bandejas douradas",
-   "ordem": 10,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 10,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p089",
-   "imagem": "reserva/fotos/produtos/p089.jpg",
-   "nome": "Kit completo – Borboletas azuis",
    "ordem": 10,
    "preco": null,
    "quantidade": 1
@@ -1851,6 +1855,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 11,
+   "descricao": "",
+   "id": "p090",
+   "imagem": "reserva/fotos/produtos/p090.jpg",
+   "nome": "Borboletas e flores",
+   "ordem": 11,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 18,
    "codigo": 415,
    "descricao": "4 buquês",
@@ -1905,18 +1921,6 @@
    "id": "p044",
    "imagem": "reserva/fotos/produtos/p044.jpg",
    "nome": "Kit com 7 peças brancas: 3 boleiras, 2 vasos e 2 bandejas",
-   "ordem": 11,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 11,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p090",
-   "imagem": "reserva/fotos/produtos/p090.jpg",
-   "nome": "Kit completo – Borboletas e flores",
    "ordem": 11,
    "preco": null,
    "quantidade": 1
@@ -2067,18 +2071,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 12,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p091",
-   "imagem": "reserva/fotos/produtos/p091.jpg",
-   "nome": "Kit completo – Tardezinha",
-   "ordem": 12,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 10,
    "codigo": 282,
    "descricao": "",
@@ -2103,6 +2095,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 12,
+   "descricao": "",
+   "id": "p091",
+   "imagem": "reserva/fotos/produtos/p091.jpg",
+   "nome": "Tardezinha",
+   "ordem": 12,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 9,
    "codigo": 123,
    "descricao": "Arco montável em formato de flor, com 1,8 m.",
@@ -2121,6 +2125,18 @@
    "id": "p153",
    "imagem": "reserva/fotos/produtos/p153.jpg",
    "nome": "Bolo fake – Sereia",
+   "ordem": 13,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 13,
+   "descricao": "",
+   "id": "p092",
+   "imagem": "reserva/fotos/produtos/p092.jpg",
+   "nome": "Boteco",
    "ordem": 13,
    "preco": null,
    "quantidade": 1
@@ -2181,18 +2197,6 @@
    "id": "p046",
    "imagem": "reserva/fotos/produtos/p046.jpg",
    "nome": "Kit com 7 peças rosa: boleira plus, 2 vasos Popi e mini boleiras",
-   "ordem": 13,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 13,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p092",
-   "imagem": "reserva/fotos/produtos/p092.jpg",
-   "nome": "Kit completo – Boteco",
    "ordem": 13,
    "preco": null,
    "quantidade": 1
@@ -2283,6 +2287,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 14,
+   "descricao": "",
+   "id": "p093",
+   "imagem": "reserva/fotos/produtos/p093.jpg",
+   "nome": "Chá revelação",
+   "ordem": 14,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 8,
    "codigo": 298,
    "descricao": "",
@@ -2325,18 +2341,6 @@
    "id": "p047",
    "imagem": "reserva/fotos/produtos/p047.jpg",
    "nome": "Kit com 7 peças lilás candy: boleira plus, 2 vasos Popi e mini boleiras",
-   "ordem": 14,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 14,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p093",
-   "imagem": "reserva/fotos/produtos/p093.jpg",
-   "nome": "Kit completo – Chá revelação",
    "ordem": 14,
    "preco": null,
    "quantidade": 1
@@ -2415,6 +2419,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 15,
+   "descricao": "",
+   "id": "p094",
+   "imagem": "reserva/fotos/produtos/p094.jpg",
+   "nome": "Chá de bebê",
+   "ordem": 15,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 2,
    "codigo": 229,
    "descricao": "Montado pela cliente (pegue e monte)",
@@ -2457,18 +2473,6 @@
    "id": "p048",
    "imagem": "reserva/fotos/produtos/p048.jpg",
    "nome": "Kit com 7 peças verde oliva: boleira plus, 2 vasos Popi e mini boleiras",
-   "ordem": 15,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 15,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p094",
-   "imagem": "reserva/fotos/produtos/p094.jpg",
-   "nome": "Kit completo – Chá de bebê",
    "ordem": 15,
    "preco": null,
    "quantidade": 1
@@ -2518,6 +2522,18 @@
    "imagem": "reserva/fotos/produtos/mweajml0-xtk65g.webp",
    "nome": "Vaso Popi lilás",
    "ordem": 15,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 16,
+   "descricao": "",
+   "id": "p095",
+   "imagem": "reserva/fotos/produtos/p095.jpg",
+   "nome": "Batizado",
+   "ordem": 16,
    "preco": null,
    "quantidade": 1
   },
@@ -2589,18 +2605,6 @@
    "id": "p049",
    "imagem": "reserva/fotos/produtos/p049.jpg",
    "nome": "Kit com 7 peças azul candy: boleira plus, 2 vasos Popi e mini boleiras",
-   "ordem": 16,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 16,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p095",
-   "imagem": "reserva/fotos/produtos/p095.jpg",
-   "nome": "Kit completo – Batizado",
    "ordem": 16,
    "preco": null,
    "quantidade": 1
@@ -2715,18 +2719,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 17,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p096",
-   "imagem": "reserva/fotos/produtos/p096.jpg",
-   "nome": "Kit completo – Primeira Eucaristia",
-   "ordem": 17,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 148,
    "descricao": "Kit com bandejas, vasos e boleiras na cor rose gold.",
@@ -2745,6 +2737,18 @@
    "id": "pf2e06fd39b",
    "imagem": "reserva/fotos/produtos/mvzre3ss-6t5zat.webp",
    "nome": "Número de Neon Led -  nº 3 - 50 cm",
+   "ordem": 17,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 17,
+   "descricao": "",
+   "id": "p096",
+   "imagem": "reserva/fotos/produtos/p096.jpg",
+   "nome": "Primeira Eucaristia",
    "ordem": 17,
    "preco": null,
    "quantidade": 1
@@ -2811,6 +2815,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 18,
+   "descricao": "",
+   "id": "p097",
+   "imagem": "reserva/fotos/produtos/p097.jpg",
+   "nome": "Festa junina",
+   "ordem": 18,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 12,
    "codigo": 150,
    "descricao": "",
@@ -2829,18 +2845,6 @@
    "id": "p013",
    "imagem": "reserva/fotos/produtos/p013.jpg",
    "nome": "Kit com 6 suporte de balões de mesa",
-   "ordem": 18,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 18,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p097",
-   "imagem": "reserva/fotos/produtos/p097.jpg",
-   "nome": "Kit completo – Festa junina",
    "ordem": 18,
    "preco": null,
    "quantidade": 1
@@ -2931,24 +2935,24 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 19,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p098",
-   "imagem": "reserva/fotos/produtos/p098.jpg",
-   "nome": "Kit completo – Preto",
-   "ordem": 19,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 10,
    "codigo": 289,
    "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
    "id": "p3fbf0a2f92",
    "imagem": "reserva/fotos/produtos/mvzrf39q-cjiowd.webp",
    "nome": "Número de Neon Led -  nº 5 - 50 cm",
+   "ordem": 19,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 19,
+   "descricao": "",
+   "id": "p098",
+   "imagem": "reserva/fotos/produtos/p098.jpg",
+   "nome": "Preto",
    "ordem": 19,
    "preco": null,
    "quantidade": 1
@@ -2991,6 +2995,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 20,
+   "descricao": "",
+   "id": "p099",
+   "imagem": "reserva/fotos/produtos/p099.jpg",
+   "nome": "Branco",
+   "ordem": 20,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 4,
    "codigo": 295,
    "descricao": "",
@@ -3021,18 +3037,6 @@
    "id": "pc18b0c0a55",
    "imagem": "reserva/fotos/produtos/mwk2ho93-sr1izd.webp",
    "nome": "Kit com 8 peças: 2 vasos, 2 boleiras, 2 bandejas mesinhas e 2 bandejas ovais - Seleção",
-   "ordem": 20,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 20,
-   "descricao": "Arco 1,5 x 1,5 m, 3 cilindros e capas para o arco e os cilindros.",
-   "id": "p099",
-   "imagem": "reserva/fotos/produtos/p099.jpg",
-   "nome": "Kit completo – Branco",
    "ordem": 20,
    "preco": null,
    "quantidade": 1
@@ -3099,6 +3103,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 21,
+   "descricao": "",
+   "id": "p127",
+   "imagem": "reserva/fotos/produtos/p127.jpg",
+   "nome": "Confraternização",
+   "ordem": 21,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 2,
    "codigo": 235,
    "descricao": "",
@@ -3117,18 +3133,6 @@
    "id": "p6f9ea96f7a",
    "imagem": "reserva/fotos/produtos/mwk2poav-4wb68l.webp",
    "nome": "Kit com 7 peças vermelhas: 1 boleira, 2 mini boleira, 2 vasos e 2 bandejas ovais",
-   "ordem": 21,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 21,
-   "descricao": "Arco redondo, cilindros e arco romano, com capas no tema Confraternização.",
-   "id": "p127",
-   "imagem": "reserva/fotos/produtos/p127.jpg",
-   "nome": "Kit completo – Confraternização",
    "ordem": 21,
    "preco": null,
    "quantidade": 1
@@ -3428,7 +3432,7 @@
    "descricao": "",
    "id": "p34cc1ea92d",
    "imagem": "reserva/fotos/produtos/mvzlt3ws-ri2lnt.webp",
-   "nome": "Kit completo - Natal",
+   "nome": "Natal",
    "ordem": 24,
    "preco": null,
    "quantidade": 1
@@ -3512,7 +3516,7 @@
    "descricao": "",
    "id": "p0504ee2e04",
    "imagem": "reserva/fotos/produtos/mvykifd4-oohbwm.webp",
-   "nome": "Kit completo - Santa Rita de Cássia",
+   "nome": "Santa Rita de Cássia",
    "ordem": 25,
    "preco": null,
    "quantidade": 1
@@ -3526,6 +3530,18 @@
    "imagem": "reserva/fotos/produtos/mweayi91-8eor0m.webp",
    "nome": "Vaso amarelo",
    "ordem": 25,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 272,
+   "descricao": "",
+   "id": "p4856865e48",
+   "imagem": "reserva/fotos/produtos/mvzltmp7-eg9ndb.webp",
+   "nome": "Ano Novo",
+   "ordem": 26,
    "preco": null,
    "quantidade": 1
   },
@@ -3573,18 +3589,6 @@
    "id": "i23",
    "imagem": "reserva/fotos/inspiracoes/i23.jpg",
    "nome": "Decoração completa com arco retangular de flores artificiais, cortina, led e jogo de mesas",
-   "ordem": 26,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 272,
-   "descricao": "",
-   "id": "p4856865e48",
-   "imagem": "reserva/fotos/produtos/mvzltmp7-eg9ndb.webp",
-   "nome": "Kit completo - Ano Novo",
    "ordem": 26,
    "preco": null,
    "quantidade": 1
@@ -3711,6 +3715,18 @@
   },
   {
    "ativo": true,
+   "categoria_id": 3,
+   "codigo": 262,
+   "descricao": "",
+   "id": "p75670b40e0",
+   "imagem": "reserva/fotos/produtos/mvyjlglt-b60qzn.webp",
+   "nome": "Escolha o seu tema que encomendamos ( arco redondo 1,5 e cilindros?",
+   "ordem": 28,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 18,
    "codigo": 201,
    "descricao": "Foram divididos em 36 galhos de mosquitinho",
@@ -3723,36 +3739,12 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 262,
-   "descricao": "",
-   "id": "p75670b40e0",
-   "imagem": "reserva/fotos/produtos/mvyjlglt-b60qzn.webp",
-   "nome": "Kit completo - Escolha o seu tema que encomendamos",
-   "ordem": 28,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 332,
    "descricao": "",
    "id": "pced454b744",
    "imagem": "reserva/fotos/produtos/mwgjlafa-kskb4m.webp",
    "nome": "Bandeja mesinha verde água",
-   "ordem": 29,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 3,
-   "codigo": 24,
-   "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p100",
-   "imagem": "reserva/fotos/produtos/p100.jpg",
-   "nome": "Capa para arco 1,5 m – Stitch Milk",
    "ordem": 29,
    "preco": null,
    "quantidade": 1
@@ -3783,13 +3775,13 @@
   },
   {
    "ativo": true,
-   "categoria_id": 12,
-   "codigo": 333,
+   "categoria_id": 3,
+   "codigo": 24,
    "descricao": "",
-   "id": "pec99a5da4e",
-   "imagem": "reserva/fotos/produtos/mwgjlrbe-6dz4ej.webp",
-   "nome": "Bandeja mesinha amarela",
-   "ordem": 30,
+   "id": "p100",
+   "imagem": "reserva/fotos/produtos/p100.jpg",
+   "nome": "Stitch Milk",
+   "ordem": 29,
    "preco": null,
    "quantidade": 1
   },
@@ -3797,10 +3789,22 @@
    "ativo": true,
    "categoria_id": 3,
    "codigo": 25,
-   "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
+   "descricao": "",
    "id": "p101",
    "imagem": "reserva/fotos/produtos/p101.jpg",
-   "nome": "Capa para arco 1,5 m – 15 anos",
+   "nome": "15 anos",
+   "ordem": 30,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 12,
+   "codigo": 333,
+   "descricao": "",
+   "id": "pec99a5da4e",
+   "imagem": "reserva/fotos/produtos/mwgjlrbe-6dz4ej.webp",
+   "nome": "Bandeja mesinha amarela",
    "ordem": 30,
    "preco": null,
    "quantidade": 1
@@ -3843,24 +3847,24 @@
   },
   {
    "ativo": true,
-   "categoria_id": 3,
-   "codigo": 26,
-   "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
-   "id": "p102",
-   "imagem": "reserva/fotos/produtos/p102.jpg",
-   "nome": "Capa para arco 1,5 m – Kanao Tsuyuri (Demon Slayer)",
-   "ordem": 31,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 2,
    "codigo": 242,
    "descricao": "Montado pela cliente (pegue e monte)",
    "id": "i25",
    "imagem": "reserva/fotos/inspiracoes/i25.jpg",
    "nome": "Decoração completa 1 arco romano e jogo de mesas de MDF",
+   "ordem": 31,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 3,
+   "codigo": 26,
+   "descricao": "",
+   "id": "p102",
+   "imagem": "reserva/fotos/produtos/p102.jpg",
+   "nome": "Kanao Tsuyuri (Demon Slayer)",
    "ordem": 31,
    "preco": null,
    "quantidade": 1
@@ -3941,10 +3945,10 @@
    "ativo": true,
    "categoria_id": 3,
    "codigo": 28,
-   "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
+   "descricao": "",
    "id": "p104",
    "imagem": "reserva/fotos/produtos/p104.jpg",
-   "nome": "Capa para arco 1,5 m – Bolofofos",
+   "nome": "Bolofofos",
    "ordem": 33,
    "preco": null,
    "quantidade": 1
@@ -4004,7 +4008,7 @@
    "descricao": "Capa para o arco redondo de 1,5 x 1,5 m.",
    "id": "p105",
    "imagem": "reserva/fotos/produtos/p105.jpg",
-   "nome": "Capa para arco 1,5 m – Corinthians",
+   "nome": "Corinthians",
    "ordem": 34,
    "preco": null,
    "quantidade": 1
