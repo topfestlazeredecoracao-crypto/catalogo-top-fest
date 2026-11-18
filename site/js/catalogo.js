@@ -56,7 +56,7 @@
     return Promise.all([
       api("configuracoes", "select=*&id=eq.1"),
       api("categorias", "select=id,nome,tipo,ordem&order=ordem,id"),
-      api("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ordem&ativo=is.true&order=ordem,nome"),
+      api("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ordem,quantidade&ativo=is.true&order=ordem,nome"),
       // Só os preços que a administradora deixou aparecer.
       api("precos_publicos", "select=id,preco")
     ]).then(function (r) {
@@ -142,6 +142,14 @@
     if (alvo) alvo.focus();
   }
 
+  // "Cód. 001 · Quant: 2" (a quantidade só aparece se existir no dado).
+  function codQuant(p) {
+    var partes = [];
+    if (cod(p)) partes.push("Cód. " + cod(p));
+    if (p.quantidade != null) partes.push("Quant: " + esc(p.quantidade));
+    return partes.length ? '<span class="cod">' + partes.join(" · ") + "</span>" : "";
+  }
+
   function preco(p) {
     if (!conf.mostrar_precos || p.preco == null) return "";
     return '<span class="preco">' + Number(p.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) + "</span>";
@@ -181,7 +189,7 @@
               : '<span role="img" aria-label="Produto sem foto">📷</span>') +
         // O nome da categoria só aparece na busca (fora dela, o título da seção já mostra).
         '</div><div class="body">' + (t ? '<span class="cat">' + esc(pc.nome) + "</span>" : "") +
-        (cod(p) ? '<span class="cod">Cód. ' + cod(p) + "</span>" : "") + "<h3>" + esc(p.nome) + "</h3><p>" +
+        codQuant(p) + "<h3>" + esc(p.nome) + "</h3><p>" +
         esc(p.descricao) + "</p>" + preco(p) + ctl(p.id, p.nome) + "</div></div>";
     });
     $("#grid").innerHTML = aviso + (h || '<div class="empty">Nenhum item encontrado.</div>');

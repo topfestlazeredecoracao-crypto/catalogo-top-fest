@@ -63,7 +63,7 @@ create index if not exists produtos_categoria_ordem on public.produtos (categori
 alter table public.produtos add column if not exists codigo int;
 -- Mostrar o preço deste produto no site (vale só se o botão geral estiver ligado).
 alter table public.produtos add column if not exists mostrar_preco boolean not null default true;
--- Quantidade de peças que a Top Fest tem (só a administradora vê; os produtos que já existem ficam com 1).
+-- Quantidade de peças que a Top Fest tem (aparece no site como "Quant"; os produtos que já existem ficam com 1).
 alter table public.produtos add column if not exists quantidade int not null default 1
   constraint produtos_quantidade_valida check (quantidade between 0 and 99999);
 
@@ -282,7 +282,7 @@ grant select on public.configuracoes, public.categorias, public.inspiracoes to a
 -- Visitante lê os produtos, mas NÃO a coluna de preço (o preço só sai pela lista abaixo,
 -- e só quando a administradora deixa aparecer).
 revoke select on public.produtos from anon;
-grant select (id, categoria_id, nome, descricao, imagem, ativo, ordem, codigo, mostrar_preco, atualizado_em)
+grant select (id, categoria_id, nome, descricao, imagem, ativo, ordem, codigo, mostrar_preco, atualizado_em, quantidade)
   on public.produtos to anon;
 grant insert, update, delete on public.configuracoes, public.categorias, public.produtos, public.inspiracoes to authenticated;
 grant select on public.admins to authenticated;

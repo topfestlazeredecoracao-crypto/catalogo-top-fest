@@ -50,7 +50,7 @@ def main():
     dados = {
         "configuracoes": tabela("configuracoes", "select=*&id=eq.1")[0],
         "categorias": tabela("categorias", "select=id,nome,icone,tipo,ordem&order=ordem,id"),
-        "produtos": tabela("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ativo,ordem&ativo=is.true&order=ordem,nome"),
+        "produtos": tabela("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ativo,ordem,quantidade&ativo=is.true&order=ordem,nome"),
     }
     # Só os preços que a administradora deixou aparecer no site.
     precos = {x["id"]: x["preco"] for x in tabela("precos_publicos", "select=id,preco")}

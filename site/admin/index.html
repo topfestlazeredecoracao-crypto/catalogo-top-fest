@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261118-2">
+<link rel="stylesheet" href="admin.css?v=20261118-3">
 </head>
 <body>
 <header class="topo">
@@ -210,7 +210,7 @@
     <label class="check"><input type="checkbox" name="mostrar_preco" checked> Mostrar o preço deste produto no site</label>
     <small class="abaixo-check">Só vale se "Mostrar preços no site" estiver ligado em Configurações.</small>
     <label>Quant<input name="quantidade" type="number" min="0" max="99999" step="1" inputmode="numeric" value="1" required>
-      <small>Quantas peças deste produto você tem. Só você vê; não aparece no site.</small></label>
+      <small>Quantas peças deste produto você tem. Aparece no site como "Quant".</small></label>
     <label class="check"><input type="checkbox" name="ativo" checked> Visível no site</label>
     <div class="acoes">
       <button class="btn" value="cancelar" type="button" data-fechar>Cancelar</button>
@@ -326,6 +326,6 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="admin.js?v=20261118-2"></script>
+<script src="admin.js?v=20261118-3"></script>
 </body>
 </html>
