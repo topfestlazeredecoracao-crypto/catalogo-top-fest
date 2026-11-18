@@ -114,3 +114,7 @@ Os dois usam só a biblioteca padrão do Python 3.
 - Commits pequenos, com mensagem clara.
 - Teste no celular (cerca de 360 px de largura), no computador e nos modos claro e escuro antes de publicar.
 - Mudanças visuais grandes: publique primeiro num branch (prévia do Cloudflare) para a dona aprovar, depois junte na `main`.
+
+## Cache dos arquivos do painel
+
+O domínio próprio manda o navegador guardar `.js` e `.css` por até 4 horas. Por isso, os arquivos do painel (`site/admin/*.html`) são chamados com um número de versão, por exemplo `admin.js?v=20261118`. **Sempre que alterar um `.js` ou `.css` do painel, troque esse número** em todos os `.html` de `site/admin/`. Use a data do dia. Assim, a administradora recebe a versão nova logo, sem precisar limpar o cache.
