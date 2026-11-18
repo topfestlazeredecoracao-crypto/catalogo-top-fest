@@ -51,8 +51,9 @@
     var linhas = lista.map(function (p) {
       return "<tr" + (p.ativo ? "" : ' class="oculto"') + ">" +
         '<td class="c">' + esc(cod(p.codigo)) + "</td>" +
-        "<td>" + esc(catPorId[p.categoria_id].nome) + "</td>" +
+        '<td class="cat">' + esc(catPorId[p.categoria_id].nome) + "</td>" +
         "<td>" + esc(p.nome) + (p.ativo ? "" : ' <span class="selo">oculto</span>') + "</td>" +
+        '<td class="desc">' + esc(p.descricao || "") + "</td>" +
         '<td class="n">' + (p.preco == null ? '<span class="sem">—</span>' : brl(p.preco)) + "</td>" +
         (conferir ? '<td class="conf"><span class="caixinha"></span></td>' : "") +
         "</tr>";
@@ -67,7 +68,7 @@
       '<p class="filtros-rel">' + esc(filtros.join(" · ")) + "</p>" +
       (lista.length
         ? "<table><thead><tr>" +
-          '<th class="c">Cód.</th><th>Categoria</th><th>Nome</th><th class="n">Valor</th>' +
+          '<th class="c">Cód.</th><th class="cat">Categoria</th><th>Nome</th><th>Descrição</th><th class="n">Valor</th>' +
           (conferir ? '<th class="conf">Conf.</th>' : "") +
           "</tr></thead><tbody>" + linhas + "</tbody></table>"
         : '<p class="msg">Nenhum produto com esses filtros.</p>') +
@@ -85,7 +86,7 @@
     if (!r.data.session) { erro("Entre na área da administradora primeiro e depois abra o relatório de novo."); return; }
     return Promise.all([
       sb.from("categorias").select("*").order("ordem").order("id"),
-      sb.from("produtos").select("id, codigo, categoria_id, nome, preco, ativo, ordem"),
+      sb.from("produtos").select("id, codigo, categoria_id, nome, descricao, preco, ativo, ordem"),
       sb.from("configuracoes").select("*").eq("id", 1).single()
     ]).then(function (res) {
       res.forEach(function (x) { if (x.error) throw x.error; });

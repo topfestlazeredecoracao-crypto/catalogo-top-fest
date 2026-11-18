@@ -139,10 +139,10 @@ Cada produto tem um **código** de 3 números (ex.: **Cód. 080**). O cliente v�
 
 ### 4.10 Relatório de produtos (imprimir ou salvar em PDF)
 
-Serve para conferir o estoque ou ter uma lista em papel com **código, categoria, nome e valor** de cada produto.
+Serve para conferir o estoque ou ter uma lista em papel com **código, categoria, nome, descrição e valor** de cada produto. A folha sai deitada (paisagem), para caber tudo.
 
-1. Na aba **📦 Produtos**, toque em **📄 Relatório em PDF**. A lista abre em outra aba.
-   - Se você já tiver escolhido uma categoria no filtro, o relatório abre só com ela.
+1. Na fileira de botões do alto, ao lado de **💾 Cópia de segurança**, toque em **📄 Relatório em PDF**. A lista abre em outra aba do navegador. No celular, se o botão não aparecer, arraste a fileira de botões para a esquerda.
+   - Se você já tiver escolhido uma categoria no filtro da aba **📦 Produtos**, o relatório abre só com ela.
 2. No topo da página, escolha:
    - **Categoria:** todas ou só uma;
    - **Ordenar por:** categoria (a mesma ordem do site), código ou nome;

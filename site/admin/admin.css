@@ -29,6 +29,7 @@ label.btn{margin:0}
 .link{background:none;border:0;color:var(--pr);font:inherit;text-decoration:underline;padding:12px 0 0;cursor:pointer}
 .abas{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:6px}
 .abas button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:10px 14px;border-radius:999px;font:inherit;font-size:15px;cursor:pointer}
+.abas .aba-link{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:10px 14px;border-radius:999px;font-size:15px;text-decoration:none;white-space:nowrap}
 .abas button.on{background:var(--pr);color:var(--on);border-color:var(--pr)}
 .barra{margin:6px 0 12px}
 .filtros{display:grid;grid-template-columns:1fr;gap:8px}
