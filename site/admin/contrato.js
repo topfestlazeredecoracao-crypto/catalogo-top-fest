@@ -40,9 +40,15 @@
     var servs = o.itens.filter(function (it) { return it.tipo === "servico"; });
     var sub = soma(itens) + soma(servs);
     var desconto = Number(o.desconto) || 0, taxa = Number(o.taxa_entrega) || 0;
-    var total = Math.max(0, sub - desconto + taxa);
+    var pctInd = Number(o.desconto_indicacao_pct) || 0;
+    var descInd = Math.round(sub * pctInd) / 100;
+    var credito = Number(o.credito_usado) || 0;
+    var total = Math.max(0, sub - desconto - descInd - credito + taxa);
     var sinal = Math.round(total * pct) / 100;
-    return { itens: itens, servs: servs, sub: sub, desconto: desconto, taxa: taxa, total: total, pct: pct, sinal: sinal, restante: total - sinal };
+    return {
+      itens: itens, servs: servs, sub: sub, desconto: desconto, taxa: taxa, pctInd: pctInd, descInd: descInd, credito: credito,
+      total: total, pct: pct, sinal: sinal, restante: total - sinal
+    };
   }
 
   // Linhas de dados do cliente: [rótulo, valor] (valor vazio = linha para escrever à mão).
@@ -60,8 +66,10 @@
 
   function linhasTotais(v) {
     var l = [];
-    if (v.desconto || v.taxa) l.push(["Subtotal", brl(v.sub)]);
+    if (v.desconto || v.taxa || v.descInd || v.credito) l.push(["Subtotal", brl(v.sub)]);
     if (v.desconto) l.push(["Desconto", "- " + brl(v.desconto)]);
+    if (v.descInd) l.push(["Desconto por indicação (" + v.pctInd.toLocaleString("pt-BR") + "%)", "- " + brl(v.descInd)]);
+    if (v.credito) l.push(["Crédito de indicação", "- " + brl(v.credito)]);
     if (v.taxa) l.push(["Taxa de entrega", brl(v.taxa)]);
     l.push(["VALOR TOTAL DA LOCAÇÃO", brl(v.total), true]);
     if (v.pct > 0) {

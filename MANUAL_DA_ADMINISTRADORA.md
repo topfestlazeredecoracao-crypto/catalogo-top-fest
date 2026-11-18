@@ -221,6 +221,10 @@ Na aba **⚙️ Configurações**:
 | **WhatsApp como aparece escrito** | Como o número é mostrado por escrito. |
 | **Telefone secundário** | Outro telefone de contato. |
 | **Mostrar preços no site** | Botão geral que liga ou desliga os preços no site (veja o item 4.8). |
+| **Programa de indicação ligado** | Liga ou desliga o programa de indicação inteiro (veja o item 11.7). |
+| **Crédito para quem indica (%)** | Quanto do valor da festa do indicado vira crédito para quem indicou. Começa em 10%. |
+| **Desconto para quem foi indicado (%)** | Desconto na primeira locação de quem chegou por indicação. Começa em 5%. Use 0 para não dar desconto. |
+| **Validade do crédito (meses)** | Por quanto tempo o crédito vale. Começa em 6 meses. |
 
 Toque em **Salvar configurações**.
 
@@ -366,6 +370,48 @@ Na lista, use **"Todas as situações"** para ver só os em aberto, os aprovados
 Em **⚙️ Configurações → Contrato** você muda o **título**, o **sinal** (% do total) e as **cláusulas**. Escreva uma cláusula por parágrafo, deixando uma **linha em branco** entre elas. Toque em **Salvar contrato**. Os próximos contratos já saem com o texto novo.
 
 > As cláusulas têm o endereço da chácara. Por isso elas **só aparecem para você e no contrato**, nunca no site.
+
+### 11.7 Programa de indicação (crédito para quem indica)
+
+**Como funciona, em resumo:**
+1. Cada cliente tem um **link pessoal** do catálogo (ex.: `topfestdecoracoes.com.br/?ind=K7M2P`).
+2. Quem abre esse link e pede orçamento chega no seu WhatsApp com a linha **"Indicação: código K7M2P"**. No carrinho, essa pessoa vê que ganha **5% de desconto** na primeira locação.
+3. Quando você marca o orçamento da pessoa indicada como **Aprovado**, quem indicou ganha **10% do valor da festa em crédito** (válido por 6 meses).
+4. Na próxima festa de quem indicou, você usa o crédito como desconto no orçamento.
+
+> Os números (10%, 5%, 6 meses) você muda em **⚙️ Configurações**. A mudança vale para os próximos créditos; os que já existem não mudam.
+
+**Enviar o link para um cliente**
+- Na aba **👥 Clientes**, toque em **🔗 Enviar link de indicação**. Abre o WhatsApp com uma mensagem pronta, com o link e as regras. É só enviar.
+- Se o cliente não tem WhatsApp cadastrado, o botão vira **🔗 Copiar link de indicação**: o link vai para a área de transferência, e você cola onde quiser.
+- O link também aparece em **✏️ Editar** do cliente, no quadro **Indicação e crédito**.
+
+**Quando chega um pedido por indicação**
+1. Use **📋 Colar pedido do WhatsApp** como sempre. Se a mensagem tiver "Indicação: código …" ou "Indicado por: …", o campo **Indicado por** já vem preenchido, e o **desconto de indicação** já vem marcado.
+2. Se a pessoa chamou direto no WhatsApp, sem o link, escolha você mesma quem indicou no campo **Indicado por** do orçamento.
+3. O desconto (5%) é marcado sozinho só na **primeira locação** do cliente. Você pode desmarcar ou marcar quando quiser.
+
+**Quando o orçamento do indicado é aprovado**
+- Ao mudar a situação para **Aprovado**, aparece o aviso "Maria ganhou R$ … de crédito".
+- Na lista de orçamentos aparece o botão **💛 Avisar Maria do crédito**: abre o WhatsApp com uma mensagem pronta para ela.
+- Se depois você mudar para **Cancelado** (ou voltar para Em aberto), o crédito é **retirado sozinho**.
+- O crédito é calculado sobre itens + serviços, menos os descontos. O frete não entra.
+
+**Usar o crédito na festa de quem indicou**
+1. Faça o orçamento da Maria normalmente.
+2. Se ela tem crédito, aparece o quadro **💛 Maria tem R$ … de crédito**.
+3. Toque em **Usar todo o crédito possível** ou digite o valor em **Usar crédito de indicação (R$)**.
+4. O crédito aparece no orçamento, no PDF e no contrato como **"Crédito de indicação"**.
+
+**Ver o saldo e o extrato**
+- A lista de clientes mostra **💛 Crédito: R$ …** de quem tem saldo.
+- Em **✏️ Editar** do cliente aparece o extrato: cada indicação (+), cada uso (−), as validades e o saldo.
+- Se o saldo aparecer **negativo**, é porque o cliente usou um crédito de uma indicação que depois foi cancelada. Decida com ele como acertar.
+
+**Botão "📤 Compartilhar catálogo" no site**
+- Fica no alto do site, para qualquer visitante mandar o catálogo para alguém. Esse link é o comum, **sem** código de indicação: só o link pessoal enviado por você gera crédito.
+
+**Para desligar tudo:** em **⚙️ Configurações**, desmarque **Programa de indicação ligado** e salve. O site para de mostrar o desconto, e os orçamentos aprovados deixam de gerar crédito novo. Os créditos que já existem continuam valendo.
 
 ---
 

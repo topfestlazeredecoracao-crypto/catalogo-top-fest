@@ -101,3 +101,12 @@ a.btn{text-decoration:none}
 .sit-troca select.sit-cancelado{background:var(--bd);color:var(--tx)}
 .sit-troca select.sit-aberto{background:var(--bg);color:var(--tx)}
 .sit-troca option{background:var(--card);color:var(--tx)}
+.indicacao{border:2px solid var(--ac);border-radius:12px;padding:12px 14px;margin:0 0 14px}
+.indicacao h3{margin-top:0}
+.indicacao p{margin:0 0 10px}
+.extrato{list-style:none;margin:8px 0 0;padding:0;font-size:14px}
+.extrato li{padding:6px 0;border-top:1px solid var(--bd)}
+.extrato .mais{color:var(--ok);font-weight:700}
+.extrato .menos{color:var(--erro);font-weight:700}
+.extrato .vencido{color:var(--mu);text-decoration:line-through}
+.saldo-neg{color:var(--erro);font-weight:700}

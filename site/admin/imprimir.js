@@ -51,7 +51,10 @@
     var soma = function (l) { return l.reduce(function (s, it) { return s + it.quantidade * it.preco; }, 0); };
     var sub = soma(itens) + soma(servs);
     var desconto = Number(o.desconto) || 0, taxa = Number(o.taxa_entrega) || 0;
-    var total = Math.max(0, sub - desconto + taxa);
+    var pctInd = Number(o.desconto_indicacao_pct) || 0;
+    var descInd = Math.round(sub * pctInd) / 100;
+    var credito = Number(o.credito_usado) || 0;
+    var total = Math.max(0, sub - desconto - descInd - credito + taxa);
     var linha = function (r, v, cls) { return "<div" + (cls ? ' class="' + cls + '"' : "") + "><span>" + r + "</span><span>" + v + "</span></div>"; };
     var contato = [conf.whatsapp_exibicao ? "WhatsApp " + conf.whatsapp_exibicao : "", conf.telefone_secundario].filter(Boolean).join(" · ");
     var endereco = c ? [c.endereco, c.bairro, c.cidade, c.cep ? "CEP " + c.cep : ""].filter(Boolean).join(" – ") : "";
@@ -70,8 +73,10 @@
       "</section>" +
       tabela("Itens", itens) + tabela("Serviços", servs) +
       '<div class="totais">' +
-      ((desconto || taxa) ? linha("Subtotal", brl(sub)) : "") +
+      ((desconto || taxa || descInd || credito) ? linha("Subtotal", brl(sub)) : "") +
       (desconto ? linha("Desconto", "- " + brl(desconto)) : "") +
+      (descInd ? linha("Desconto por indicação (" + pctInd.toLocaleString("pt-BR") + "%)", "- " + brl(descInd)) : "") +
+      (credito ? linha("Crédito de indicação", "- " + brl(credito)) : "") +
       (taxa ? linha("Taxa de entrega", brl(taxa)) : "") +
       linha("Total", brl(total), "total") + "</div>" +
       (o.observacoes ? '<section class="bloco"><h3>Observações</h3><p class="obs">' + esc(o.observacoes) + "</p></section>" : "") +

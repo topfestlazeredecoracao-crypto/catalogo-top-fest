@@ -740,6 +740,18 @@
     formCfg.whatsapp_exibicao.value = c.whatsapp_exibicao;
     formCfg.telefone_secundario.value = c.telefone_secundario;
     formCfg.mostrar_precos.checked = c.mostrar_precos;
+    formCfg.indicacao_ativa.checked = c.indicacao_ativa !== false;
+    formCfg.indicacao_credito_pct.value = c.indicacao_credito_pct == null ? 10 : c.indicacao_credito_pct;
+    formCfg.indicacao_desconto_pct.value = c.indicacao_desconto_pct == null ? 5 : c.indicacao_desconto_pct;
+    formCfg.indicacao_validade_meses.value = c.indicacao_validade_meses == null ? 6 : c.indicacao_validade_meses;
+  }
+
+  function lerInteiro(txt, campo, min, max) {
+    var n = Number(String(txt).trim());
+    if (String(txt).trim() === "" || !Number.isInteger(n) || n < min || n > max) {
+      throw new Error(campo + ": use um número inteiro de " + min + " a " + max + ".");
+    }
+    return n;
   }
 
   function normalizarWhats(txt) {
@@ -756,7 +768,11 @@
         whatsapp_orcamentos: normalizarWhats(formCfg.whatsapp_orcamentos.value),
         whatsapp_exibicao: formCfg.whatsapp_exibicao.value.trim(),
         telefone_secundario: formCfg.telefone_secundario.value.trim(),
-        mostrar_precos: formCfg.mostrar_precos.checked
+        mostrar_precos: formCfg.mostrar_precos.checked,
+        indicacao_ativa: formCfg.indicacao_ativa.checked,
+        indicacao_credito_pct: lerInteiro(formCfg.indicacao_credito_pct.value, "Crédito para quem indica", 0, 100),
+        indicacao_desconto_pct: lerInteiro(formCfg.indicacao_desconto_pct.value, "Desconto para quem foi indicado", 0, 100),
+        indicacao_validade_meses: lerInteiro(formCfg.indicacao_validade_meses.value, "Validade do crédito", 1, 60)
       };
       return sb.from("configuracoes").update(dados).eq("id", 1).select().single().then(ok);
     }).then(function (c) {
@@ -799,7 +815,7 @@
     ocupado(b, carregarTudo().then(function () {
       var copia = {
         sistema: "catalogo-top-fest",
-        versao: 3,
+        versao: 4,
         exportado_em: new Date().toISOString(),
         endereco_fotos: fotoUrl("x").replace(/x$/, ""),
         configuracoes: st.conf,
@@ -843,12 +859,17 @@
     avisar("Restaurando… não feche a página.");
     var idNovo = {};
     var cfg = c.configuracoes || {};
-    return sb.from("configuracoes").update({
+    var cfgNova = {
       whatsapp_orcamentos: cfg.whatsapp_orcamentos,
       whatsapp_exibicao: cfg.whatsapp_exibicao || "",
       telefone_secundario: cfg.telefone_secundario || "",
       mostrar_precos: !!cfg.mostrar_precos
-    }).eq("id", 1).then(ok).then(function () {
+    };
+    // Cópias antigas não têm o programa de indicação: fica como está.
+    ["indicacao_ativa", "indicacao_credito_pct", "indicacao_desconto_pct", "indicacao_validade_meses"].forEach(function (k) {
+      if (cfg[k] != null) cfgNova[k] = cfg[k];
+    });
+    return sb.from("configuracoes").update(cfgNova).eq("id", 1).then(ok).then(function () {
       // Categorias são casadas pelo nome (o número interno pode mudar).
       return sb.from("categorias").upsert(c.categorias.map(function (x) {
         return { nome: x.nome, icone: x.icone, tipo: x.tipo, ordem: x.ordem };
@@ -881,12 +902,15 @@
     }).then(function () {
       if (!c.clientes || !c.clientes.length) return;
       return sb.from("clientes").upsert(c.clientes.map(function (x) {
-        return {
+        var linha = {
           id: x.id, nome: x.nome, whatsapp: x.whatsapp || "", documento: x.documento || "", email: x.email || "",
           cep: x.cep || "", endereco: x.endereco || "", bairro: x.bairro || "", cidade: x.cidade || "",
           observacoes: x.observacoes || "", rg: x.rg || ""
         };
-      }), { onConflict: "id" }).then(ok);
+        // Mantém o código do link de indicação que o cliente já recebeu.
+        if (x.codigo_indicacao) linha.codigo_indicacao = x.codigo_indicacao;
+        return linha;
+      }), { onConflict: "id", defaultToNull: false }).then(ok);
     }).then(function () {
       if (!c.orcamentos || !c.orcamentos.length) return;
       return sb.from("orcamentos").upsert(c.orcamentos.map(function (x) {
@@ -894,7 +918,10 @@
           id: x.id, numero: x.numero, cliente_id: x.cliente_id || null, cliente_nome: x.cliente_nome || "",
           data_evento: x.data_evento || null, itens: x.itens || [], desconto: x.desconto || 0,
           taxa_entrega: x.taxa_entrega || 0, observacoes: x.observacoes || "", criado_em: x.criado_em,
-          situacao: x.situacao || "aberto", data_retirada: x.data_retirada || null, data_devolucao: x.data_devolucao || null
+          situacao: x.situacao || "aberto", data_retirada: x.data_retirada || null, data_devolucao: x.data_devolucao || null,
+          indicado_por: x.indicado_por || null, desconto_indicacao_pct: x.desconto_indicacao_pct || 0,
+          credito_usado: x.credito_usado || 0, credito_pct: x.credito_pct == null ? null : x.credito_pct,
+          credito_em: x.credito_em || null, credito_validade: x.credito_validade || null
         };
       }), { onConflict: "id" }).then(ok);
     }).then(function () {
@@ -972,6 +999,72 @@
     return d.slice(0, 5) + "-" + d.slice(5);
   }
 
+  // ---------- Indicação e crédito ----------
+  function primeiroNome(n) { return String(n || "").trim().split(/\s+/)[0]; }
+  function centavos(v) { return Math.round((Number(v) || 0) * 100); }
+  function hojeISO() { return new Date().toLocaleDateString("sv-SE"); }
+  function porData(campo) { return function (a, b) { return a[campo] < b[campo] ? -1 : a[campo] > b[campo] ? 1 : 0; }; }
+
+  function linkIndicacao(c) { return location.origin + "/?ind=" + encodeURIComponent(c.codigo_indicacao || ""); }
+
+  function msgLinkIndicacao(c) {
+    var cf = st.conf;
+    var m = "Oi, " + primeiroNome(c.nome) + "! Obrigada por escolher a " + cf.nome + " 💛\n\n" +
+      "Este é o seu link pessoal do nosso catálogo de decoração:\n" + linkIndicacao(c) + "\n\n" +
+      "Compartilhe com amigos e familiares! Quando alguém alugar com a gente por este link, você ganha " +
+      cf.indicacao_credito_pct + "% do valor da locação em crédito para a sua próxima festa (válido por " +
+      cf.indicacao_validade_meses + (cf.indicacao_validade_meses === 1 ? " mês)" : " meses)");
+    if (cf.indicacao_desconto_pct) m += ", e quem você indicou ganha " + cf.indicacao_desconto_pct + "% de desconto na primeira locação";
+    return m + ".";
+  }
+
+  // Créditos de um cliente. Ganhos: orçamentos aprovados de quem ele indicou.
+  // Usos: orçamentos dele (não cancelados) com crédito usado. Cada uso gasta primeiro
+  // o crédito que vence antes. Valores em centavos para não errar nas contas.
+  function creditos(clienteId, excetoOrcId) {
+    var hoje = hojeISO();
+    var ganhos = st.orcs.filter(function (o) {
+      return o.indicado_por === clienteId && o.situacao === "aprovado" && centavos(o.credito_gerado) > 0;
+    }).map(function (o) {
+      return { orc: o, valor: centavos(o.credito_gerado), resta: centavos(o.credito_gerado), em: o.credito_em || "", validade: o.credito_validade || "" };
+    }).sort(porData("validade"));
+    var usos = st.orcs.filter(function (o) {
+      return o.cliente_id === clienteId && o.id !== excetoOrcId && o.situacao !== "cancelado" && centavos(o.credito_usado) > 0;
+    }).map(function (o) {
+      return { orc: o, valor: centavos(o.credito_usado), data: String(o.criado_em || "").slice(0, 10) };
+    }).sort(porData("data"));
+    var semCobertura = 0;
+    usos.forEach(function (u) {
+      var falta = u.valor;
+      ganhos.forEach(function (g) {
+        if (!falta || !g.resta || g.validade < u.data) return;
+        var x = Math.min(falta, g.resta);
+        g.resta -= x;
+        falta -= x;
+      });
+      semCobertura += falta;
+    });
+    var disponivel = 0, vencido = 0;
+    ganhos.forEach(function (g) { if (g.validade >= hoje) disponivel += g.resta; else vencido += g.resta; });
+    return { saldo: (disponivel - semCobertura) / 100, vencido: vencido / 100, ganhos: ganhos, usos: usos };
+  }
+
+  function extratoHtml(c) {
+    var s = creditos(c.id);
+    var hoje = hojeISO();
+    var linhas = s.ganhos.map(function (g) {
+      return { data: g.em, html: dataBR(g.em) + " – Indicou " + esc(nomeCliente(g.orc) || "um cliente") + " (orçamento nº " + g.orc.numero + "): " +
+        '<span class="' + (g.validade < hoje ? "vencido" : "mais") + '">+ ' + brl(g.valor / 100) + "</span> · " +
+        (g.validade < hoje ? "venceu em " : "válido até ") + dataBR(g.validade) };
+    }).concat(s.usos.map(function (u) {
+      return { data: u.data, html: dataBR(u.data) + " – Usou no orçamento nº " + u.orc.numero + ': <span class="menos">− ' + brl(u.valor / 100) + "</span>" };
+    })).sort(porData("data"));
+    if (!linhas.length) return '<p class="dica">Ainda não tem créditos. Envie o link para este cliente começar a indicar.</p>';
+    return "<p><b>Saldo de crédito: " + '<span class="' + (s.saldo < 0 ? "saldo-neg" : "") + '">' + brl(s.saldo) + "</span></b>" +
+      (s.saldo < 0 ? " (usou crédito de uma indicação que depois foi cancelada)" : "") + "</p>" +
+      '<ul class="extrato">' + linhas.map(function (l) { return "<li>" + l.html + "</li>"; }).join("") + "</ul>";
+  }
+
   function desenharClientes() {
     var t = $("#busca-cliente").value.trim().toLowerCase();
     var td = t.replace(/\D/g, "");
@@ -981,7 +1074,8 @@
       return td.length >= 3 && (c.whatsapp + " " + c.documento).indexOf(td) >= 0;
     });
     $("#lista-clientes").innerHTML = lista.map(function (c) {
-      var info = [telBR(c.whatsapp), c.cidade, docBR(c.documento)].filter(Boolean).join(" · ");
+      var saldo = creditos(c.id).saldo;
+      var info = [telBR(c.whatsapp), c.cidade, docBR(c.documento), saldo ? "💛 Crédito: " + brl(saldo) : ""].filter(Boolean).join(" · ");
       return '<li class="item" data-id="' + esc(c.id) + '">' +
         '<div class="mini">👤</div>' +
         '<div class="item-info"><b>' + esc(c.nome) + "</b><span>" + esc(info || "Sem telefone") + "</span></div>" +
@@ -989,6 +1083,9 @@
         '<button class="btn" data-acao="editar">✏️ Editar</button>' +
         '<button class="btn" data-acao="orcamento">🧾 Novo orçamento</button>' +
         (c.whatsapp ? '<a class="btn" href="' + esc(linkWhats(c.whatsapp)) + '" target="_blank" rel="noopener">💬 WhatsApp</a>' : "") +
+        (c.whatsapp
+          ? '<a class="btn" href="' + esc(linkWhats(c.whatsapp, msgLinkIndicacao(c))) + '" target="_blank" rel="noopener">🔗 Enviar link de indicação</a>'
+          : '<button class="btn" data-acao="copiar-link">🔗 Copiar link de indicação</button>') +
         '<button class="btn" data-acao="excluir">🗑️ Excluir</button>' +
         "</div></li>";
     }).join("") || '<li class="dica">' + (st.clientes.length ? "Nenhum cliente encontrado." : "Nenhum cliente cadastrado ainda.") + "</li>";
@@ -1004,6 +1101,7 @@
     var acao = b.dataset.acao;
     if (acao === "editar") abrirCliente(c);
     else if (acao === "orcamento") abrirOrcamento(null, { cliente_id: c.id });
+    else if (acao === "copiar-link") copiarLink(c);
     else if (acao === "excluir") excluirCliente(c);
   });
 
@@ -1021,8 +1119,26 @@
     ["nome", "rg", "email", "cep", "endereco", "bairro", "cidade", "observacoes"].forEach(function (k) { formCli[k].value = v[k] || ""; });
     formCli.whatsapp.value = telBR(v.whatsapp);
     formCli.documento.value = docBR(v.documento);
+    // Link de indicação e extrato (só para cliente já cadastrado).
+    $("#cli-ind").hidden = !c;
+    if (c) {
+      $("#cli-link").value = linkIndicacao(c);
+      var envia = $("#cli-enviar-link");
+      envia.hidden = !c.whatsapp;
+      if (c.whatsapp) envia.href = linkWhats(c.whatsapp, msgLinkIndicacao(c));
+      $("#cli-extrato").innerHTML = extratoHtml(c);
+    }
     $("#dlg-cliente").showModal();
   }
+
+  function copiarLink(c) {
+    var link = linkIndicacao(c);
+    var feito = navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject(new Error("sem área de transferência"));
+    feito.then(function () { avisar("Link copiado: " + link); })
+      .catch(function () { avisar("Não deu para copiar sozinho. O link é: " + link, true); });
+  }
+
+  $("#cli-copiar").addEventListener("click", function () { if (clienteEditando) copiarLink(clienteEditando); });
 
   formCli.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -1081,7 +1197,14 @@
       if (it.tipo === "servico") servicos += v; else itens += v;
     });
     var desconto = Number(o.desconto) || 0, taxa = Number(o.taxa_entrega) || 0;
-    return { itens: itens, servicos: servicos, desconto: desconto, taxa: taxa, total: Math.max(0, itens + servicos - desconto + taxa) };
+    // Desconto de indicação (%) sobre itens + serviços; crédito de indicação usado (R$).
+    var pctInd = Number(o.desconto_indicacao_pct) || 0;
+    var descInd = Math.round((itens + servicos) * pctInd) / 100;
+    var credito = Number(o.credito_usado) || 0;
+    return {
+      itens: itens, servicos: servicos, desconto: desconto, taxa: taxa, pctInd: pctInd, descInd: descInd, credito: credito,
+      total: Math.max(0, itens + servicos - desconto - descInd - credito + taxa)
+    };
   }
 
   function nomeCliente(o) {
@@ -1104,8 +1227,10 @@
     if (o.data_evento) m += "\nData do evento: " + dataBR(o.data_evento) + "\n";
     if (prods.length) m += "\nItens:\n" + prods.map(linhaItem).join("\n") + "\n";
     if (servs.length) m += "\nServiços:\n" + servs.map(linhaItem).join("\n") + "\n";
-    if (v.desconto || v.taxa) m += "\nSubtotal: " + brl(v.itens + v.servicos);
+    if (v.desconto || v.taxa || v.descInd || v.credito) m += "\nSubtotal: " + brl(v.itens + v.servicos);
     if (v.desconto) m += "\nDesconto: - " + brl(v.desconto);
+    if (v.descInd) m += "\nDesconto por indicação (" + v.pctInd + "%): - " + brl(v.descInd);
+    if (v.credito) m += "\nCrédito de indicação: - " + brl(v.credito);
     if (v.taxa) m += "\nTaxa de entrega: " + brl(v.taxa);
     m += "\nTotal: " + brl(v.total) + "\n";
     if (o.observacoes) m += "\nObservações: " + o.observacoes + "\n";
@@ -1122,7 +1247,9 @@
     $("#lista-orcamentos").innerHTML = lista.map(function (o) {
       var c = cliente(o.cliente_id);
       var n = o.itens.length;
-      var info = [o.data_evento ? "Evento: " + dataBR(o.data_evento) : "", n + (n === 1 ? " item" : " itens"), "Total: " + brl(contas(o).total)]
+      var quem = cliente(o.indicado_por);
+      var info = [o.data_evento ? "Evento: " + dataBR(o.data_evento) : "", n + (n === 1 ? " item" : " itens"), "Total: " + brl(contas(o).total),
+        quem ? "Indicado por " + quem.nome + (Number(o.credito_gerado) > 0 ? " (crédito de " + brl(o.credito_gerado) + ")" : "") : ""]
         .filter(Boolean).join(" · ");
       return '<li class="item" data-id="' + esc(o.id) + '">' +
         '<div class="mini">🧾</div>' +
@@ -1141,6 +1268,12 @@
         (c && c.whatsapp
           ? '<a class="btn" href="' + esc(linkWhats(c.whatsapp, msgOrcamento(o))) + '" target="_blank" rel="noopener">💬 Enviar no WhatsApp</a>'
           : '<button class="btn" data-acao="sem-whats">💬 Enviar no WhatsApp</button>') +
+        // Avisar quem indicou que ganhou crédito (só com o orçamento aprovado).
+        (quem && Number(o.credito_gerado) > 0
+          ? (quem.whatsapp
+            ? '<a class="btn" href="' + esc(linkWhats(quem.whatsapp, msgCredito(o))) + '" target="_blank" rel="noopener">💛 Avisar ' + esc(primeiroNome(quem.nome)) + " do crédito</a>"
+            : '<button class="btn" data-acao="sem-whats-ind">💛 Avisar ' + esc(primeiroNome(quem.nome)) + " do crédito</button>")
+          : "") +
         '<button class="btn" data-acao="copiar">📄 Copiar</button>' +
         '<button class="btn" data-acao="excluir">🗑️ Excluir</button>' +
         "</div></li>";
@@ -1148,6 +1281,17 @@
   }
 
   var SITUACOES = { aberto: "Em aberto", aprovado: "Aprovado", cancelado: "Cancelado" };
+
+  function msgCredito(o) {
+    var quem = cliente(o.indicado_por);
+    var amigo = primeiroNome(nomeCliente(o));
+    var saldo = creditos(quem.id).saldo;
+    return "Oi, " + primeiroNome(quem.nome) + "! " +
+      (amigo ? amigo + " alugou com a gente por indicação sua 🎉" : "Uma pessoa que você indicou alugou com a gente 🎉") + "\n\n" +
+      "Você ganhou " + brl(o.credito_gerado) + " de crédito para a sua próxima festa, válido até " + dataBR(o.credito_validade) + "." +
+      (saldo > Number(o.credito_gerado) ? "\nSeu saldo total de crédito é " + brl(saldo) + "." : "") +
+      "\n\nMuito obrigada! 💛\n" + st.conf.nome;
+  }
 
   $("#busca-orc").addEventListener("input", desenharOrcamentos);
   $("#filtro-situacao").addEventListener("change", desenharOrcamentos);
@@ -1159,11 +1303,21 @@
     var o = orcPorId(sel.closest("[data-id]").dataset.id);
     var nova = sel.value;
     sel.disabled = true;
+    var tinhaCredito = Number(o.credito_gerado) > 0;
     sb.from("orcamentos").update({ situacao: nova }).eq("id", o.id).select().single().then(ok).then(function (novo) {
       Object.assign(o, novo);
       desenharOrcamentos();
-      avisar(nova === "aprovado" ? "Orçamento nº " + o.numero + ' aprovado. O botão "📄 Contrato" já está disponível.'
-        : "Situação do orçamento nº " + o.numero + ": " + SITUACOES[nova] + ".");
+      desenharClientes();
+      var quem = cliente(o.indicado_por);
+      var texto = nova === "aprovado" ? "Orçamento nº " + o.numero + ' aprovado. O botão "📄 Contrato" já está disponível.'
+        : "Situação do orçamento nº " + o.numero + ": " + SITUACOES[nova] + ".";
+      if (quem && Number(o.credito_gerado) > 0) {
+        texto += " " + primeiroNome(quem.nome) + " ganhou " + brl(o.credito_gerado) + ' de crédito: toque em "💛 Avisar".';
+      } else if (quem && tinhaCredito) {
+        texto += " O crédito de " + primeiroNome(quem.nome) + " por esta indicação foi retirado.";
+        if (creditos(quem.id).saldo < 0) texto += " Atenção: ela já tinha usado esse crédito.";
+      }
+      avisar(texto);
     }).catch(function (er) { falhou(er); desenharOrcamentos(); });
   });
 
@@ -1178,6 +1332,8 @@
       abrirOrcamento(null, { cliente_id: o.cliente_id, itens: o.itens, desconto: o.desconto, taxa_entrega: o.taxa_entrega, observacoes: o.observacoes });
     } else if (acao === "sem-whats") {
       avisar("Este cliente não tem WhatsApp cadastrado. Abra o orçamento e cadastre ou escolha o cliente.", true);
+    } else if (acao === "sem-whats-ind") {
+      avisar("Quem indicou não tem WhatsApp cadastrado. Cadastre o número na aba Clientes.", true);
     } else if (acao === "excluir") {
       confirmar("Excluir o orçamento nº " + o.numero + "?", "Excluir").then(function (sim) {
         if (!sim) return;
@@ -1219,7 +1375,10 @@
       itens: JSON.parse(JSON.stringify(v.itens || [])),
       desconto: Number(v.desconto) || 0,
       taxa_entrega: Number(v.taxa_entrega) || 0,
-      observacoes: v.observacoes || ""
+      observacoes: v.observacoes || "",
+      indicado_por: v.indicado_por || null,
+      desconto_indicacao_pct: Number(v.desconto_indicacao_pct) || 0,
+      credito_usado: Number(v.credito_usado) || 0
     };
     formO.reset();
     $("#dlg-orcamento-tit").textContent = base ? "Orçamento nº " + base.numero : "Novo orçamento";
@@ -1232,6 +1391,9 @@
     formO.desconto.value = numCampo(orc.desconto);
     formO.taxa_entrega.value = numCampo(orc.taxa_entrega);
     formO.observacoes.value = orc.observacoes;
+    formO.credito_usado.value = numCampo(orc.credito_usado);
+    opcoesIndicado();
+    atualizarCredito();
     $("#orc-sugestoes").innerHTML = "";
     avisoOrc("");
     listaServicos();
@@ -1277,6 +1439,8 @@
     $("#orc-totais").innerHTML = linha("Itens", brl(v.itens)) +
       (v.servicos ? linha("Serviços", brl(v.servicos)) : "") +
       (v.desconto ? linha("Desconto", "- " + brl(v.desconto)) : "") +
+      (v.descInd ? linha("Desconto por indicação (" + v.pctInd + "%)", "- " + brl(v.descInd)) : "") +
+      (v.credito ? linha("Crédito de indicação usado", "- " + brl(v.credito)) : "") +
       (v.taxa ? linha("Taxa de entrega", brl(v.taxa)) : "") +
       linha("Total", brl(v.total), "total");
   }
@@ -1366,6 +1530,92 @@
   formO.cliente_id.addEventListener("change", function () {
     orc.cliente_id = formO.cliente_id.value || null;
     if (orc.cliente_id) avisoOrc("");
+    // O crédito é de cada cliente: trocou o cliente, zera o crédito usado.
+    orc.credito_usado = 0;
+    formO.credito_usado.value = "";
+    opcoesIndicado();
+    atualizarCredito();
+    desenharTotais();
+  });
+
+  // Primeira locação = o cliente ainda não tem outro orçamento aprovado.
+  function primeiraLocacao(clienteId) {
+    if (!clienteId) return true;
+    return !st.orcs.some(function (o) {
+      return o.cliente_id === clienteId && o.situacao === "aprovado" && (!orcOriginal || o.id !== orcOriginal.id);
+    });
+  }
+
+  function pctDescontoIndicacao() {
+    return st.conf.indicacao_ativa !== false ? Number(st.conf.indicacao_desconto_pct) || 0 : 0;
+  }
+
+  // "Indicado por": todos os clientes, menos o próprio cliente do orçamento.
+  function opcoesIndicado() {
+    if (orc.indicado_por && orc.indicado_por === orc.cliente_id) {
+      orc.indicado_por = null;
+      orc.desconto_indicacao_pct = 0;
+    }
+    formO.indicado_por.innerHTML = '<option value="">— Ninguém —</option>' + st.clientes.filter(function (c) {
+      return c.id !== orc.cliente_id;
+    }).map(function (c) {
+      return '<option value="' + esc(c.id) + '">' + esc(c.nome) + "</option>";
+    }).join("");
+    formO.indicado_por.value = orc.indicado_por || "";
+    atualizarDescontoIndicacao();
+  }
+
+  function atualizarDescontoIndicacao() {
+    var pct = orc.desconto_indicacao_pct || pctDescontoIndicacao();
+    formO.desc_ind.checked = orc.desconto_indicacao_pct > 0;
+    formO.desc_ind.disabled = !orc.indicado_por || (!pct && !orc.desconto_indicacao_pct);
+    $("#orc-desc-ind-txt").textContent = pct
+      ? "Dar " + pct.toLocaleString("pt-BR") + "% de desconto por indicação"
+      : "Desconto por indicação (desligado em Configurações)";
+  }
+
+  formO.indicado_por.addEventListener("change", function () {
+    orc.indicado_por = formO.indicado_por.value || null;
+    // Escolheu quem indicou: já marca o desconto, se for a primeira locação do cliente.
+    orc.desconto_indicacao_pct = orc.indicado_por && primeiraLocacao(orc.cliente_id) ? pctDescontoIndicacao() : 0;
+    atualizarDescontoIndicacao();
+    desenharTotais();
+  });
+
+  formO.desc_ind.addEventListener("change", function () {
+    orc.desconto_indicacao_pct = formO.desc_ind.checked ? pctDescontoIndicacao() : 0;
+    atualizarDescontoIndicacao();
+    desenharTotais();
+  });
+
+  // Crédito disponível do cliente (sem contar o que este orçamento já usa).
+  function creditoDisponivel() {
+    if (!orc.cliente_id) return 0;
+    return Math.max(0, creditos(orc.cliente_id, orcOriginal && orcOriginal.id).saldo);
+  }
+
+  function atualizarCredito() {
+    var c = cliente(orc.cliente_id);
+    var disp = creditoDisponivel();
+    var usado = Number(orc.credito_usado) || 0;
+    $("#orc-credito").hidden = !c || (!disp && !usado);
+    if (!c) return;
+    $("#orc-credito-txt").innerHTML = disp
+      ? "💛 <b>" + esc(primeiroNome(c.nome)) + " tem " + brl(disp) + "</b> de crédito de indicação para usar."
+      : "💛 " + esc(primeiroNome(c.nome)) + " não tem crédito disponível agora.";
+    $("#orc-usar-credito").hidden = !disp;
+  }
+
+  formO.credito_usado.addEventListener("input", function () {
+    orc.credito_usado = lerNumero(formO.credito_usado.value);
+    desenharTotais();
+  });
+
+  $("#orc-usar-credito").addEventListener("click", function () {
+    var v = contas({ itens: orc.itens, desconto: orc.desconto, taxa_entrega: 0, desconto_indicacao_pct: orc.desconto_indicacao_pct, credito_usado: 0 });
+    orc.credito_usado = Math.min(creditoDisponivel(), v.total);
+    formO.credito_usado.value = numCampo(orc.credito_usado);
+    desenharTotais();
   });
 
   var nomePedido = "";   // nome que veio no pedido colado, para sugerir no cadastro
@@ -1374,6 +1624,8 @@
     abrirCliente(null, { nome: nomePedido }, function (c) {
       orc.cliente_id = c.id;
       opcoesCliente();
+      opcoesIndicado();
+      atualizarCredito();
       avisoOrc("");
     });
   });
@@ -1397,7 +1649,17 @@
     var retirada = formO.data_retirada.value || null, devolucao = formO.data_devolucao.value || null;
     if (retirada && devolucao && devolucao < retirada) throw new Error("A data da devolução é antes da data da retirada.");
     var c = cliente(orc.cliente_id);
+    var creditoUsado = lerValor(formO.credito_usado.value, "Crédito usado");
+    var usadoAntes = orcOriginal ? Number(orcOriginal.credito_usado) || 0 : 0;
+    if (creditoUsado && !c) throw new Error("Escolha o cliente para usar o crédito de indicação.");
+    if (creditoUsado > creditoDisponivel() + 0.004 && creditoUsado !== usadoAntes) {
+      throw new Error("O crédito usado passa do disponível (" + brl(creditoDisponivel()) + ").");
+    }
+    var indicadoPor = orc.indicado_por && orc.indicado_por !== (c && c.id) ? orc.indicado_por : null;
     var dados = {
+      indicado_por: indicadoPor,
+      desconto_indicacao_pct: indicadoPor ? orc.desconto_indicacao_pct || 0 : 0,
+      credito_usado: creditoUsado,
       situacao: formO.situacao.value,
       data_retirada: retirada,
       data_devolucao: devolucao,
@@ -1418,7 +1680,10 @@
       $("#dlg-orcamento").close();
       $("#busca-orc").value = "";
       desenharOrcamentos();
-      avisar("Orçamento nº " + novo.numero + " salvo. Agora você pode imprimir ou enviar no WhatsApp.");
+      desenharClientes();
+      var quem = cliente(novo.indicado_por);
+      avisar("Orçamento nº " + novo.numero + " salvo. Agora você pode imprimir ou enviar no WhatsApp." +
+        (quem && Number(novo.credito_gerado) > 0 ? " " + primeiroNome(quem.nome) + " tem " + brl(novo.credito_gerado) + " de crédito por esta indicação." : ""));
     });
   }
 
@@ -1432,11 +1697,15 @@
 
   // Entende a mensagem que o site manda: "- 2x (Cód. 080) Nome", "Nome: …", "Data do evento: dd/mm/aaaa".
   function lerPedido(txt) {
-    var r = { itens: [], nome: "", data: "", faltou: [] };
+    var r = { itens: [], nome: "", data: "", faltou: [], indCodigo: "", indNome: "" };
     var guarda = orc;
     orc = { itens: r.itens };
     txt.split(/\r?\n/).forEach(function (l) {
       l = l.trim();
+      var mic = l.match(/^indica[çc][ãa]o:\s*(?:c[óo]digo\s*)?([A-Za-z0-9]{3,10})\s*$/i);
+      var mip = l.match(/^indicad[oa] por:\s*(.+)$/i);
+      if (mic) { r.indCodigo = mic[1].toUpperCase(); return; }
+      if (mip) { r.indNome = mip[1].trim(); return; }
       var mn = l.match(/^nome:\s*(.+)$/i);
       var md = l.match(/^data do evento:\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/i);
       var mi = l.match(/^[-•*]?\s*(\d+)\s*x\s+(.+)$/i);
@@ -1465,10 +1734,23 @@
     }
     var nome = r.nome.toLowerCase();
     var c = nome ? st.clientes.filter(function (x) { return x.nome.toLowerCase() === nome; })[0] : null;
+    // Quem indicou: pelo código do link ou pelo nome que a pessoa escreveu.
+    var quem = null;
+    if (r.indCodigo) quem = st.clientes.filter(function (x) { return x.codigo_indicacao === r.indCodigo; })[0] || null;
+    else if (r.indNome) quem = st.clientes.filter(function (x) { return x.nome.toLowerCase() === r.indNome.toLowerCase(); })[0] || null;
+    if (quem && c && quem.id === c.id) quem = null;
     $("#dlg-colar").close();
-    abrirOrcamento(null, { cliente_id: c ? c.id : null, data_evento: r.data, itens: r.itens });
+    orcOriginal = null;
+    abrirOrcamento(null, {
+      cliente_id: c ? c.id : null, data_evento: r.data, itens: r.itens,
+      indicado_por: quem ? quem.id : null,
+      desconto_indicacao_pct: quem && primeiraLocacao(c ? c.id : null) ? pctDescontoIndicacao() : 0
+    });
     nomePedido = r.nome;
     var avisos = [];
+    if (quem) avisos.push("Indicação de " + quem.nome + " já preenchida.");
+    else if (r.indCodigo) avisos.push("O pedido veio com o código de indicação " + r.indCodigo + ", mas nenhum cliente tem esse código. Se souber quem indicou, escolha em \"Indicado por\".");
+    else if (r.indNome) avisos.push('O pedido diz "Indicado por: ' + r.indNome + '", mas não encontrei esse nome nos clientes. Se for um cliente, escolha em "Indicado por".');
     if (r.nome && !c) avisos.push('O pedido veio com o nome "' + r.nome + '", que não está cadastrado. Escolha o cliente ou toque em "Cadastrar cliente".');
     if (r.faltou.length) avisos.push("Não encontrei no catálogo: " + r.faltou.join(" | ") + ". Adicione manualmente.");
     avisoOrc(avisos.join(" "));

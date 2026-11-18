@@ -345,3 +345,109 @@ create policy "somente admin" on public.contrato_modelo for all to authenticated
   using (public.is_admin()) with check (public.is_admin());
 revoke all on public.contrato_modelo from anon;
 grant select, insert, update on public.contrato_modelo to authenticated;
+
+-- ---------- Programa de indicação (18/11/2026) ----------
+-- Cada cliente tem um código (ex.: K7M2P) para o link pessoal: topfestdecoracoes.com.br/?ind=K7M2P
+-- Quem chega pelo link e aluga ganha um desconto na primeira locação; quando o orçamento dessa
+-- pessoa é aprovado, quem indicou ganha crédito para a próxima festa.
+
+-- Regras do programa (a administradora muda em Configurações).
+alter table public.configuracoes add column if not exists indicacao_ativa boolean not null default true;
+alter table public.configuracoes add column if not exists indicacao_credito_pct int not null default 10
+  check (indicacao_credito_pct between 0 and 100);
+alter table public.configuracoes add column if not exists indicacao_desconto_pct int not null default 5
+  check (indicacao_desconto_pct between 0 and 100);
+alter table public.configuracoes add column if not exists indicacao_validade_meses int not null default 6
+  check (indicacao_validade_meses between 1 and 60);
+
+-- Código de indicação do cliente: 5 letras/números, sem os que se confundem (0/O, 1/I/L).
+create or replace function public.novo_codigo_indicacao()
+returns text
+language plpgsql
+volatile
+set search_path = ''
+as $$
+declare
+  letras constant text := 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  c text;
+begin
+  loop
+    c := '';
+    for i in 1..5 loop
+      c := c || substr(letras, 1 + floor(random() * length(letras))::int, 1);
+    end loop;
+    exit when not exists (select 1 from public.clientes where codigo_indicacao = c);
+  end loop;
+  return c;
+end;
+$$;
+revoke execute on function public.novo_codigo_indicacao() from public, anon;
+grant execute on function public.novo_codigo_indicacao() to authenticated;
+
+alter table public.clientes add column if not exists codigo_indicacao text;
+update public.clientes set codigo_indicacao = public.novo_codigo_indicacao() where codigo_indicacao is null;
+alter table public.clientes alter column codigo_indicacao set default public.novo_codigo_indicacao();
+alter table public.clientes alter column codigo_indicacao set not null;
+alter table public.clientes drop constraint if exists clientes_codigo_indicacao_formato;
+alter table public.clientes add constraint clientes_codigo_indicacao_formato
+  check (codigo_indicacao ~ '^[A-Z0-9]{3,10}$');
+create unique index if not exists clientes_codigo_indicacao_unico on public.clientes (codigo_indicacao);
+
+-- No orçamento: quem indicou, desconto do indicado (%), crédito usado (R$) e crédito gerado para quem indicou.
+alter table public.orcamentos add column if not exists indicado_por uuid references public.clientes (id) on delete set null;
+alter table public.orcamentos add column if not exists desconto_indicacao_pct numeric(5, 2) not null default 0
+  check (desconto_indicacao_pct between 0 and 100);
+alter table public.orcamentos add column if not exists credito_usado numeric(10, 2) not null default 0
+  check (credito_usado >= 0);
+alter table public.orcamentos add column if not exists credito_pct numeric(5, 2);
+alter table public.orcamentos add column if not exists credito_gerado numeric(10, 2);
+alter table public.orcamentos add column if not exists credito_em date;
+alter table public.orcamentos add column if not exists credito_validade date;
+
+-- Calcula o crédito de quem indicou. Só existe enquanto o orçamento estiver "aprovado":
+-- cancelou (ou voltou para "em aberto"), o crédito some. O percentual e a validade ficam
+-- guardados na primeira aprovação, para não mudarem se as Configurações mudarem depois.
+-- Base do crédito: itens + serviços − desconto − desconto de indicação (sem frete).
+create or replace function public.calcular_credito_indicacao()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+declare
+  cfg public.configuracoes;
+  base numeric;
+  hoje date := (now() at time zone 'America/Sao_Paulo')::date;
+begin
+  if new.situacao = 'aprovado' and new.indicado_por is not null
+     and new.indicado_por is distinct from new.cliente_id then
+    if new.credito_pct is null then
+      select * into cfg from public.configuracoes where id = 1;
+      if not coalesce(cfg.indicacao_ativa, false) or coalesce(cfg.indicacao_credito_pct, 0) = 0 then
+        new.credito_gerado := null;
+        new.credito_em := null;
+        new.credito_validade := null;
+        return new;
+      end if;
+      new.credito_pct := cfg.indicacao_credito_pct;
+      new.credito_em := hoje;
+      new.credito_validade := (hoje + make_interval(months => cfg.indicacao_validade_meses))::date;
+    end if;
+    select coalesce(sum(coalesce((it->>'quantidade')::numeric, 0) * coalesce((it->>'preco')::numeric, 0)), 0)
+      into base from jsonb_array_elements(new.itens) it;
+    base := base - round(base * new.desconto_indicacao_pct / 100, 2) - new.desconto;
+    new.credito_gerado := greatest(0, round(base * new.credito_pct / 100, 2));
+  else
+    new.credito_pct := null;
+    new.credito_gerado := null;
+    new.credito_em := null;
+    new.credito_validade := null;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists credito_indicacao on public.orcamentos;
+create trigger credito_indicacao before insert or update on public.orcamentos
+  for each row execute function public.calcular_credito_indicacao();
+
+-- Orçamentos antigos já aprovados não geram crédito retroativo (não têm "indicado por").

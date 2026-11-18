@@ -7,6 +7,8 @@
   var CFG = window.TOPFEST;
   var GALERIA = "galeria";
   var CARRINHO = "topfest-orcamento";
+  var INDICACAO = "topfest-indicacao";
+  var DIAS_INDICACAO = 90;   // por quanto tempo o site lembra o link de indicação
 
   var cats = [];        // categorias em ordem
   var prods = [];       // produtos ativos em ordem (categoria, ordem)
@@ -20,6 +22,8 @@
   var q = "";
   var nome = "";
   var data = "";
+  var indicadoPor = "";   // nome digitado em "Quem te indicou?"
+  var indicacao = lerIndicacao();   // código do link pessoal (?ind=K7M2P)
 
   function $(s) { return document.querySelector(s); }
 
@@ -42,6 +46,28 @@
   function salvarCarrinho() {
     try { localStorage.setItem(CARRINHO, JSON.stringify(cart)); } catch (e) { /* sem armazenamento */ }
   }
+
+  // Link de indicação: guarda o código por alguns dias neste aparelho e tira do endereço,
+  // para que, se esta pessoa compartilhar o site, o link dela vá limpo.
+  function lerIndicacao() {
+    var guardado = null;
+    try { guardado = JSON.parse(localStorage.getItem(INDICACAO)); } catch (e) { /* sem armazenamento */ }
+    var params = new URLSearchParams(location.search);
+    var novo = (params.get("ind") || "").trim().toUpperCase();
+    if (params.has("ind")) {
+      params.delete("ind");
+      var resto = params.toString();
+      try { history.replaceState(null, "", location.pathname + (resto ? "?" + resto : "") + location.hash); } catch (e) { /* ignora */ }
+    }
+    if (/^[A-Z0-9]{3,10}$/.test(novo)) {
+      guardado = { c: novo, t: Date.now() };
+      try { localStorage.setItem(INDICACAO, JSON.stringify(guardado)); } catch (e) { /* sem armazenamento */ }
+    }
+    if (!guardado || !/^[A-Z0-9]{3,10}$/.test(guardado.c) || !(Date.now() - guardado.t < DIAS_INDICACAO * 864e5)) return "";
+    return guardado.c;
+  }
+
+  function programaIndicacao() { return conf.indicacao_ativa === true; }
 
   function api(tabela, consulta) {
     return fetch(CFG.supabaseUrl + "/rest/v1/" + tabela + "?" + consulta, {
@@ -212,7 +238,8 @@
   // Botões "Tirar dúvidas": abrem o WhatsApp sem lista de itens.
   function linksDuvida() {
     var href = "https://wa.me/" + conf.whatsapp_orcamentos + "?text=" +
-      encodeURIComponent("Olá! Vim pelo catálogo da Chácara Top Fest e gostaria de tirar uma dúvida.");
+      encodeURIComponent("Olá! Vim pelo catálogo da Chácara Top Fest e gostaria de tirar uma dúvida." +
+        (indicacao && programaIndicacao() ? "\n\nIndicação: código " + indicacao : ""));
     Array.prototype.forEach.call(document.querySelectorAll("[data-duvida]"), function (a) { a.href = href; });
   }
 
@@ -249,6 +276,10 @@
     var n = nome.trim();
     if (n) m += "\nNome: " + n;
     if (data) m += "\nData do evento: " + data.split("-").reverse().join("/");
+    if (programaIndicacao()) {
+      if (indicacao) m += "\nIndicação: código " + indicacao;
+      else if (indicadoPor.trim()) m += "\nIndicado por: " + indicadoPor.trim();
+    }
     return m + "\n\nObrigado!";
   }
 
@@ -264,10 +295,33 @@
     });
     h += '<label class="f">Seu nome<input id="nm" autocomplete="name" value="' + esc(nome) + '"></label>' +
       '<label class="f">Data do evento<input id="dt" type="date" value="' + esc(data) + '"></label>' +
+      blocoIndicacao() +
       '<a id="send" class="' + (ids.length ? "" : "off") + '" target="_blank" rel="noopener" href="#">Enviar orçamento pelo WhatsApp</a>' +
       '<div class="sec"><button data-a="x">Continuar escolhendo</button><button data-a="clr">Limpar</button></div>';
     $("#panel").innerHTML = h;
     upd();
+  }
+
+  // Quem chegou pelo link de um cliente vê o aviso do desconto; os outros podem dizer quem indicou.
+  function blocoIndicacao() {
+    if (!programaIndicacao()) return "";
+    var pct = Number(conf.indicacao_desconto_pct) || 0;
+    if (indicacao) {
+      return '<p class="indic">🎁 Você chegou pela indicação de um cliente nosso' +
+        (pct ? " e ganha <b>" + pct + "% de desconto</b> na sua primeira locação" : "") + ".</p>";
+    }
+    return '<label class="f">Quem te indicou? (opcional)<input id="ind" autocomplete="off" maxlength="80" value="' + esc(indicadoPor) + '"></label>';
+  }
+
+  // Botão "Compartilhar catálogo": usa o compartilhar do celular; sem ele, abre o WhatsApp.
+  function compartilhar() {
+    var url = location.origin + "/";
+    var texto = "Olha o catálogo de decoração para locação da Chácara Top Fest:";
+    if (navigator.share) {
+      navigator.share({ title: document.title, text: texto, url: url }).catch(function () { /* cancelado */ });
+    } else {
+      window.open("https://wa.me/?text=" + encodeURIComponent(texto + " " + url), "_blank", "noopener");
+    }
   }
 
   function upd() {
@@ -390,6 +444,7 @@
   });
 
   $("#fab").addEventListener("click", abrirPainel);
+  $("#compartilhar").addEventListener("click", compartilhar);
 
   // Botão ☰: esconde ou mostra a coluna de categorias.
   // Ao entrar no site a coluna sempre aparece, para o cliente saber que ela existe.
@@ -436,6 +491,7 @@
   $("#panel").addEventListener("input", function (e) {
     if (e.target.id === "nm") nome = e.target.value;
     if (e.target.id === "dt") data = e.target.value;
+    if (e.target.id === "ind") indicadoPor = e.target.value;
     upd();
   });
 

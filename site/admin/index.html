@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261118-3">
+<link rel="stylesheet" href="admin.css?v=20261118-4">
 </head>
 <body>
 <header class="topo">
@@ -143,6 +143,15 @@
         </label>
         <label class="check"><input type="checkbox" name="mostrar_precos"> Mostrar preços no site</label>
         <small class="abaixo-check">Liga ou desliga os preços de todos os produtos. Com ele ligado, aparecem só os produtos que têm preço e estão com "Mostrar o preço deste produto no site" marcado.</small>
+        <h3>Programa de indicação</h3>
+        <label class="check"><input type="checkbox" name="indicacao_ativa"> Programa de indicação ligado</label>
+        <small class="abaixo-check">Ligado: quem chega pelo link de um cliente vê o desconto no site, e quem indicou ganha crédito quando o orçamento da pessoa indicada é aprovado.</small>
+        <div class="valores">
+          <label>Crédito para quem indica (%)<input name="indicacao_credito_pct" type="number" min="0" max="100" step="1" inputmode="numeric" required></label>
+          <label>Desconto para quem foi indicado (%)<input name="indicacao_desconto_pct" type="number" min="0" max="100" step="1" inputmode="numeric" required></label>
+        </div>
+        <label>Validade do crédito (meses)<input name="indicacao_validade_meses" type="number" min="1" max="60" step="1" inputmode="numeric" required>
+          <small>As mudanças valem para os próximos créditos. Os créditos que já existem não mudam.</small></label>
         <button class="btn pri grande" type="submit">Salvar configurações</button>
       </form>
       <form id="form-contrato" class="cartao">
@@ -245,6 +254,15 @@
     <label>Bairro<input name="bairro" maxlength="100" autocomplete="off"></label>
     <label>Cidade<input name="cidade" maxlength="100" autocomplete="off"></label>
     <label>Observações<textarea name="observacoes" rows="3" maxlength="1000"></textarea></label>
+    <div id="cli-ind" class="indicacao" hidden>
+      <h3>Indicação e crédito</h3>
+      <label>Link pessoal de indicação<input id="cli-link" readonly></label>
+      <div class="botoes">
+        <button class="btn" type="button" id="cli-copiar">📋 Copiar link</button>
+        <a class="btn" id="cli-enviar-link" target="_blank" rel="noopener">💬 Enviar link pelo WhatsApp</a>
+      </div>
+      <div id="cli-extrato"></div>
+    </div>
     <div class="acoes">
       <button class="btn" type="button" data-fechar>Cancelar</button>
       <button class="btn pri" type="submit">Salvar</button>
@@ -288,6 +306,16 @@
       <label>Desconto (R$)<input name="desconto" inputmode="decimal" placeholder="0,00"></label>
       <label>Taxa de entrega / frete (R$)<input name="taxa_entrega" inputmode="decimal" placeholder="0,00"></label>
     </div>
+    <h3>Indicação e crédito</h3>
+    <label>Indicado por<select name="indicado_por"></select>
+      <small>Quem indicou este cliente. Quando este orçamento for aprovado, quem indicou ganha crédito.</small></label>
+    <label class="check"><input type="checkbox" name="desc_ind"> <span id="orc-desc-ind-txt">Desconto por indicação</span></label>
+    <small class="abaixo-check">Normalmente só na primeira locação de quem foi indicado.</small>
+    <div id="orc-credito" class="indicacao" hidden>
+      <p id="orc-credito-txt"></p>
+      <label>Usar crédito de indicação (R$)<input name="credito_usado" inputmode="decimal" placeholder="0,00"></label>
+      <button class="btn" type="button" id="orc-usar-credito">Usar todo o crédito possível</button>
+    </div>
     <div id="orc-totais" class="totais"></div>
     <label>Observações (aparecem no orçamento)<textarea name="observacoes" rows="3" maxlength="2000" placeholder="Ex.: local, horário, forma de pagamento"></textarea></label>
     <div class="acoes">
@@ -326,6 +354,6 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="admin.js?v=20261118-3"></script>
+<script src="admin.js?v=20261118-4"></script>
 </body>
 </html>
