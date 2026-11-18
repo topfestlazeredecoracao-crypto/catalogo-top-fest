@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Relatório de produtos – Chácara Top Fest</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
+<link rel="stylesheet" href="imprimir.css">
+</head>
+<body class="relatorio">
+<div class="barra-tela">
+  <div class="opcoes">
+    <label>Categoria <select id="f-cat"><option value="">Todas as categorias</option></select></label>
+    <label>Ordenar por
+      <select id="f-ordem">
+        <option value="categoria">Categoria (ordem do site)</option>
+        <option value="codigo">Código</option>
+        <option value="nome">Nome</option>
+      </select>
+    </label>
+    <label>Mostrar
+      <select id="f-situacao">
+        <option value="todos">Todos os produtos</option>
+        <option value="ativos">Só os que aparecem no site</option>
+        <option value="ocultos">Só os ocultos</option>
+      </select>
+    </label>
+    <label class="check"><input type="checkbox" id="f-conferir" checked> Coluna para conferência</label>
+  </div>
+  <button id="imprimir" type="button" disabled>🖨️ Imprimir / Salvar em PDF</button>
+  <span>Para PDF: escolha <b>"Salvar como PDF"</b> no lugar da impressora.</span>
+</div>
+<main id="folha"><p class="msg">Carregando os produtos…</p></main>
+<script src="vendor/supabase-2.117.3.js"></script>
+<script src="../js/config.js"></script>
+<script src="relatorio.js"></script>
+</body>
+</html>

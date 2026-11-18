@@ -47,3 +47,21 @@ th{background:#f6f4ef;font-size:13px}
 .assinaturas span{display:block;border-top:1px solid #1d2733;margin-bottom:6px}
 @media(max-width:560px){.assinaturas{grid-template-columns:1fr;gap:48px}}
 @media print{.assinaturas{break-inside:avoid}}
+/* Relatório de produtos */
+.relatorio .opcoes{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;width:100%}
+.relatorio .opcoes label{display:flex;flex-direction:column;gap:3px;font-size:13px}
+.relatorio .opcoes label.check{flex-direction:row;align-items:center;gap:6px;align-self:flex-end;padding-bottom:8px}
+.relatorio .opcoes select{font:inherit;font-size:15px;padding:8px;border-radius:8px;border:0;max-width:280px}
+.relatorio .opcoes input[type=checkbox]{width:20px;height:20px}
+.relatorio #folha{max-width:960px}
+.relatorio table{font-size:13.5px}
+.relatorio td,.relatorio th{padding:5px 8px}
+.relatorio tr.oculto td{color:#8a8f96}
+.relatorio .selo{font-size:10.5px;text-transform:uppercase;border:1px solid #b9bec4;border-radius:4px;padding:0 4px;margin-left:4px}
+.relatorio .sem{color:#8a8f96}
+.relatorio .conf{width:46px;text-align:center}
+.relatorio .caixinha{display:inline-block;width:14px;height:14px;border:1.5px solid #1d2733;border-radius:2px}
+.filtros-rel{margin:-6px 0 12px;color:#5d6b78;font-size:13px}
+.resumo{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:14px}
+.relatorio .assinaturas{margin-top:48px}
+@media print{.relatorio thead{display:table-header-group}.relatorio tr.oculto td{color:#555}}

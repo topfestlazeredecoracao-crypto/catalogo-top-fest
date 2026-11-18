@@ -323,7 +323,12 @@
   }
 
   $("#busca").addEventListener("input", desenharProdutos);
-  $("#filtro-cat").addEventListener("change", desenharProdutos);
+  $("#filtro-cat").addEventListener("change", function () {
+    desenharProdutos();
+    // O relatório já abre com a mesma categoria escolhida aqui.
+    var c = $("#filtro-cat").value;
+    $("#relatorio-produtos").href = "relatorio.html" + (c ? "?cat=" + encodeURIComponent(c) : "");
+  });
 
   $("#lista-produtos").addEventListener("click", function (e) {
     var b = e.target.closest("[data-acao]");

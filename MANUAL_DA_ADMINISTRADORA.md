@@ -137,6 +137,21 @@ Cada produto tem um **código** de 3 números (ex.: **Cód. 080**). O cliente v�
 
 ---
 
+### 4.10 Relatório de produtos (imprimir ou salvar em PDF)
+
+Serve para conferir o estoque ou ter uma lista em papel com **código, categoria, nome e valor** de cada produto.
+
+1. Na aba **📦 Produtos**, toque em **📄 Relatório em PDF**. A lista abre em outra aba.
+   - Se você já tiver escolhido uma categoria no filtro, o relatório abre só com ela.
+2. No topo da página, escolha:
+   - **Categoria:** todas ou só uma;
+   - **Ordenar por:** categoria (a mesma ordem do site), código ou nome;
+   - **Mostrar:** todos os produtos, só os que aparecem no site ou só os ocultos;
+   - **Coluna para conferência:** coloca um quadradinho em cada linha para você marcar com caneta, e espaço para "Conferido por" e "Data" no final.
+3. Toque em **🖨️ Imprimir / Salvar em PDF**. Para ter o arquivo, escolha **"Salvar como PDF"** no lugar da impressora.
+
+No relatório, os produtos ocultos aparecem em cinza com a marca "oculto", e quem não tem valor cadastrado aparece com "—". No final, há o total de produtos, quantos estão ocultos e quantos estão sem valor.
+
 ## 5. Categorias
 
 As categorias são os botões no alto do site (Mobiliário, Flores, Placas...).
