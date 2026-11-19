@@ -104,7 +104,7 @@ footer{text-align:center;color:var(--mu);font-size:12.5px;padding:24px 16px 32px
   #grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 }
 /* Compartilhar o catálogo e indicação */
-.compartilhar{display:block;margin:10px auto 0;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:8px 16px;font-weight:700;font-size:14px;min-height:40px}
+.compartilhar{display:block;margin:8px 0 0;border:1px solid rgba(255,255,255,.5);background:transparent;color:rgba(255,255,255,.92);border-radius:999px;padding:3px 10px;font-weight:600;font-size:12px;min-height:30px;cursor:pointer}
 .compartilhar:hover{background:rgba(255,255,255,.26)}
 .indic{margin:14px 0 0;padding:10px 12px;border:2px solid var(--gold);border-radius:12px;background:var(--card);font-size:14px}
 /* Kits (inspirações com a lista de itens) */
