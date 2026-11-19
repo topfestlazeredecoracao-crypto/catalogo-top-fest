@@ -115,7 +115,6 @@ footer{text-align:center;color:var(--mu);font-size:12.5px;padding:24px 16px 32px
 .lb-kit{max-width:640px;margin:4px auto 0}
 /* Chácara: botão na coluna de categorias e faixa em "Todos" */
 a.chip{text-decoration:none}
-.chip.chacara{border:2px solid var(--wa-bg);color:var(--wa);font-weight:700}
 .banner-chacara{grid-column:1/-1;position:relative;display:block;min-height:170px;border-radius:16px;overflow:hidden;text-decoration:none;color:#fff;background:linear-gradient(135deg,#8f6d14,#0f5f85)}
 .banner-chacara img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .banner-chacara::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.72),rgba(0,0,0,.15))}

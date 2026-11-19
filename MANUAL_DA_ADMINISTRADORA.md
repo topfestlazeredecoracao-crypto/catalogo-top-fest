@@ -468,7 +468,7 @@ Uma inspiração (ou qualquer produto) pode virar um **kit**: você diz quais it
 
 ### 11.11 Página da Chácara (aluguel do espaço)
 
-O site tem uma página só da chácara: **topfestdecoracoes.com.br/chacara/**. No catálogo, ela aparece como uma faixa com foto no começo de **Todos** (botão **Conhecer a chácara**).
+O site tem uma página só da chácara: **topfestdecoracoes.com.br/chacara/**. No catálogo, ela abre pelo botão **Aluguel da Chácara Top Fest** na coluna de categorias e pela faixa com foto no começo de **Todos** (botão **Conhecer a chácara**).
 
 **Mudar textos, endereço e fotos:** aba **🏡 Chácara**.
 - **Título** e **Chamada:** aparecem em cima da foto de capa.

@@ -151,6 +151,8 @@
     };
     // "Todos" primeiro; logo abaixo, a galeria de inspirações (mesma cor das outras).
     var h = botao("Todos", "Todos");
+    // A chácara tem página própria: o botão abre a página (mesmo visual das outras categorias).
+    if (chacara) h += '<a class="chip" href="/chacara/"><span>' + esc(chacara.cat.nome) + "</span></a>";
     cats.forEach(function (c) { if (c.tipo === GALERIA) h += botao(c.chave, c.nome); });
     cats.forEach(function (c) { if (c.tipo !== GALERIA) h += botao(c.chave, c.nome); });
     $("#chips").innerHTML = h;
