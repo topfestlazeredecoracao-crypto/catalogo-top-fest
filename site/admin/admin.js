@@ -1397,6 +1397,7 @@
     $("#orc-sugestoes").innerHTML = "";
     avisoOrc("");
     listaServicos();
+    desenharAgendaDia();
     desenharItensOrc();
     $("#dlg-orcamento").showModal();
   }
@@ -1416,6 +1417,76 @@
     dl.innerHTML = Object.keys(nomes).sort().map(function (n) { return '<option value="' + esc(n) + '">'; }).join("");
   }
 
+  // ---------- Agenda: quem já está marcado na data do evento ----------
+  // Conta orçamentos Em aberto e Aprovados da mesma data (menos o que está aberto na tela).
+  function orcsNaData(data) {
+    if (!data) return [];
+    var este = orcOriginal && orcOriginal.id;
+    return st.orcs.filter(function (o) {
+      return o.data_evento === data && o.id !== este && o.situacao !== "cancelado";
+    }).sort(function (a, b) { return a.numero - b.numero; });
+  }
+
+  // Quantas unidades do produto já estão reservadas na data, e para quem.
+  function ocupacao(produtoId, data) {
+    var r = { total: 0, quem: [] };
+    orcsNaData(data).forEach(function (o) {
+      var q = 0;
+      (o.itens || []).forEach(function (it) { if (it.produto_id === produtoId) q += Number(it.quantidade) || 0; });
+      if (q) { r.total += q; r.quem.push({ o: o, q: q }); }
+    });
+    return r;
+  }
+
+  function estoque(p) { return p && p.quantidade != null ? Number(p.quantidade) : 1; }
+
+  function textoOcupacao(it) {
+    var data = formO.data_evento.value;
+    if (!data || it.tipo === "servico" || !it.produto_id) return "";
+    var oc = ocupacao(it.produto_id, data);
+    if (!oc.total) return "";
+    var tem = estoque(produtoPorId(it.produto_id));
+    var livres = Math.max(0, tem - oc.total);
+    var falta = (Number(it.quantidade) || 0) > livres;
+    var quem = oc.quem.map(function (x) {
+      return x.q + " para " + nomeCliente(x.o) + " (nº " + x.o.numero + ", " + SITUACOES[x.o.situacao] + ")";
+    }).join("; ");
+    return '<div class="ocup' + (falta ? " falta" : "") + '" data-ocup>' + (falta ? "⛔ " : "⚠️ ") +
+      "Já reservado em " + esc(dataBR(data)) + ": " + esc(quem) + ". Vocês têm " + tem + ", livres: " + livres + "." +
+      (falta ? " Não dá para atender esta quantidade." : "") + "</div>";
+  }
+
+  function desenharAgendaDia() {
+    var caixa = $("#orc-agenda");
+    var data = formO.data_evento.value;
+    if (!data) { caixa.hidden = true; return; }
+    var lista = orcsNaData(data);
+    caixa.hidden = false;
+    caixa.classList.toggle("livre", !lista.length);
+    caixa.innerHTML = lista.length
+      ? "<p>📅 <b>Já agendado para " + esc(dataBR(data)) + ":</b></p><ul>" + lista.map(function (o) {
+          return "<li>" + esc(nomeCliente(o)) + " – orçamento nº " + o.numero + " (" + SITUACOES[o.situacao] + ")</li>";
+        }).join("") + "</ul>"
+      : "<p>✅ Nenhum outro cliente agendado para " + esc(dataBR(data)) + ".</p>";
+  }
+
+  // Produtos sem unidades livres para a quantidade pedida, na data do evento.
+  function itensEmFalta() {
+    var data = formO.data_evento.value;
+    if (!data) return [];
+    return orc.itens.filter(function (it) {
+      if (it.tipo === "servico" || !it.produto_id) return false;
+      var livres = estoque(produtoPorId(it.produto_id)) - ocupacao(it.produto_id, data).total;
+      return (Number(it.quantidade) || 0) > livres;
+    });
+  }
+
+  formO.data_evento.addEventListener("change", function () {
+    desenharAgendaDia();
+    desenharItensOrc();
+    desenharSugestoes();
+  });
+
   function desenharItensOrc() {
     $("#orc-itens").innerHTML = orc.itens.map(function (it, i) {
       var serv = it.tipo === "servico";
@@ -1426,7 +1497,8 @@
         '<label>Qtd<input data-campo="quantidade" type="number" min="1" max="9999" inputmode="numeric" value="' + esc(it.quantidade) + '"></label>' +
         '<label>Valor unit. (R$)<input data-campo="preco" inputmode="decimal" placeholder="0,00" value="' + esc(numCampo(it.preco)) + '"></label>' +
         '<span class="orc-sub" data-sub>' + brl((Number(it.quantidade) || 0) * (Number(it.preco) || 0)) + "</span>" +
-        '<button class="btn" type="button" data-acao="remover" aria-label="Remover ' + esc(it.nome || "serviço") + '">✖ Remover</button></li>';
+        '<button class="btn" type="button" data-acao="remover" aria-label="Remover ' + esc(it.nome || "serviço") + '">✖ Remover</button>' +
+        textoOcupacao(it) + "</li>";
     }).join("") || '<li class="dica">Nenhum item ainda. Procure um produto acima ou adicione um serviço.</li>';
     desenharTotais();
   }
@@ -1463,10 +1535,19 @@
     return exato ? [exato].concat(lista.slice(0, 7)) : lista;
   }
 
+  function etiquetaOcupacao(p) {
+    var data = formO.data_evento.value;
+    if (!data) return "";
+    var oc = ocupacao(p.id, data).total;
+    if (!oc) return "";
+    var livres = Math.max(0, estoque(p) - oc);
+    return '<span class="ocup-tag">' + (livres ? "⚠️ " + livres + " livre(s) na data" : "⛔ ocupado na data") + "</span>";
+  }
+
   function desenharSugestoes() {
     $("#orc-sugestoes").innerHTML = sugestoes().map(function (p) {
       return '<li><button type="button" data-id="' + esc(p.id) + '"><span class="cod">Cód. ' + cod(p.codigo) + "</span><span>" +
-        esc(p.nome) + (p.ativo ? "" : " (oculto)") + (p.preco != null ? " · " + brl(p.preco) : "") + "</span></button></li>";
+        esc(p.nome) + (p.ativo ? "" : " (oculto)") + (p.preco != null ? " · " + brl(p.preco) : "") + "</span>" + etiquetaOcupacao(p) + "</button></li>";
     }).join("");
   }
 
@@ -1510,6 +1591,12 @@
     else if (campo === "quantidade") it.quantidade = parseInt(e.target.value, 10) || 0;
     else if (campo === "preco") it.preco = lerNumero(e.target.value);
     $("[data-sub]", li).textContent = isNaN(it.preco) ? "valor inválido" : brl((Number(it.quantidade) || 0) * it.preco);
+    if (campo === "quantidade") {
+      var velho = $("[data-ocup]", li);
+      if (velho) velho.remove();
+      var novo = textoOcupacao(it);
+      if (novo) li.insertAdjacentHTML("beforeend", novo);
+    }
     desenharTotais();
   });
 
@@ -1633,7 +1720,14 @@
   formO.addEventListener("submit", function (e) {
     e.preventDefault();
     var botao = $('button[type="submit"]', formO);
-    ocupado(botao, Promise.resolve().then(salvarOrcamento)).catch(falhou);
+    var falta = formO.situacao.value === "cancelado" ? [] : itensEmFalta();
+    var seguir = falta.length
+      ? confirmar("Atenção: em " + dataBR(formO.data_evento.value) + " não há unidades livres suficientes de: " +
+          falta.map(function (it) { return it.nome; }).join(", ") + ". Salvar mesmo assim?", "Salvar mesmo assim")
+      : Promise.resolve(true);
+    seguir.then(function (sim) {
+      if (sim) ocupado(botao, Promise.resolve().then(salvarOrcamento)).catch(falhou);
+    });
   });
 
   function salvarOrcamento() {

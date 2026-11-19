@@ -109,4 +109,12 @@ a.btn{text-decoration:none}
 .extrato .mais{color:var(--ok);font-weight:700}
 .extrato .menos{color:var(--erro);font-weight:700}
 .extrato .vencido{color:var(--mu);text-decoration:line-through}
+.agenda-dia{border:2px solid var(--ac);border-radius:12px;padding:10px 14px;margin:-6px 0 14px;font-size:15px}
+.agenda-dia p{margin:0 0 6px}
+.agenda-dia ul{margin:0;padding-left:20px}
+.agenda-dia.livre{border-color:var(--ok)}
+.ocup{grid-column:1/-1;font-size:14px;border-radius:8px;padding:6px 10px;background:var(--tile)}
+.ocup.falta{background:var(--erro);color:#fff;font-weight:600}
+.sugestoes .ocup-tag{margin-left:auto;font-size:13px;font-weight:700;color:var(--erro);white-space:nowrap}
+@media(min-width:640px){.orc-item .ocup{grid-column:1/-1}}
 .saldo-neg{color:var(--erro);font-weight:700}

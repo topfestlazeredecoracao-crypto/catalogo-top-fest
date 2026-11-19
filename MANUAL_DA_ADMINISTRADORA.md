@@ -415,6 +415,21 @@ Em **⚙️ Configurações → Contrato** você muda o **título**, o **sinal**
 
 ---
 
+### 11.8 Aviso de data ocupada (agenda)
+
+Quando você coloca a **Data do evento** no orçamento, o sistema confere os outros orçamentos dessa mesma data:
+
+- Logo abaixo da data aparece **📅 Já agendado para …** com os clientes daquele dia, ou **✅ Nenhum outro cliente agendado**.
+- Em cada produto do orçamento, se ele já estiver reservado nesse dia, aparece:
+  - **⚠️ (amarelo):** já tem reserva, mas ainda sobram unidades. Ex.: "Vocês têm 3, livres: 1".
+  - **⛔ (vermelho):** não sobra unidade para a quantidade pedida.
+- Na busca de produtos, aparece **⛔ ocupado na data** ou **⚠️ 1 livre(s) na data** ao lado do nome.
+- Ao salvar com algum item em vermelho, o sistema pergunta se quer **salvar mesmo assim**. A decisão é sua.
+
+> Contam como reservados os orçamentos **Em aberto** e **Aprovado** do mesmo dia. **Cancelado** não conta.
+> O número de unidades vem do campo **Quant** do produto. Deixe o Quant certo para o aviso funcionar.
+> Kits contam como um produto só: o sistema não sabe quais peças estão dentro de cada kit.
+
 ## 12. Se algo der errado
 
 | O que aconteceu | O que fazer |
