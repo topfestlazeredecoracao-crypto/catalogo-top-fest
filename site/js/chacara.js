@@ -217,6 +217,9 @@
   function validar() {
     var e = $("#entrada").value, s = $("#saida").value;
     if (!e || !s) return { ok: false, msg: "Preencha a data de entrada e a de saída." };
+    var certa = /^20\d\d-\d\d-\d\d$/;
+    if (!certa.test(e)) return { ok: false, msg: "Confira o ano da data de entrada." };
+    if (!certa.test(s)) return { ok: false, msg: "Confira o ano da data de saída." };
     if (e < hoje()) return { ok: false, msg: "A data de entrada já passou." };
     if (s < e) return { ok: false, msg: "A data de saída é antes da entrada." };
     return { ok: true };
@@ -244,10 +247,13 @@
 
   function atualizar() {
     var e = $("#entrada").value, s = $("#saida").value;
-    if (e) $("#saida").min = e;
+    // Só mexe no mínimo da saída quando a entrada muda: trocar o "min" enquanto a pessoa
+    // digita a saída faz o navegador apagar o que estava sendo digitado.
+    var minSaida = e || hoje();
+    if ($("#saida").min !== minSaida) $("#saida").min = minSaida;
     var v = validar();
     var per = $("#periodo");
-    if (e && s && s >= e) {
+    if (v.ok) {
       var n = dias(e, s);
       per.textContent = "📅 " + dataLonga(e) + " até " + dataLonga(s) + " · " + n + (n === 1 ? " dia" : " dias");
       per.className = "periodo ok";
