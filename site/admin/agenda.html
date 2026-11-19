@@ -7,7 +7,7 @@
 <title>Agenda – Chácara Top Fest</title>
 <style>@page{size:A4 landscape}</style>
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="imprimir.css?v=20261119-6">
+<link rel="stylesheet" href="imprimir.css?v=20261119-7">
 </head>
 <body class="relatorio agenda">
 <div class="barra-tela">
@@ -19,12 +19,20 @@
         <option value="dia">Programação por dia</option>
         <option value="clientes">Clientes agendados</option>
         <option value="produtos">Produtos agendados</option>
+        <option value="chacara">🏡 Reservas da chácara</option>
       </select>
     </label>
     <label>Situação
       <select id="f-sit">
         <option value="ativos">Aprovados e Em aberto</option>
         <option value="aprovados">Só aprovados</option>
+      </select>
+    </label>
+    <label>Tipo
+      <select id="f-tipo">
+        <option value="">Chácara e decoração</option>
+        <option value="chacara">Só chácara</option>
+        <option value="decoracao">Só decoração</option>
       </select>
     </label>
   </div>
@@ -34,7 +42,7 @@
 <main id="folha"><p class="msg">Carregando a agenda…</p></main>
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="agenda-comum.js?v=20261119-6"></script>
-<script src="agenda.js?v=20261119-6"></script>
+<script src="agenda-comum.js?v=20261119-7"></script>
+<script src="agenda.js?v=20261119-7"></script>
 </body>
 </html>

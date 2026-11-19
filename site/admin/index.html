@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261119-6">
+<link rel="stylesheet" href="admin.css?v=20261119-7">
 </head>
 <body>
 <header class="topo">
@@ -56,6 +56,7 @@
       <button role="tab" data-aba="produtos" class="on">📦 Produtos</button>
       <button role="tab" data-aba="orcamentos">🧾 Orçamentos</button>
       <button role="tab" data-aba="agenda">📅 Agenda</button>
+      <button role="tab" data-aba="agchacara">🗓️ Agenda da chácara</button>
       <button role="tab" data-aba="chacara">🏡 Chácara</button>
       <button role="tab" data-aba="clientes">👥 Clientes</button>
       <button role="tab" data-aba="categorias">🗂️ Categorias</button>
@@ -116,11 +117,55 @@
             <option value="aprovados">Só aprovados</option>
           </select>
         </label>
+        <label>Tipo
+          <select id="ag-tipo">
+            <option value="">Chácara e decoração</option>
+            <option value="chacara">🏡 Só chácara</option>
+            <option value="decoracao">🎈 Só decoração</option>
+          </select>
+        </label>
       </div>
       <div class="barra botoes">
         <a class="btn pri" id="ag-imprimir" href="agenda.html" target="_blank" rel="noopener">🖨️ Imprimir / salvar em PDF</a>
       </div>
       <div id="agenda-res" class="agenda-res"></div>
+    </div>
+
+    <div id="aba-agchacara" class="aba" hidden>
+      <section class="agc-consulta">
+        <h2>Consultar uma data</h2>
+        <div class="agc-linha">
+          <label>Data<input id="agc-data" type="date"></label>
+          <button class="btn pri" id="agc-consultar" type="button">🔎 Consultar</button>
+        </div>
+        <div id="agc-res" class="agc-res" aria-live="polite"></div>
+      </section>
+
+      <div class="agc-nav">
+        <button class="btn" id="agc-ant" type="button" aria-label="Mês anterior">◀</button>
+        <h2 id="agc-mes"></h2>
+        <button class="btn" id="agc-prox" type="button" aria-label="Próximo mês">▶</button>
+      </div>
+      <p class="agc-legenda"><span class="ch-livre">Livre</span><span class="ch-aberto">Em aberto</span><span class="ch-ocupado">Reservado</span></p>
+      <div id="agc-cal"></div>
+      <p class="dica" id="agc-resumo"></p>
+      <p class="dica">Toque em um dia para ver quem reservou. Orçamento "Em aberto" fica amarelo e não bloqueia a data: só o "Aprovado" deixa o dia vermelho.</p>
+
+      <h2>Reservas da chácara</h2>
+      <div class="agenda-filtros agc-filtros">
+        <label>De<input id="agc-de" type="date"></label>
+        <label>Até<input id="agc-ate" type="date"></label>
+        <label>Situação
+          <select id="agc-sit">
+            <option value="ativos">Aprovados e Em aberto</option>
+            <option value="aprovados">Só aprovados</option>
+          </select>
+        </label>
+      </div>
+      <div class="barra botoes">
+        <a class="btn pri" id="agc-imprimir" href="agenda.html?ver=chacara" target="_blank" rel="noopener">🖨️ Imprimir / salvar em PDF</a>
+      </div>
+      <div id="agc-lista" class="agenda-res"></div>
     </div>
 
     <div id="aba-chacara" class="aba" hidden>
@@ -436,7 +481,7 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="agenda-comum.js?v=20261119-6"></script>
-<script src="admin.js?v=20261119-6"></script>
+<script src="agenda-comum.js?v=20261119-7"></script>
+<script src="admin.js?v=20261119-7"></script>
 </body>
 </html>

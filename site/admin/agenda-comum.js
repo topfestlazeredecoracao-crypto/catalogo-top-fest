@@ -71,6 +71,156 @@
 
   function estoque(p) { return p && p.quantidade != null ? Number(p.quantidade) : 1; }
 
+  // ---------- Chácara ----------
+  // Um item é da chácara se foi marcado ao salvar (it.chacara) ou se o produto é de categoria do tipo "chacara".
+  // d precisa de cats (id, tipo) e prods (id, categoria_id) para os orçamentos antigos, sem a marca.
+  function idsChacara(d) {
+    if (d._ch) return d._ch;
+    var cats = {}, ids = {};
+    (d.cats || []).forEach(function (c) { if (c.tipo === "chacara") cats[c.id] = true; });
+    (d.prods || []).forEach(function (p) { if (cats[p.categoria_id]) ids[p.id] = true; });
+    d._ch = ids;
+    return ids;
+  }
+  function itemChacara(it, d) {
+    return it.tipo !== "servico" && !!(it.chacara || (it.produto_id && idsChacara(d)[it.produto_id]));
+  }
+  function tipoOrc(o, d) {
+    var ch = false, dec = false;
+    (o.itens || []).forEach(function (it) {
+      if (it.tipo === "servico" || !it.produto_id) return;
+      if (itemChacara(it, d)) ch = true; else dec = true;
+    });
+    return { chacara: ch, decoracao: dec };
+  }
+
+  // Total do orçamento (a mesma conta do painel).
+  function totalOrc(o, d) {
+    var itens = 0, servicos = 0, chacara = 0;
+    (o.itens || []).forEach(function (it) {
+      var v = (Number(it.quantidade) || 0) * (Number(it.preco) || 0);
+      if (it.tipo === "servico") servicos += v; else itens += v;
+      if (itemChacara(it, d)) chacara += v;
+    });
+    var dec = itens + servicos - chacara;
+    var descInd = Math.round(dec * (Number(o.desconto_indicacao_pct) || 0)) / 100 +
+      Math.round(chacara * (Number(o.desconto_indicacao_chacara_pct) || 0)) / 100;
+    return Math.max(0, itens + servicos - (Number(o.desconto) || 0) - descInd - (Number(o.credito_usado) || 0) + (Number(o.taxa_entrega) || 0));
+  }
+  function brl(n) { return Number(n || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); }
+
+  // Orçamentos da chácara que valem para a agenda (Em aberto e Aprovados, com data).
+  function reservasChacara(d) {
+    return d.orcs.filter(function (o) {
+      return o.situacao !== "cancelado" && periodo(o) && tipoOrc(o, d).chacara;
+    }).sort(function (a, b) {
+      var pa = periodo(a), pb = periodo(b);
+      return pa.ini < pb.ini ? -1 : pa.ini > pb.ini ? 1 : a.numero - b.numero;
+    });
+  }
+  // Quem está na chácara num dia: aprovados (ocupam) e em aberto (interessados, não bloqueiam).
+  function diaChacara(lista, dia) {
+    var r = { aprovados: [], abertos: [] };
+    lista.forEach(function (o) {
+      var p = periodo(o);
+      if (p.ini <= dia && dia <= p.fim) (o.situacao === "aprovado" ? r.aprovados : r.abertos).push(o);
+    });
+    r.estado = r.aprovados.length > 1 ? "conflito" : r.aprovados.length ? "ocupado" : r.abertos.length ? "aberto" : "livre";
+    return r;
+  }
+
+  var MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  function primeiroNome(n) { return String(n || "").trim().split(/\s+/)[0] || ""; }
+
+  // Calendário do mês (mes de 1 a 12). Cada dia é um botão com data-dia.
+  function calendarioChacara(d, ano, mes) {
+    var lista = reservasChacara(d), h = ajudantes(d);
+    var ini = ano + "-" + String(mes).padStart(2, "0") + "-01";
+    var vazios = new Date(ini + "T12:00:00").getDay();
+    var hoje = new Date().toLocaleDateString("sv-SE");
+    var html = '<div class="ch-cal">' + ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map(function (s) {
+      return '<span class="ch-sem">' + s + "</span>";
+    }).join("");
+    for (var i = 0; i < vazios; i++) html += '<span class="ch-vazio"></span>';
+    var conta = { livre: 0, aberto: 0, ocupado: 0, conflito: 0 };
+    for (var dia = ini; dia.slice(0, 7) === ini.slice(0, 7); dia = somaDias(dia, 1)) {
+      var r = diaChacara(lista, dia);
+      conta[r.estado]++;
+      var quem = (r.aprovados.length ? r.aprovados : r.abertos).map(function (o) { return primeiroNome(h.nome(o)); }).join(", ");
+      var rotulo = dataBR(dia) + ": " + { livre: "livre", aberto: "em aberto (" + quem + ")", ocupado: "reservado (" + quem + ")", conflito: "conflito (" + quem + ")" }[r.estado];
+      html += '<button type="button" class="ch-d ch-' + r.estado + (dia === hoje ? " ch-hoje" : "") + (dia < hoje ? " ch-passado" : "") +
+        '" data-dia="' + dia + '" aria-label="' + esc(rotulo) + '" title="' + esc(rotulo) + '"><b>' + Number(dia.slice(8)) + "</b>" +
+        (quem ? '<span class="ch-quem">' + esc(quem) + "</span>" : "") + "</button>";
+    }
+    html += "</div>";
+    return {
+      titulo: MESES[mes - 1].charAt(0).toUpperCase() + MESES[mes - 1].slice(1) + " de " + ano,
+      html: html,
+      resumo: (conta.ocupado + conta.conflito) + " dia(s) reservado(s) · " + conta.aberto + " em aberto · " + conta.livre + " livre(s)" +
+        (conta.conflito ? " · ⛔ " + conta.conflito + " dia(s) com duas reservas aprovadas" : "")
+    };
+  }
+
+  function pacotes(o, d) {
+    return (o.itens || []).filter(function (it) { return itemChacara(it, d); }).map(function (it) {
+      return (Number(it.quantidade) > 1 ? it.quantidade + "x " : "") + it.nome;
+    }).join(", ") || "—";
+  }
+  function textoEntradaSaida(o) {
+    if (o.data_retirada && o.data_devolucao) return "Entrada " + dataBR(o.data_retirada) + " · Saída " + dataBR(o.data_devolucao);
+    return textoPeriodo(periodo(o));
+  }
+
+  // Cartão de uma reserva (usado na consulta de data). acoes = HTML extra (botões do painel).
+  function cartaoReserva(o, d, h, acoes) {
+    var c = h.cliente(o);
+    var zap = c && c.whatsapp ? String(c.whatsapp).replace(/\D/g, "") : "";
+    if (zap && zap.length <= 11) zap = "55" + zap;
+    return '<div class="ch-res ch-res-' + esc(o.situacao) + '"><p><b>' + esc(h.nome(o)) + "</b> " + selo(o) + "</p>" +
+      "<p>📅 " + esc(textoEntradaSaida(o)) + (o.data_evento ? " · 🎉 Evento " + dataBR(o.data_evento) : "") + "</p>" +
+      "<p>🏡 " + esc(pacotes(o, d)) + (tipoOrc(o, d).decoracao ? " + decoração" : "") + "</p>" +
+      "<p>🧾 Orçamento nº " + esc(o.numero) + " · Total " + esc(brl(totalOrc(o, d))) +
+      (zap ? ' · <a href="https://wa.me/' + zap + '" target="_blank" rel="noopener">💬 ' + esc(telBR(c.whatsapp)) + "</a>" : "") + "</p>" +
+      (acoes || "") + "</div>";
+  }
+
+  // Resposta da consulta de um dia. acoes(o) devolve botões extras para cada reserva.
+  function consultaChacara(d, dia, acoes) {
+    if (!dia) return { estado: "", html: '<p class="msg">Escolha uma data.</p>' };
+    var r = diaChacara(reservasChacara(d), dia), h = ajudantes(d);
+    var cab = {
+      livre: "✅ " + dataBR(dia) + " está LIVRE.",
+      aberto: "🟡 " + dataBR(dia) + " está livre, mas tem orçamento em aberto (ainda não confirmado):",
+      ocupado: "⛔ " + dataBR(dia) + " está RESERVADO:",
+      conflito: "⛔ Atenção: " + dataBR(dia) + " tem mais de uma reserva aprovada!"
+    }[r.estado];
+    var html = '<p class="ch-cab">' + esc(semana(dia)) + " · " + esc(cab) + "</p>";
+    r.aprovados.concat(r.abertos).forEach(function (o) { html += cartaoReserva(o, d, h, acoes ? acoes(o) : ""); });
+    return { estado: r.estado, html: html };
+  }
+
+  // Lista das reservas da chácara num período (tela e impressão).
+  function listaChacara(lista, d, h) {
+    var aprov = lista.filter(function (o) { return o.situacao === "aprovado"; });
+    var conflitos = {};
+    aprov.forEach(function (a) {
+      aprov.forEach(function (b) { if (a !== b && sobrepoe(periodo(a), periodo(b))) conflitos[a.id] = true; });
+    });
+    var nConf = Object.keys(conflitos).length;
+    var soma = aprov.reduce(function (s, o) { return s + totalOrc(o, d); }, 0);
+    return (nConf ? '<p class="ag-alerta">⛔ ' + nConf + " reserva(s) aprovada(s) com datas que se cruzam. Confira as linhas em vermelho.</p>" : "") +
+      '<div class="ag-tab"><table><thead><tr><th>Entrada</th><th>Saída</th><th>Cliente</th><th>Orçamento</th><th>Pacote</th><th class="n">Total</th></tr></thead><tbody>' +
+      lista.map(function (o) {
+        var p = periodo(o);
+        return "<tr" + (conflitos[o.id] ? ' class="ag-falta"' : "") + '><td class="c"><b>' + esc(semana(p.ini).slice(0, 3)) + " " + dataBR(p.ini) + "</b></td>" +
+          '<td class="c">' + esc(semana(p.fim).slice(0, 3)) + " " + dataBR(p.fim) + "</td>" +
+          "<td>" + clienteHtml(o, h, false) + '</td><td class="c">nº ' + esc(o.numero) + "<br>" + selo(o) + "</td>" +
+          "<td>" + esc(pacotes(o, d)) + (tipoOrc(o, d).decoracao ? '<br><span class="ag-end">+ decoração</span>' : "") + "</td>" +
+          '<td class="n">' + esc(brl(totalOrc(o, d))) + "</td></tr>";
+      }).join("") + "</tbody></table></div>" +
+      '<p class="ag-resumo">' + aprov.length + " reserva(s) aprovada(s) no período · soma dos aprovados: <b>" + esc(brl(soma)) + "</b></p>";
+  }
+
   // ---------- Relatórios ----------
   // d = { orcs, clientes, prods }; f = { de, ate, sit: "ativos" | "aprovados", ver: "dia" | "clientes" | "produtos" }
   function filtrar(d, f) {
@@ -78,6 +228,7 @@
     return d.orcs.filter(function (o) {
       if (o.situacao === "cancelado") return false;
       if (f.sit === "aprovados" && o.situacao !== "aprovado") return false;
+      if (f.tipo && !tipoOrc(o, d)[f.tipo]) return false;
       return sobrepoe(periodo(o), janela);
     }).sort(function (a, b) {
       var pa = periodo(a), pb = periodo(b);
@@ -173,23 +324,27 @@
       linhas.join("") + "</tbody></table></div>";
   }
 
-  var TITULOS = { dia: "Programação por dia", clientes: "Clientes agendados", produtos: "Produtos agendados" };
+  var TITULOS = { dia: "Programação por dia", clientes: "Clientes agendados", produtos: "Produtos agendados", chacara: "Reservas da chácara" };
 
   function montar(d, f) {
     if (!f.de || !f.ate || f.ate < f.de) return { titulo: TITULOS[f.ver], html: '<p class="msg">Escolha as datas "De" e "Até" (a segunda depois da primeira).</p>', total: 0 };
+    if (f.ver === "chacara") f = { de: f.de, ate: f.ate, sit: f.sit, ver: f.ver, tipo: "chacara" };
     var lista = filtrar(d, f), h = ajudantes(d);
     var corpo;
     if (!lista.length) corpo = '<p class="msg">Nenhum orçamento agendado nesse período.</p>';
+    else if (f.ver === "chacara") corpo = listaChacara(lista, d, h);
     else if (f.ver === "clientes") corpo = clientes(lista, h);
     else if (f.ver === "produtos") corpo = produtos(lista, d, f, h);
     else corpo = porDia(lista, f, h);
     var resumo = '<p class="ag-resumo">' + dataBR(f.de) + " a " + dataBR(f.ate) + " · " +
-      (f.sit === "aprovados" ? "só aprovados" : "aprovados e em aberto") + " · <b>" + lista.length + "</b> orçamento(s)</p>";
+      (f.sit === "aprovados" ? "só aprovados" : "aprovados e em aberto") +
+      (f.tipo === "chacara" ? " · só chácara" : f.tipo === "decoracao" ? " · só decoração" : "") + " · <b>" + lista.length + "</b> orçamento(s)</p>";
     return { titulo: TITULOS[f.ver] || TITULOS.dia, html: resumo + corpo, total: lista.length };
   }
 
   window.TF_AGENDA = {
     periodo: periodo, sobrepoe: sobrepoe, reservas: reservas, estoque: estoque,
-    textoPeriodo: textoPeriodo, somaDias: somaDias, montar: montar
+    textoPeriodo: textoPeriodo, somaDias: somaDias, montar: montar,
+    tipoOrc: tipoOrc, calendarioChacara: calendarioChacara, consultaChacara: consultaChacara
   };
 })();

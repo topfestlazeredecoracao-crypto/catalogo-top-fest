@@ -361,16 +361,94 @@
     $("#ag-ate").value = window.TF_AGENDA.somaDias(hoje, 30);
   })();
 
+  function dadosAgenda() { return { orcs: st.orcs, clientes: st.clientes, prods: st.prods, cats: st.cats }; }
+
   function desenharAgenda() {
     if (!st.orcs) return;
-    var f = { de: $("#ag-de").value, ate: $("#ag-ate").value, ver: $("#ag-ver").value, sit: $("#ag-sit").value };
-    var r = window.TF_AGENDA.montar({ orcs: st.orcs, clientes: st.clientes, prods: st.prods }, f);
+    var f = { de: $("#ag-de").value, ate: $("#ag-ate").value, ver: $("#ag-ver").value, sit: $("#ag-sit").value, tipo: $("#ag-tipo").value };
+    var r = window.TF_AGENDA.montar(dadosAgenda(), f);
     $("#agenda-res").innerHTML = r.html;
-    $("#ag-imprimir").href = "agenda.html?de=" + f.de + "&ate=" + f.ate + "&ver=" + f.ver + "&sit=" + f.sit;
+    $("#ag-imprimir").href = "agenda.html?de=" + f.de + "&ate=" + f.ate + "&ver=" + f.ver + "&sit=" + f.sit + "&tipo=" + f.tipo;
   }
 
-  ["#ag-de", "#ag-ate", "#ag-ver", "#ag-sit"].forEach(function (id) { $(id).addEventListener("change", desenharAgenda); });
+  ["#ag-de", "#ag-ate", "#ag-ver", "#ag-sit", "#ag-tipo"].forEach(function (id) { $(id).addEventListener("change", desenharAgenda); });
   $('.abas [data-aba="agenda"]').addEventListener("click", desenharAgenda);
+
+  // ---------- Aba Agenda da chácara ----------
+  // A chácara é um lugar só: o que importa é se a data está livre. Aprovado ocupa; Em aberto só avisa.
+  var agcMes = (function () { var h = hojeISO(); return { ano: Number(h.slice(0, 4)), mes: Number(h.slice(5, 7)) }; })();
+  (function () {
+    var hoje = hojeISO();
+    $("#agc-data").value = hoje;
+    $("#agc-de").value = hoje;
+    $("#agc-ate").value = window.TF_AGENDA.somaDias(hoje, 90);
+  })();
+
+  function desenharConsultaChacara() {
+    var dia = $("#agc-data").value;
+    var r = window.TF_AGENDA.consultaChacara(dadosAgenda(), dia, function (o) {
+      return '<div class="item-acoes"><button class="btn" type="button" data-agc-abrir="' + esc(o.id) + '">✏️ Abrir orçamento nº ' + esc(o.numero) + "</button></div>";
+    });
+    var caixa = $("#agc-res");
+    caixa.className = "agc-res agc-" + (r.estado || "vazio");
+    caixa.innerHTML = r.html + (r.estado === "livre" || r.estado === "aberto"
+      ? '<div class="item-acoes"><button class="btn pri" type="button" data-agc-novo="' + esc(dia) + '">➕ Novo orçamento para esta data</button></div>'
+      : "");
+  }
+
+  function desenharCalendarioChacara() {
+    var r = window.TF_AGENDA.calendarioChacara(dadosAgenda(), agcMes.ano, agcMes.mes);
+    $("#agc-mes").textContent = r.titulo;
+    $("#agc-cal").innerHTML = r.html;
+    $("#agc-resumo").textContent = r.resumo;
+    var sel = $('#agc-cal [data-dia="' + $("#agc-data").value + '"]');
+    if (sel) sel.classList.add("ch-sel");
+  }
+
+  function desenharListaChacara() {
+    var f = { de: $("#agc-de").value, ate: $("#agc-ate").value, ver: "chacara", sit: $("#agc-sit").value };
+    $("#agc-lista").innerHTML = window.TF_AGENDA.montar(dadosAgenda(), f).html;
+    $("#agc-imprimir").href = "agenda.html?de=" + f.de + "&ate=" + f.ate + "&ver=chacara&sit=" + f.sit;
+  }
+
+  function desenharAgendaChacara() {
+    if (!st.orcs) return;
+    desenharConsultaChacara();
+    desenharCalendarioChacara();
+    desenharListaChacara();
+  }
+
+  function mudarMesChacara(n) {
+    agcMes.mes += n;
+    if (agcMes.mes < 1) { agcMes.mes = 12; agcMes.ano--; }
+    if (agcMes.mes > 12) { agcMes.mes = 1; agcMes.ano++; }
+    desenharCalendarioChacara();
+  }
+
+  $("#agc-ant").addEventListener("click", function () { mudarMesChacara(-1); });
+  $("#agc-prox").addEventListener("click", function () { mudarMesChacara(1); });
+  $("#agc-consultar").addEventListener("click", function () {
+    var dia = $("#agc-data").value;
+    if (dia) { agcMes = { ano: Number(dia.slice(0, 4)), mes: Number(dia.slice(5, 7)) }; }
+    desenharConsultaChacara();
+    desenharCalendarioChacara();
+  });
+  $("#agc-data").addEventListener("change", function () { $("#agc-consultar").click(); });
+  $("#agc-cal").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-dia]");
+    if (!b) return;
+    $("#agc-data").value = b.dataset.dia;
+    desenharConsultaChacara();
+    desenharCalendarioChacara();
+    $("#agc-res").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  $("#agc-res").addEventListener("click", function (e) {
+    var a = e.target.closest("[data-agc-abrir]"), n = e.target.closest("[data-agc-novo]");
+    if (a) { var o = orcPorId(a.dataset.agcAbrir); if (o) abrirOrcamento(o); }
+    if (n) abrirOrcamento(null, { data_evento: n.dataset.agcNovo });
+  });
+  ["#agc-de", "#agc-ate", "#agc-sit"].forEach(function (id) { $(id).addEventListener("change", desenharListaChacara); });
+  $('.abas [data-aba="agchacara"]').addEventListener("click", desenharAgendaChacara);
 
   function desenharTudo() {
     preencherFiltroCategorias();
@@ -1552,6 +1630,8 @@
         '<button class="btn" data-acao="excluir">🗑️ Excluir</button>' +
         "</div></li>";
     }).join("") || '<li class="dica">' + (st.orcs.length ? "Nenhum orçamento encontrado." : "Nenhum orçamento ainda.") + "</li>";
+    if (!$("#aba-agchacara").hidden) desenharAgendaChacara();
+    if (!$("#aba-agenda").hidden) desenharAgenda();
   }
 
   var SITUACOES = { aberto: "Em aberto", aprovado: "Aprovado", cancelado: "Cancelado" };

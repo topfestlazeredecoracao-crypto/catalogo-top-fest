@@ -48,7 +48,7 @@ Para sair, toque em **Sair**, no canto de cima. Faça isso sempre que usar um co
 ## 3. As abas da área da administradora
 
 ```
-[ 📦 Produtos ] [ 🧾 Orçamentos ] [ 👥 Clientes ] [ 🗂️ Categorias ] [ 📸 Inspirações ] [ ⚙️ Configurações ] [ 💾 Cópia de segurança ]
+[ 📦 Produtos ] [ 🧾 Orçamentos ] [ 📅 Agenda ] [ 🗓️ Agenda da chácara ] [ 🏡 Chácara ] [ 👥 Clientes ] [ 🗂️ Categorias ] [ 📸 Inspirações ] [ ⚙️ Configurações ] [ 💾 Cópia de segurança ]
 ```
 
 No celular, arraste as abas para o lado para ver todas.
@@ -443,7 +443,8 @@ Quando você preenche essas datas no orçamento:
    - **Clientes agendados:** um cliente por linha, com as três datas.
    - **Produtos agendados:** cada produto reservado no período, para quem e em quais datas. A coluna **Máx. no mesmo dia** mostra o dia mais cheio e avisa **⛔ faltam** se passar da Quant.
 4. Em **Situação**, escolha **Aprovados e Em aberto** ou **Só aprovados**.
-5. Para papel ou PDF, toque em **🖨️ Imprimir / salvar em PDF**. Abre uma folha com a logo; escolha a impressora ou **Salvar como PDF**.
+5. Em **Tipo**, escolha **Chácara e decoração**, **🏡 Só chácara** ou **🎈 Só decoração**.
+6. Para papel ou PDF, toque em **🖨️ Imprimir / salvar em PDF**. Abre uma folha com a logo; escolha a impressora ou **Salvar como PDF**.
 
 ### 11.10 Kits prontos (inspirações com a lista de itens)
 
@@ -510,6 +511,33 @@ Como funciona:
 - No orçamento, a caixa de desconto mostra os dois (ex.: "5% na decoração e 2% na chácara").
 - A página da chácara mostra ao indicado o desconto da chácara, e a mensagem do **🔗 link de indicação** explica os dois.
 - Os percentuais ficam guardados no orçamento quando ele é aprovado. Mudar as Configurações depois não altera créditos que já existem.
+
+### 11.14 Aba 🗓️ Agenda da chácara (datas livres e reservadas)
+
+A chácara é **um lugar só**. Por isso ela tem uma agenda própria, que mostra se cada data está **livre** ou **reservada**.
+
+Entram nessa agenda os orçamentos que têm um **pacote da chácara**. Orçamentos só de decoração e orçamentos cancelados não entram.
+
+**Consultar uma data (quando o cliente pergunta "tem vaga no dia tal?")**
+1. Toque na aba **🗓️ Agenda da chácara**.
+2. Em **Consultar uma data**, escolha o dia. A resposta aparece na hora:
+   - **✅ Livre:** pode fechar. Toque em **➕ Novo orçamento para esta data** se quiser começar o orçamento.
+   - **🟡 Livre, mas tem orçamento em aberto:** alguém pediu orçamento e ainda não confirmou. A data **não fica bloqueada**. Avise o cliente ou fale com quem pediu primeiro.
+   - **⛔ Reservado:** já tem um orçamento **Aprovado** nesse dia. Aparecem o nome do cliente, a entrada e a saída, o pacote, o valor, o WhatsApp e o botão **✏️ Abrir orçamento**.
+
+**Calendário do mês**
+- Cada dia aparece em uma cor: **verde = livre**, **amarelo = em aberto**, **vermelho = reservado**. Embaixo do número aparece o primeiro nome do cliente.
+- **Listrado de vermelho** quer dizer que há **duas reservas aprovadas no mesmo dia**. É um erro: abra os orçamentos e corrija um deles.
+- Use **◀ ▶** para trocar de mês. Toque em um dia para ver os detalhes dele lá em cima.
+- Os dias que já passaram ficam mais claros. O dia de hoje tem uma borda azul.
+
+**Lista de reservas da chácara**
+- Escolha o período em **De** e **Até** e a **Situação**. A lista mostra entrada, saída, cliente, número do orçamento, pacote e valor total.
+- No fim da lista aparece a **soma dos aprovados** no período.
+- Se duas reservas aprovadas cruzarem as datas, aparece um aviso **⛔** e as linhas ficam vermelhas.
+- **🖨️ Imprimir / salvar em PDF** abre a mesma lista em folha com a logo.
+
+**Como a agenda sabe os dias ocupados:** ela usa as datas de **entrada** (campo "Data da retirada") e de **saída** (campo "Data da devolução") do orçamento. Se elas estiverem em branco, ela usa só a **data do evento**. Então preencha a entrada e a saída quando o cliente ficar mais de um dia.
 
 ## 12. Se algo der errado
 

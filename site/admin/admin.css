@@ -120,7 +120,7 @@ a.btn{text-decoration:none}
 .saldo-neg{color:var(--erro);font-weight:700}
 .agenda-filtros{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
 .agenda-filtros label:nth-child(n+3){grid-column:1/-1}
-@media(min-width:760px){.agenda-filtros{grid-template-columns:160px 160px 1fr 220px}.agenda-filtros label:nth-child(n+3){grid-column:auto}}
+@media(min-width:760px){.agenda-filtros{grid-template-columns:150px 150px 1fr 200px 200px}.agenda-filtros label:nth-child(n+3){grid-column:auto}}
 .agenda-res .msg{color:var(--mu);text-align:center;padding:20px 0}
 .ag-resumo{color:var(--mu);font-size:14px;margin:0 0 10px}
 .ag-dia h3{text-transform:capitalize;color:var(--pr)}
@@ -151,3 +151,39 @@ tr.ag-falta td{background:rgba(179,38,30,.12)}
 #form-chacara textarea{font-size:15px;line-height:1.45}
 .selo-chacara{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--tile);color:var(--tx);margin-left:4px;vertical-align:middle}
 @media(min-width:640px){#aba-orcamentos .filtros{grid-template-columns:1fr 200px 200px}}
+/* Agenda da chácara */
+.agc-consulta{border:2px solid var(--ac);border-radius:14px;padding:12px 14px;margin:0 0 18px}
+.agc-consulta h2{margin-top:0}
+.agc-linha{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.agc-linha label{flex:1;min-width:170px;margin:0}
+.agc-res{margin-top:12px}
+.agc-res:empty{display:none}
+.ch-cab{font-size:17px;font-weight:700;margin:0 0 8px}
+.ch-cab::first-letter{text-transform:uppercase}
+.agc-livre .ch-cab{color:var(--ok)}
+.agc-ocupado .ch-cab,.agc-conflito .ch-cab{color:var(--erro)}
+.ch-res{border:1px solid var(--bd);border-left:6px solid #d4a516;border-radius:10px;padding:8px 12px;margin:0 0 10px;background:var(--card)}
+.ch-res-aprovado{border-left-color:var(--erro)}
+.ch-res p{margin:2px 0;font-size:15px}
+.ch-res .item-acoes{margin-top:6px}
+.agc-nav{display:flex;align-items:center;gap:10px;margin:6px 0}
+.agc-nav h2{flex:1;text-align:center;margin:0}
+.agc-nav .btn{min-width:56px}
+.agc-legenda{display:flex;gap:8px;flex-wrap:wrap;font-size:14px;margin:6px 0 10px}
+.agc-legenda span{padding:3px 10px;border-radius:999px;border:1px solid var(--bd)}
+.ch-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.ch-sem{text-align:center;font-size:12px;font-weight:700;color:var(--mu);padding:2px 0}
+.ch-d{min-height:58px;border:1px solid var(--bd);border-radius:10px;padding:4px 3px;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--tx);overflow:hidden}
+.ch-d b{font-size:16px}
+.ch-quem{font-size:11px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ch-livre{background:rgba(26,127,60,.12)}
+.ch-aberto{background:#fff1b8;color:#4d3800}
+.ch-ocupado{background:#b3261e;color:#fff;border-color:#b3261e}
+.ch-conflito{background:repeating-linear-gradient(45deg,#b3261e,#b3261e 6px,#7a1712 6px,#7a1712 12px);color:#fff;border-color:#7a1712}
+.agc-legenda .ch-ocupado{color:#fff}
+.ch-d.ch-passado{opacity:.5}
+.ch-d.ch-hoje{outline:2px solid var(--pr);outline-offset:-2px}
+.ch-d.ch-sel{outline:3px solid var(--ac);outline-offset:1px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ch-livre{background:rgba(47,191,104,.16)}}
+:root[data-theme="dark"] .ch-livre{background:rgba(47,191,104,.16)}
+@media(min-width:760px){.ch-d{min-height:72px}.ch-quem{font-size:12px}.agc-filtros{grid-template-columns:160px 160px 220px}}
