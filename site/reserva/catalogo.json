@@ -142,9 +142,11 @@
   }
  ],
  "configuracoes": {
-  "atualizado_em": "2026-11-01T13:25:07.009165+00:00",
+  "atualizado_em": "2026-11-19T09:11:06.04551+00:00",
   "id": 1,
   "indicacao_ativa": true,
+  "indicacao_chacara_credito_pct": 0,
+  "indicacao_chacara_desconto_pct": 0,
   "indicacao_credito_pct": 10,
   "indicacao_desconto_pct": 5,
   "indicacao_validade_meses": 6,
@@ -366,6 +368,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 60,
+   "codigo": 428,
+   "descricao": "Aluguel sem a casa",
+   "id": "p8ecf2160f9",
+   "imagem": null,
+   "kit_itens": [],
+   "nome": "Aluguel Chácara pacote parcial",
+   "ordem": 2,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 4,
    "codigo": 55,
    "descricao": "",
@@ -407,14 +422,14 @@
    "ativo": true,
    "categoria_id": 17,
    "codigo": 194,
-   "descricao": "40 unidades disponíveis.",
+   "descricao": "",
    "id": "p026",
    "imagem": "reserva/fotos/produtos/p026.jpg",
    "kit_itens": [],
    "nome": "Capas para cadeiras",
    "ordem": 2,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 40
   },
   {
    "ativo": true,
@@ -498,14 +513,14 @@
    "ativo": true,
    "categoria_id": 10,
    "codigo": 127,
-   "descricao": "2 unidades disponíveis.",
+   "descricao": "",
    "id": "p175",
    "imagem": "reserva/fotos/produtos/p175.jpg",
    "kit_itens": [],
    "nome": "Luminárias pendentes de macramê",
    "ordem": 2,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -1031,14 +1046,14 @@
    "ativo": true,
    "categoria_id": 10,
    "codigo": 275,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "pd0a73ce8a4",
    "imagem": "reserva/fotos/produtos/mvzr0rew-7z7gvs.webp",
    "kit_itens": [],
    "nome": "Luminária nº 1 -  LED 3D, luz quente, 22 cm",
    "ordem": 5,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -2721,14 +2736,14 @@
    "ativo": true,
    "categoria_id": 13,
    "codigo": 316,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "p8952819586",
    "imagem": "reserva/fotos/produtos/mweajml0-xtk65g.webp",
    "kit_itens": [],
    "nome": "Vaso Popi lilás",
    "ordem": 15,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -2864,14 +2879,14 @@
    "ativo": true,
    "categoria_id": 13,
    "codigo": 317,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "p492ddd2c4b",
    "imagem": "reserva/fotos/produtos/mweakv4u-kax9wc.webp",
    "kit_itens": [],
    "nome": "Vaso Popi rosa",
    "ordem": 16,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -2994,14 +3009,14 @@
    "ativo": true,
    "categoria_id": 13,
    "codigo": 318,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "p8bd5e511ed",
    "imagem": "reserva/fotos/produtos/mwealv6b-pbbl1u.webp",
    "kit_itens": [],
    "nome": "Vaso Popi vermelho",
    "ordem": 17,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -3098,14 +3113,14 @@
    "ativo": true,
    "categoria_id": 13,
    "codigo": 319,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "pecd085520c",
    "imagem": "reserva/fotos/produtos/mweanwl5-kzz0tz.webp",
    "kit_itens": [],
    "nome": "Vaso Popi verde oliva",
    "ordem": 18,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -3215,14 +3230,14 @@
    "ativo": true,
    "categoria_id": 13,
    "codigo": 320,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "p1483691ace",
    "imagem": "reserva/fotos/produtos/mweap9ep-atz5jg.webp",
    "kit_itens": [],
    "nome": "Vaso Popi azul candy",
    "ordem": 19,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -3319,14 +3334,14 @@
    "ativo": true,
    "categoria_id": 13,
    "codigo": 321,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "p2ec0201c61",
    "imagem": "reserva/fotos/produtos/mweaqj08-qzp1p3.webp",
    "kit_itens": [],
    "nome": "Vaso Popi rose gold",
    "ordem": 20,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -3423,14 +3438,14 @@
    "ativo": true,
    "categoria_id": 13,
    "codigo": 322,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "p291ba9635b",
    "imagem": "reserva/fotos/produtos/mwearado-y0o2cc.webp",
    "kit_itens": [],
    "nome": "Vaso Popi marrom",
    "ordem": 21,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -3527,14 +3542,14 @@
    "ativo": true,
    "categoria_id": 13,
    "codigo": 323,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "p79f8a7b1ca",
    "imagem": "reserva/fotos/produtos/mweaw9pn-nm7fhx.webp",
    "kit_itens": [],
    "nome": "Vaso branco",
    "ordem": 22,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
@@ -4827,14 +4842,14 @@
    "ativo": true,
    "categoria_id": 12,
    "codigo": 371,
-   "descricao": "2 unidades",
+   "descricao": "",
    "id": "pd0f48fbe4b",
    "imagem": "reserva/fotos/produtos/mwjbckf3-ryfi1c.webp",
    "kit_itens": [],
    "nome": "Boleira avulsa pinheirinho verde",
    "ordem": 60,
    "preco": null,
-   "quantidade": 1
+   "quantidade": 2
   },
   {
    "ativo": true,
