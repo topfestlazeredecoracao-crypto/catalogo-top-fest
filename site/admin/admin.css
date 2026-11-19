@@ -149,3 +149,5 @@ tr.ag-falta td{background:rgba(179,38,30,.12)}
 .selo-kit{font-size:12px;font-weight:700;color:var(--ac)}
 #ch-fotos input{margin:6px;width:auto;padding:8px;font-size:14px}
 #form-chacara textarea{font-size:15px;line-height:1.45}
+.selo-chacara{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--tile);color:var(--tx);margin-left:4px;vertical-align:middle}
+@media(min-width:640px){#aba-orcamentos .filtros{grid-template-columns:1fr 200px 200px}}

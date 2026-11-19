@@ -498,3 +498,11 @@ create policy "admin insere" on public.chacara_pagina for insert to authenticate
 grant select on public.chacara_pagina to anon, authenticated;
 grant insert, update on public.chacara_pagina to authenticated;
 insert into public.chacara_pagina (id) values (1) on conflict (id) do nothing;
+
+-- ---------- Contrato próprio da chácara (19/11/2026) ----------
+-- Usado quando o orçamento tem um pacote da chácara. As cláusulas são escritas pela administradora no painel.
+alter table public.contrato_modelo add column if not exists chacara_titulo text not null default 'CONTRATO DE LOCAÇÃO – ESPAÇO PARA EVENTOS';
+alter table public.contrato_modelo add column if not exists chacara_clausulas text not null default '';
+alter table public.contrato_modelo add column if not exists chacara_percentual_sinal int not null default 50;
+alter table public.contrato_modelo drop constraint if exists contrato_chacara_sinal_valido;
+alter table public.contrato_modelo add constraint contrato_chacara_sinal_valido check (chacara_percentual_sinal between 0 and 100);

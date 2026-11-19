@@ -7,7 +7,7 @@
   var CFG = window.TOPFEST;
   var sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseKey);
   var folha = document.getElementById("folha");
-  var dados = null;   // { o, c, conf, modelo, contas }
+  var dados = null;   // { o, c, conf, modelo, contas, ch }
   var LINHA = "______________________";
 
   function esc(s) {
@@ -34,11 +34,14 @@
   function erro(texto) { folha.innerHTML = '<p class="msg">' + esc(texto) + "</p>"; }
 
   // ---------- Conteúdo (o mesmo para a folha e para o Word) ----------
-  function calcular(o, pct) {
+  // ch = ids dos produtos da chácara (pacotes).
+  function calcular(o, pct, ch) {
     var soma = function (l) { return l.reduce(function (s, it) { return s + it.quantidade * it.preco; }, 0); };
-    var itens = o.itens.filter(function (it) { return it.tipo !== "servico"; });
+    var todos = o.itens.filter(function (it) { return it.tipo !== "servico"; });
+    var chacara = todos.filter(function (it) { return ch[it.produto_id]; });
+    var itens = todos.filter(function (it) { return !ch[it.produto_id]; });
     var servs = o.itens.filter(function (it) { return it.tipo === "servico"; });
-    var sub = soma(itens) + soma(servs);
+    var sub = soma(todos) + soma(servs);
     var desconto = Number(o.desconto) || 0, taxa = Number(o.taxa_entrega) || 0;
     var pctInd = Number(o.desconto_indicacao_pct) || 0;
     var descInd = Math.round(sub * pctInd) / 100;
@@ -46,13 +49,13 @@
     var total = Math.max(0, sub - desconto - descInd - credito + taxa);
     var sinal = Math.round(total * pct) / 100;
     return {
-      itens: itens, servs: servs, sub: sub, desconto: desconto, taxa: taxa, pctInd: pctInd, descInd: descInd, credito: credito,
+      itens: itens, chacara: chacara, servs: servs, sub: sub, desconto: desconto, taxa: taxa, pctInd: pctInd, descInd: descInd, credito: credito,
       total: total, pct: pct, sinal: sinal, restante: total - sinal
     };
   }
 
   // Linhas de dados do cliente: [rótulo, valor] (valor vazio = linha para escrever à mão).
-  function campos(o, c) {
+  function campos(o, c, v) {
     var doc = c && c.documento;
     var endereco = c ? [c.endereco, c.cidade, c.cep ? "CEP " + c.cep : ""].filter(Boolean).join(" – ") : "";
     return [
@@ -60,7 +63,9 @@
       [["ENDEREÇO", endereco]],
       [["BAIRRO", c && c.bairro], ["TELEFONE", c && telBR(c.whatsapp)]],
       [[doc && doc.length === 14 ? "CNPJ" : "CPF", docBR(doc)], ["RG", c && c.rg]],
-      [["DATA DA RETIRADA", dataBR(o.data_retirada)], ["DATA DA DEVOLUÇÃO", dataBR(o.data_devolucao)]]
+      v && v.chacara.length
+        ? [["ENTRADA NA CHÁCARA", dataBR(o.data_retirada)], ["SAÍDA DA CHÁCARA", dataBR(o.data_devolucao)]]
+        : [["DATA DA RETIRADA", dataBR(o.data_retirada)], ["DATA DA DEVOLUÇÃO", dataBR(o.data_devolucao)]]
     ];
   }
 
@@ -74,10 +79,19 @@
     l.push(["VALOR TOTAL DA LOCAÇÃO", brl(v.total), true]);
     if (v.pct > 0) {
       l.push(["Sinal para reserva (" + v.pct + "%)", brl(v.sinal)]);
-      l.push(["Restante, a pagar na retirada", brl(v.restante)]);
+      l.push(["Restante, a pagar " + (v.chacara.length ? "na entrada" : "na retirada"), brl(v.restante)]);
     }
     return l;
   }
+
+  // Blocos de cláusulas: chácara, decoração ou os dois.
+  function blocosClausulas(m, v) {
+    if (!v.chacara.length) return [{ titulo: "Cláusulas", txt: m.clausulas }];
+    var b = [{ titulo: v.itens.length ? "Cláusulas do aluguel da chácara" : "Cláusulas", txt: m.chacara_clausulas }];
+    if (v.itens.length) b.push({ titulo: "Cláusulas da locação de decoração", txt: m.clausulas });
+    return b;
+  }
+  function tituloContrato(m, v) { return v.chacara.length ? m.chacara_titulo || m.titulo : m.titulo; }
 
   function paragrafos(txt) {
     return String(txt || "").split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean);
@@ -99,21 +113,24 @@
     document.title = "Contrato " + o.numero + " – " + (c ? c.nome : o.cliente_nome || "Chácara Top Fest");
     folha.innerHTML =
       '<header class="cab"><img src="../img/logo.png" alt="Chácara Top Fest"><div>' +
-      "<h1>" + esc(m.titulo) + "</h1><p>" + esc(conf.nome) + " · " + esc(conf.slogan) + "</p>" +
+      "<h1>" + esc(tituloContrato(m, v)) + "</h1><p>" + esc(conf.nome) + " · " + esc(conf.slogan) + "</p>" +
       "<p>Referente ao orçamento nº " + esc(o.numero) + "</p></div></header>" +
-      '<section class="campos">' + campos(o, c).map(function (linha) {
+      '<section class="campos">' + campos(o, c, v).map(function (linha) {
         return '<div class="linha">' + linha.map(function (f) {
           return '<p><b>' + esc(f[0]) + ":</b> " + (f[1] ? esc(f[1]) : '<span class="branco">' + LINHA + "</span>") + "</p>";
         }).join("") + "</div>";
       }).join("") + "</section>" +
+      tabelaHtml("Aluguel da chácara", v.chacara, true) +
       tabelaHtml("Itens de decoração locados", v.itens, true) + tabelaHtml("Serviços", v.servs, false) +
       '<div class="totais">' + linhasTotais(v).map(function (l) {
         return "<div" + (l[2] ? ' class="total"' : "") + "><span>" + esc(l[0]) + "</span><span>" + l[1] + "</span></div>";
       }).join("") + "</div>" +
       (o.observacoes ? '<section class="bloco"><h3>Observações</h3><p class="obs">' + esc(o.observacoes) + "</p></section>" : "") +
-      '<section class="clausulas"><h3>Cláusulas</h3>' +
-      (paragrafos(m.clausulas).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") ||
-        '<p class="msg">Nenhuma cláusula cadastrada. Cadastre em ⚙️ Configurações → Contrato.</p>') + "</section>" +
+      blocosClausulas(m, v).map(function (b) {
+        return '<section class="clausulas"><h3>' + esc(b.titulo) + "</h3>" +
+          (paragrafos(b.txt).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") ||
+            '<p class="msg">Nenhuma cláusula cadastrada. Cadastre em ⚙️ Configurações → ' + (b.txt === m.clausulas ? "Contrato" : "Contrato da chácara") + ".</p>") + "</section>";
+      }).join("") +
       '<section class="assinaturas"><div><span></span>ASSINATURA DO LOCADOR</div><div><span></span>ASSINATURA DO CLIENTE</div></section>';
     document.getElementById("imprimir").disabled = false;
     document.getElementById("word").disabled = false;
@@ -160,20 +177,23 @@
       '<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="900000" cy="900000"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic>' +
       "</a:graphicData></a:graphic></wp:inline></w:drawing></w:r>";
     var corpo = par(logo, { centro: true }) +
-      par(run(m.titulo, { b: true, sz: 28 }), { centro: true, depois: 60 }) +
+      par(run(tituloContrato(m, v), { b: true, sz: 28 }), { centro: true, depois: 60 }) +
       par(run("Referente ao orçamento nº " + o.numero, { sz: 20 }), { centro: true, depois: 240 }) +
-      campos(o, c).map(function (linha) {
+      campos(o, c, v).map(function (linha) {
         return par(linha.map(function (f, i) {
           return (i ? run("     ") : "") + run(f[0] + ": ", { b: true }) + run(f[1] || LINHA);
         }).join(""), { depois: 100 });
       }).join("") +
+      tabelaDocx("Aluguel da chácara", v.chacara, true) +
       tabelaDocx("Itens de decoração locados", v.itens, true) + tabelaDocx("Serviços", v.servs, false) +
       linhasTotais(v).map(function (l, i) {
         return par(run(l[0] + ": ", { b: true }) + run(l[1], { b: l[2] }), { direita: true, antes: i ? 0 : 200, depois: 40 });
       }).join("") +
       (o.observacoes ? par(run("OBSERVAÇÕES: ", { b: true }) + run(o.observacoes), { antes: 200 }) : "") +
-      par(run("CLÁUSULAS:", { b: true }), { antes: 300 }) +
-      paragrafos(m.clausulas).map(function (p) { return par(run(p, { sz: 20 })); }).join("") +
+      blocosClausulas(m, v).map(function (b) {
+        return par(run(b.titulo.toUpperCase() + ":", { b: true }), { antes: 300 }) +
+          paragrafos(b.txt).map(function (p) { return par(run(p, { sz: 20 })); }).join("");
+      }).join("") +
       par(run("________________________________________________"), { centro: true, antes: 600, depois: 0 }) +
       par(run("ASSINATURA DO LOCADOR", { b: true, sz: 20 }), { centro: true }) +
       par(run("________________________________________________"), { centro: true, antes: 600, depois: 0 }) +
@@ -263,14 +283,22 @@
     return Promise.all([
       sb.from("orcamentos").select("*, clientes(*)").eq("id", id).maybeSingle(),
       sb.from("configuracoes").select("*").eq("id", 1).single(),
-      sb.from("contrato_modelo").select("*").eq("id", 1).maybeSingle()
+      sb.from("contrato_modelo").select("*").eq("id", 1).maybeSingle(),
+      sb.from("categorias").select("id, tipo"),
+      sb.from("produtos").select("id, categoria_id")
     ]).then(function (res) {
       res.forEach(function (x) { if (x.error) throw x.error; });
       var o = res[0].data;
       if (!o) { erro("Orçamento não encontrado (ele pode ter sido excluído)."); return; }
       if (o.situacao !== "aprovado") { erro("Este orçamento ainda não está aprovado. Marque como \"Aprovado\" para gerar o contrato."); return; }
       var modelo = res[2].data || { titulo: "CONTRATO DE LOCAÇÃO", clausulas: "", percentual_sinal: 0 };
-      dados = { o: o, c: o.clientes, conf: res[1].data, modelo: modelo, contas: calcular(o, modelo.percentual_sinal) };
+      var ch = {};
+      var catCh = {};
+      (res[3].data || []).forEach(function (x) { if (x.tipo === "chacara") catCh[x.id] = true; });
+      (res[4].data || []).forEach(function (p) { if (catCh[p.categoria_id]) ch[p.id] = true; });
+      var temChacara = o.itens.some(function (it) { return ch[it.produto_id]; });
+      var pct = temChacara && modelo.chacara_percentual_sinal != null ? modelo.chacara_percentual_sinal : modelo.percentual_sinal;
+      dados = { o: o, c: o.clientes, conf: res[1].data, modelo: modelo, contas: calcular(o, pct, ch) };
       montarFolha();
     });
   }).catch(function (e) {

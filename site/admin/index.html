@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261119-2">
+<link rel="stylesheet" href="admin.css?v=20261119-5">
 </head>
 <body>
 <header class="topo">
@@ -89,6 +89,11 @@
           <option value="aberto">Em aberto</option>
           <option value="aprovado">Aprovados</option>
           <option value="cancelado">Cancelados</option>
+        </select>
+        <select id="filtro-tipo" aria-label="Filtrar por tipo">
+          <option value="">Chácara e decoração</option>
+          <option value="chacara">🏡 Só chácara</option>
+          <option value="decoracao">🎈 Só decoração</option>
         </select>
       </div>
       <ul id="lista-orcamentos" class="lista"></ul>
@@ -215,6 +220,16 @@
         <label>Cláusulas<textarea name="clausulas" rows="14" maxlength="10000"></textarea>
           <small>Uma cláusula por parágrafo, separadas por uma linha em branco.</small></label>
         <button class="btn pri grande" type="submit">Salvar contrato</button>
+      </form>
+      <form id="form-contrato-chacara" class="cartao">
+        <h2>🏡 Contrato da chácara</h2>
+        <p class="dica">Usado quando o orçamento tem o <b>aluguel da chácara</b>. Se o mesmo orçamento também tiver decoração, o contrato mostra as cláusulas da chácara e, depois, as da decoração.</p>
+        <label>Título<input name="chacara_titulo" maxlength="150" required></label>
+        <label>Sinal para reservar (% do total)<input name="chacara_percentual_sinal" type="number" min="0" max="100" inputmode="numeric" required>
+          <small>Use 0 para não mostrar sinal e restante.</small></label>
+        <label>Cláusulas do aluguel da chácara<textarea name="chacara_clausulas" rows="14" maxlength="10000"></textarea>
+          <small>Uma cláusula por parágrafo, separadas por uma linha em branco.</small></label>
+        <button class="btn pri grande" type="submit">Salvar contrato da chácara</button>
       </form>
       <form id="form-senha" class="cartao">
         <h2>Trocar minha senha</h2>
@@ -414,7 +429,7 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="agenda-comum.js?v=20261119-2"></script>
-<script src="admin.js?v=20261119-2"></script>
+<script src="agenda-comum.js?v=20261119-5"></script>
+<script src="admin.js?v=20261119-5"></script>
 </body>
 </html>

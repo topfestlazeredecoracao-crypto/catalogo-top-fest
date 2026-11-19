@@ -983,12 +983,33 @@
   // ---------- Modelo do contrato ----------
   var formCt = $("#form-contrato");
 
+  var formCtCh = $("#form-contrato-chacara");
+
   function preencherContrato() {
     var c = st.contrato || { titulo: "", clausulas: "", percentual_sinal: 50 };
     formCt.titulo.value = c.titulo;
     formCt.clausulas.value = c.clausulas;
     formCt.percentual_sinal.value = c.percentual_sinal;
+    formCtCh.chacara_titulo.value = c.chacara_titulo || "CONTRATO DE LOCAÇÃO – ESPAÇO PARA EVENTOS";
+    formCtCh.chacara_clausulas.value = c.chacara_clausulas || "";
+    formCtCh.chacara_percentual_sinal.value = c.chacara_percentual_sinal == null ? 50 : c.chacara_percentual_sinal;
   }
+
+  formCtCh.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var acao = Promise.resolve().then(function () {
+      var pct = Number(formCtCh.chacara_percentual_sinal.value);
+      if (!Number.isInteger(pct) || pct < 0 || pct > 100) throw new Error("O sinal deve ser um número de 0 a 100.");
+      var dados = { chacara_titulo: formCtCh.chacara_titulo.value.trim(), chacara_clausulas: formCtCh.chacara_clausulas.value.trim(), chacara_percentual_sinal: pct };
+      if (!dados.chacara_titulo) throw new Error("Preencha o título do contrato da chácara.");
+      return sb.from("contrato_modelo").update(dados).eq("id", 1).select().single().then(ok);
+    }).then(function (c) {
+      st.contrato = c;
+      preencherContrato();
+      avisar("Contrato da chácara salvo.");
+    });
+    ocupado($('button[type="submit"]', formCtCh), acao.catch(falhou));
+  });
 
   formCt.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -1134,7 +1155,13 @@
     }).then(function () {
       var ct = c.contrato_modelo;
       if (!ct) return;
-      return sb.from("contrato_modelo").upsert({ id: 1, titulo: ct.titulo, clausulas: ct.clausulas || "", percentual_sinal: ct.percentual_sinal }, { onConflict: "id" }).then(ok);
+      var linhaCt = { id: 1, titulo: ct.titulo, clausulas: ct.clausulas || "", percentual_sinal: ct.percentual_sinal };
+      if (ct.chacara_titulo != null) {
+        linhaCt.chacara_titulo = ct.chacara_titulo;
+        linhaCt.chacara_clausulas = ct.chacara_clausulas || "";
+        linhaCt.chacara_percentual_sinal = ct.chacara_percentual_sinal;
+      }
+      return sb.from("contrato_modelo").upsert(linhaCt, { onConflict: "id" }).then(ok);
     }).then(carregarTudo).then(function () { avisar("Cópia restaurada com sucesso!"); });
   }
 
@@ -1444,23 +1471,42 @@
     return m + "\nObrigado!";
   }
 
+  // Orçamento com pacote da chácara e/ou itens de decoração.
+  function eProdutoChacara(id) {
+    var p = produtoPorId(id), c = p && cat(p.categoria_id);
+    return !!(c && c.tipo === "chacara");
+  }
+  function tipoOrc(o) {
+    var ch = false, dec = false;
+    (o.itens || []).forEach(function (it) {
+      if (it.tipo === "servico" || !it.produto_id) return;
+      if (eProdutoChacara(it.produto_id)) ch = true; else dec = true;
+    });
+    return { chacara: ch, decoracao: dec };
+  }
+
   function desenharOrcamentos() {
     var t = $("#busca-orc").value.trim().toLowerCase();
     var sit = $("#filtro-situacao").value;
+    var tipo = $("#filtro-tipo").value;
     var lista = st.orcs.filter(function (o) {
       if (sit && o.situacao !== sit) return false;
+      if (tipo && !tipoOrc(o)[tipo]) return false;
       return !t || String(o.numero) === t.replace(/^n[º°o]?\s*/, "") || (nomeCliente(o) || "").toLowerCase().indexOf(t) >= 0;
     });
     $("#lista-orcamentos").innerHTML = lista.map(function (o) {
       var c = cliente(o.cliente_id);
       var n = o.itens.length;
       var quem = cliente(o.indicado_por);
-      var info = [o.data_evento ? "Evento: " + dataBR(o.data_evento) : "", n + (n === 1 ? " item" : " itens"), "Total: " + brl(contas(o).total),
+      var info = [o.data_evento ? "Evento: " + dataBR(o.data_evento) : "",
+        tipoOrc(o).chacara && o.data_retirada && o.data_devolucao ? "Chácara: " + dataBR(o.data_retirada) + " a " + dataBR(o.data_devolucao) : "", n + (n === 1 ? " item" : " itens"), "Total: " + brl(contas(o).total),
         quem ? "Indicado por " + quem.nome + (Number(o.credito_gerado) > 0 ? " (crédito de " + brl(o.credito_gerado) + ")" : "") : ""]
         .filter(Boolean).join(" · ");
       return '<li class="item" data-id="' + esc(o.id) + '">' +
-        '<div class="mini">🧾</div>' +
-        '<div class="item-info"><b>Nº ' + o.numero + " · " + esc(nomeCliente(o) || "Sem cliente") + "</b><span>" + esc(info) + "</span></div>" +
+        '<div class="mini">' + (tipoOrc(o).chacara ? "🏡" : "🧾") + "</div>" +
+        '<div class="item-info"><b>Nº ' + o.numero + " · " + esc(nomeCliente(o) || "Sem cliente") +
+        (tipoOrc(o).chacara ? ' <span class="selo-chacara">🏡 Chácara' + (tipoOrc(o).decoracao ? " + decoração" : "") + "</span>" : "") +
+        "</b><span>" + esc(info) + "</span></div>" +
         // A situação muda direto na lista (salva na hora).
         '<label class="sit-troca">Situação:<select data-acao="situacao" class="sit-' + esc(o.situacao) + '">' +
         Object.keys(SITUACOES).map(function (k) {
@@ -1502,6 +1548,7 @@
 
   $("#busca-orc").addEventListener("input", desenharOrcamentos);
   $("#filtro-situacao").addEventListener("change", desenharOrcamentos);
+  $("#filtro-tipo").addEventListener("change", desenharOrcamentos);
   $("#novo-orcamento").addEventListener("click", function () { abrirOrcamento(null); });
 
   $("#lista-orcamentos").addEventListener("change", function (e) {

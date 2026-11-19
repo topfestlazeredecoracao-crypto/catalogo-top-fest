@@ -484,6 +484,21 @@ O site tem uma página só da chácara: **topfestdecoracoes.com.br/chacara/**. N
 - Ao colar o pedido, a **entrada** vira **Data da retirada** e **Data do evento**, e a **saída** vira **Data da devolução**. O tipo de evento e os convidados vão para as observações.
 - A chácara tem **Quant 1**: se já houver outro orçamento no mesmo período, aparece o aviso **⛔** e ela aparece na **📅 Agenda**.
 
+### 11.12 Orçamentos da chácara: filtro e contrato próprio
+
+**Filtro:** na aba **🧾 Orçamentos**, o terceiro filtro mostra **Chácara e decoração**, **🏡 Só chácara** ou **🎈 Só decoração**. Um orçamento com as duas coisas aparece nos dois filtros. Na lista, os orçamentos com chácara têm o ícone 🏡, o selo **🏡 Chácara** e as datas de entrada e saída.
+
+**Contrato da chácara:** em **⚙️ Configurações**, quadro **🏡 Contrato da chácara**.
+1. Confira o **título**.
+2. Escolha o **sinal** (% do total para reservar).
+3. Escreva as **cláusulas** (uma por parágrafo, com uma linha em branco entre elas).
+4. Toque em **Salvar contrato da chácara**.
+
+Ao gerar o **📄 Contrato** de um orçamento aprovado:
+- **Só chácara:** usa o título, o sinal e as cláusulas da chácara. As datas aparecem como **Entrada na chácara** e **Saída da chácara**, e o restante é "a pagar na entrada".
+- **Chácara + decoração:** usa o título e o sinal da chácara, mostra as duas tabelas (Aluguel da chácara e Itens de decoração) e as cláusulas da chácara seguidas das da decoração.
+- **Só decoração:** continua como antes.
+
 ## 12. Se algo der errado
 
 | O que aconteceu | O que fazer |
