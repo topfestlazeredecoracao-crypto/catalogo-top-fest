@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Espaço Top Fest – Aluguel de chácara para eventos em Mococa/SP</title>
+<meta name="description" content="Chácara para festas e eventos em Mococa/SP: piscina, salão com área gourmet, churrasqueira, casa de apoio, mesas e cadeiras. Peça seu orçamento pelo WhatsApp.">
+<meta name="theme-color" content="#8f6d14">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Espaço Top Fest – Aluguel de chácara para eventos em Mococa/SP">
+<meta property="og:description" content="Piscina, salão com área gourmet, churrasqueira e casa de apoio. Peça seu orçamento pelo WhatsApp.">
+<meta property="og:url" content="https://topfestdecoracoes.com.br/chacara/">
+<meta property="og:image" content="https://topfestdecoracoes.com.br/img/compartilhar.jpg">
+<link rel="canonical" href="https://topfestdecoracoes.com.br/chacara/">
+<link rel="preconnect" href="https://mtxczbepmxbxzafdypga.supabase.co" crossorigin>
+<link rel="stylesheet" href="/css/chacara.css?v=20261119-1">
+</head>
+<body>
+<nav class="topo">
+  <a class="marca" href="/"><img src="/img/logo.png" width="44" height="44" alt=""><span>Top Fest</span></a>
+  <a class="voltar" href="/">‹ Catálogo de decoração</a>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="slides" id="slides" aria-roledescription="carrossel" aria-label="Fotos da chácara"></div>
+  <div class="hero-texto">
+    <p class="selo">🏡 Aluguel de chácara para eventos</p>
+    <h1 id="titulo">Espaço Top Fest</h1>
+    <p id="chamada"></p>
+    <a class="cta" href="#orcamento">📅 Pedir orçamento</a>
+  </div>
+  <button class="seta ant" type="button" data-s="-1" aria-label="Foto anterior" hidden>‹</button>
+  <button class="seta prox" type="button" data-s="1" aria-label="Próxima foto" hidden>›</button>
+  <div class="pontos" id="pontos"></div>
+</header>
+
+<main>
+  <section class="intro" id="intro"></section>
+
+  <section id="galeria-sec" hidden>
+    <h2>Fotos do espaço</h2>
+    <div class="galeria" id="galeria"></div>
+  </section>
+
+  <section id="estrutura-sec" hidden>
+    <div class="cartoes" id="estrutura"></div>
+  </section>
+
+  <section id="pacotes-sec" hidden>
+    <h2>Pacotes</h2>
+    <div class="pacotes" id="pacotes"></div>
+  </section>
+
+  <section class="orc" id="orcamento" aria-labelledby="orc-tit">
+    <h2 id="orc-tit">Peça seu orçamento</h2>
+    <p class="sub">Escolha as datas. A mensagem vai pronta para o nosso WhatsApp.</p>
+    <form id="form" novalidate>
+      <div id="campo-pacote"></div>
+      <div class="duas">
+        <label>Data de entrada<input id="entrada" type="date" required></label>
+        <label>Data de saída<input id="saida" type="date" required></label>
+      </div>
+      <p class="periodo" id="periodo" aria-live="polite"></p>
+      <div class="duas">
+        <label>Tipo de evento
+          <select id="tipo">
+            <option value="">Escolha…</option>
+            <option>Aniversário</option>
+            <option>Almoço ou jantar</option>
+            <option>Confraternização</option>
+            <option>Casamento</option>
+            <option>Batizado</option>
+            <option>Bodas</option>
+            <option>Chá de bebê</option>
+            <option>Chá revelação</option>
+            <option>Outro</option>
+          </select>
+        </label>
+        <label>Nº de convidados<input id="convidados" type="number" min="1" max="9999" inputmode="numeric" placeholder="Ex.: 50"></label>
+      </div>
+      <label>Seu nome<input id="nome" autocomplete="name" maxlength="80"></label>
+      <label>Alguma observação? (opcional)<textarea id="obs" rows="3" maxlength="500"></textarea></label>
+      <div id="indicacao"></div>
+      <a id="enviar" class="whats off" href="#" target="_blank" rel="noopener" aria-disabled="true">Enviar pedido pelo WhatsApp</a>
+      <p class="dica" id="dica-enviar">Preencha a data de entrada e a de saída.</p>
+    </form>
+  </section>
+
+  <section class="local" id="local-sec" hidden>
+    <h2>Onde fica</h2>
+    <p id="endereco"></p>
+    <a id="mapa" class="botao" href="#" target="_blank" rel="noopener">📍 Abrir no mapa</a>
+  </section>
+
+  <section class="decor">
+    <h2>✨ Decoração para a sua festa</h2>
+    <p>Também alugamos arcos, painéis, mesas, boleiras, capas temáticas e muito mais.</p>
+    <a class="botao" href="/">Ver o catálogo de decoração ›</a>
+  </section>
+</main>
+
+<footer>
+  <a class="duvida" data-duvida href="https://wa.me/5519991616329" target="_blank" rel="noopener">💬 Tirar dúvidas pelo WhatsApp</a>
+  <p>Chácara Top Fest · Lazer, eventos e decorações</p>
+</footer>
+
+<a class="flutua" id="flutua" href="#orcamento">📅 Pedir orçamento da chácara</a>
+<div id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden></div>
+
+<script src="/js/config.js"></script>
+<script src="/js/chacara.js?v=20261119-1"></script>
+</body>
+</html>
