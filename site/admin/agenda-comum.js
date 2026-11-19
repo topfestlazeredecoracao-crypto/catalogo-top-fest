@@ -109,6 +109,20 @@
   }
   function brl(n) { return Number(n || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); }
 
+  // Parte da chácara no orçamento: pacotes - desconto de indicação da chácara - parte proporcional do desconto manual
+  // (a mesma divisão usada no crédito de indicação). Frete e crédito usado não entram.
+  function valorChacara(o, d) {
+    var sc = 0, sd = 0;
+    (o.itens || []).forEach(function (it) {
+      var v = (Number(it.quantidade) || 0) * (Number(it.preco) || 0);
+      if (itemChacara(it, d)) sc += v; else sd += v;
+    });
+    var desc = Number(o.desconto) || 0;
+    var dc = sd + sc > 0 ? Math.round(desc * sc / (sd + sc) * 100) / 100 : 0;
+    return Math.max(0, sc - Math.round(sc * (Number(o.desconto_indicacao_chacara_pct) || 0)) / 100 - dc);
+  }
+  function numDias(p) { return p ? Math.round((new Date(p.fim + "T12:00:00") - new Date(p.ini + "T12:00:00")) / 864e5) + 1 : 0; }
+
   // Orçamentos da chácara que valem para a agenda (Em aberto e Aprovados, com data).
   function reservasChacara(d) {
     return d.orcs.filter(function (o) {
@@ -209,13 +223,15 @@
     var nConf = Object.keys(conflitos).length;
     var soma = aprov.reduce(function (s, o) { return s + totalOrc(o, d); }, 0);
     return (nConf ? '<p class="ag-alerta">⛔ ' + nConf + " reserva(s) aprovada(s) com datas que se cruzam. Confira as linhas em vermelho.</p>" : "") +
-      '<div class="ag-tab"><table><thead><tr><th>Entrada</th><th>Saída</th><th>Cliente</th><th>Orçamento</th><th>Pacote</th><th class="n">Total</th></tr></thead><tbody>' +
+      '<div class="ag-tab"><table><thead><tr><th>Entrada</th><th>Saída</th><th class="n">Dias</th><th>Cliente</th><th>Orçamento</th><th>Pacote</th><th class="n">Total</th></tr></thead><tbody>' +
       lista.map(function (o) {
         var p = periodo(o);
         return "<tr" + (conflitos[o.id] ? ' class="ag-falta"' : "") + '><td class="c"><b>' + esc(semana(p.ini).slice(0, 3)) + " " + dataBR(p.ini) + "</b></td>" +
           '<td class="c">' + esc(semana(p.fim).slice(0, 3)) + " " + dataBR(p.fim) + "</td>" +
+          '<td class="n">' + numDias(p) + "</td>" +
           "<td>" + clienteHtml(o, h, false) + '</td><td class="c">nº ' + esc(o.numero) + "<br>" + selo(o) + "</td>" +
-          "<td>" + esc(pacotes(o, d)) + (tipoOrc(o, d).decoracao ? '<br><span class="ag-end">+ decoração</span>' : "") + "</td>" +
+          "<td>" + esc(pacotes(o, d)) + (tipoOrc(o, d).decoracao ? '<br><span class="ag-end">+ decoração</span>' : "") +
+          (o.observacoes ? '<br><span class="ag-end">' + esc(o.observacoes) + "</span>" : "") + "</td>" +
           '<td class="n">' + esc(brl(totalOrc(o, d))) + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
       '<p class="ag-resumo">' + aprov.length + " reserva(s) aprovada(s) no período · soma dos aprovados: <b>" + esc(brl(soma)) + "</b></p>";
@@ -345,6 +361,12 @@
   window.TF_AGENDA = {
     periodo: periodo, sobrepoe: sobrepoe, reservas: reservas, estoque: estoque,
     textoPeriodo: textoPeriodo, somaDias: somaDias, montar: montar,
-    tipoOrc: tipoOrc, calendarioChacara: calendarioChacara, consultaChacara: consultaChacara
+    tipoOrc: tipoOrc, calendarioChacara: calendarioChacara, consultaChacara: consultaChacara,
+    // Usados pelos relatórios da chácara (relatorio-chacara.js).
+    util: {
+      esc: esc, cod: cod, dataBR: dataBR, semana: semana, telBR: telBR, brl: brl, selo: selo, SIT: SIT,
+      ajudantes: ajudantes, clienteHtml: clienteHtml, pacotes: pacotes, filtrar: filtrar, listaChacara: listaChacara,
+      totalOrc: totalOrc, valorChacara: valorChacara, numDias: numDias, MESES: MESES
+    }
   };
 })();

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Relatórios da chácara – Chácara Top Fest</title>
+<style>@page{size:A4 landscape}</style>
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
+<link rel="stylesheet" href="imprimir.css?v=20261119-9">
+</head>
+<body class="relatorio agenda">
+<div class="barra-tela">
+  <div class="opcoes">
+    <label>Relatório
+      <select id="f-tipo">
+        <option value="entradas">🔑 Entradas e saídas</option>
+        <option value="reservas">📋 Reservas do período</option>
+        <option value="faturamento">💰 Faturamento por mês</option>
+        <option value="clientes">👥 Clientes da chácara</option>
+      </select>
+    </label>
+    <label>De <input type="date" id="f-de"></label>
+    <label>Até <input type="date" id="f-ate"></label>
+    <label id="rot-sit">Situação
+      <select id="f-sit">
+        <option value="ativos">Aprovados e Em aberto</option>
+        <option value="aprovados">Só aprovados</option>
+      </select>
+    </label>
+  </div>
+  <button id="imprimir" type="button" disabled>🖨️ Imprimir / Salvar em PDF</button>
+  <span>Para PDF: escolha <b>"Salvar como PDF"</b> no lugar da impressora.</span>
+</div>
+<main id="folha"><p class="msg">Carregando os relatórios…</p></main>
+<script src="vendor/supabase-2.117.3.js"></script>
+<script src="../js/config.js"></script>
+<script src="agenda-comum.js?v=20261119-8"></script>
+<script src="relatorio-chacara.js?v=20261119-8"></script>
+</body>
+</html>

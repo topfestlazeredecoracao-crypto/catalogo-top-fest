@@ -84,3 +84,9 @@ tr.ag-dev td{background:#faf7f0}
 tr.ag-falta td{background:#fde8e6}
 .ag-alerta{color:#b3261e;font-weight:700}
 @media print{.ag-dia{break-inside:auto}.ag-dia h3{break-after:avoid}}
+/* Relatórios da chácara */
+tfoot .soma td{border-top:2px solid #1d2733;border-bottom:0;background:#f6f4ef}
+.relatorio .barra-tela label[hidden]{display:none}
+table.rel-es{table-layout:fixed}
+.rel-es th:nth-child(1){width:21%}.rel-es th:nth-child(2){width:20%}.rel-es th:nth-child(4){width:12%}.rel-es th:nth-child(5){width:56px}
+@media(max-width:560px){table.rel-es{table-layout:auto}.rel-es th{width:auto!important}}

@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261119-7">
+<link rel="stylesheet" href="admin.css?v=20261119-8">
 </head>
 <body>
 <header class="topo">
@@ -63,7 +63,8 @@
       <button role="tab" data-aba="inspiracoes">📸 Inspirações</button>
       <button role="tab" data-aba="config">⚙️ Configurações</button>
       <button role="tab" data-aba="backup">💾 Cópia de segurança</button>
-      <a class="aba-link" id="relatorio-produtos" href="relatorio.html" target="_blank" rel="noopener">📄 Relatório em PDF</a>
+      <a class="aba-link" id="relatorio-produtos" href="relatorio.html" target="_blank" rel="noopener">📄 Relatório de produtos</a>
+      <a class="aba-link" href="relatorio-chacara.html" target="_blank" rel="noopener">📄 Relatórios da chácara</a>
     </nav>
 
     <div id="aba-produtos" class="aba">
@@ -164,6 +165,7 @@
       </div>
       <div class="barra botoes">
         <a class="btn pri" id="agc-imprimir" href="agenda.html?ver=chacara" target="_blank" rel="noopener">🖨️ Imprimir / salvar em PDF</a>
+        <a class="btn" href="relatorio-chacara.html" target="_blank" rel="noopener">📄 Relatórios da chácara (entradas e saídas, faturamento, clientes)</a>
       </div>
       <div id="agc-lista" class="agenda-res"></div>
     </div>
@@ -481,7 +483,7 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="agenda-comum.js?v=20261119-7"></script>
-<script src="admin.js?v=20261119-7"></script>
+<script src="agenda-comum.js?v=20261119-8"></script>
+<script src="admin.js?v=20261119-8"></script>
 </body>
 </html>

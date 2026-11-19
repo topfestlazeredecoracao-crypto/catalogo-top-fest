@@ -1,0 +1,220 @@
+/* Relatórios do aluguel da chácara (imprimir ou salvar em PDF). Só abre para a administradora logada. */
+(function () {
+  "use strict";
+
+  var CFG = window.TOPFEST;
+  var A = window.TF_AGENDA, U = A.util;
+  var esc = U.esc, dataBR = U.dataBR, brl = U.brl;
+  var sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseKey);
+  var folha = document.getElementById("folha");
+  var f = {
+    tipo: document.getElementById("f-tipo"), de: document.getElementById("f-de"),
+    ate: document.getElementById("f-ate"), sit: document.getElementById("f-sit")
+  };
+  var dados = null, conf = {};
+
+  var TITULOS = {
+    entradas: "Entradas e saídas da chácara",
+    reservas: "Reservas da chácara",
+    faturamento: "Faturamento da chácara por mês",
+    clientes: "Clientes da chácara"
+  };
+  // Faturamento e clientes contam só o que foi fechado (Aprovado).
+  function soAprovados() { return f.tipo.value === "faturamento" || f.tipo.value === "clientes"; }
+
+  function hoje() { return new Date().toLocaleDateString("sv-SE"); }
+  function periodoPadrao(tipo) {
+    var h = hoje(), ano = h.slice(0, 4);
+    if (tipo === "faturamento" || tipo === "clientes") return { de: ano + "-01-01", ate: ano + "-12-31" };
+    return { de: h, ate: A.somaDias(h, tipo === "entradas" ? 30 : 90) };
+  }
+
+  function erro(texto) { folha.innerHTML = '<p class="msg">' + esc(texto) + "</p>"; }
+  function msg(texto) { return '<p class="msg">' + esc(texto) + "</p>"; }
+
+  // Orçamentos da chácara (não cancelados) que encostam no período.
+  function lista(sit) {
+    return U.filtrar(dados, { de: f.de.value, ate: f.ate.value, sit: sit, tipo: "chacara" });
+  }
+  // Para faturamento e clientes: aprovados com ENTRADA dentro do período (cada reserva conta uma vez, no mês da entrada).
+  function aprovadosPorEntrada(incluirAbertos) {
+    return dados.orcs.filter(function (o) {
+      var p = A.periodo(o);
+      if (!p || p.ini < f.de.value || p.ini > f.ate.value) return false;
+      if (!A.tipoOrc(o, dados).chacara) return false;
+      return o.situacao === "aprovado" || (incluirAbertos && o.situacao === "aberto");
+    });
+  }
+
+  // ---------- 1. Entradas e saídas ----------
+  function entradas() {
+    var l = lista(f.sit.value), h = U.ajudantes(dados), de = f.de.value, ate = f.ate.value;
+    var porDia = {};
+    function por(dia, ordem, oque, classe, o) {
+      if (dia < de || dia > ate) return;
+      (porDia[dia] = porDia[dia] || []).push({ ordem: ordem, oque: oque, classe: classe, o: o });
+    }
+    l.forEach(function (o) {
+      var p = A.periodo(o);
+      if (p.ini === p.fim) por(p.ini, 1, "🔑 Entrada e saída no mesmo dia", "ret", o);
+      else {
+        por(p.ini, 1, "🔑 Entrada", "ret", o);
+        por(p.fim, 0, "🚪 Saída", "dev", o);
+      }
+      if (o.data_evento && o.data_evento !== p.ini && o.data_evento !== p.fim) por(o.data_evento, 2, "🎉 Evento", "evt", o);
+    });
+    var diasL = Object.keys(porDia).sort();
+    if (!diasL.length) return { html: msg("Nenhuma entrada ou saída da chácara nesse período."), n: 0 };
+    var n = 0;
+    var html = diasL.map(function (dia) {
+      // No mesmo dia: primeiro quem sai, depois quem entra.
+      var linhas = porDia[dia].sort(function (a, b) { return a.ordem - b.ordem; }).map(function (x) {
+        n++;
+        var o = x.o, p = A.periodo(o);
+        return '<tr class="ag-' + x.classe + '"><td class="ag-tipo">' + x.oque + "</td>" +
+          "<td>" + U.clienteHtml(o, h, false) + "</td>" +
+          "<td>" + esc(U.pacotes(o, dados)) +
+          '<br><span class="ag-end">' + (p.ini === p.fim ? dataBR(p.ini) : "Entrada " + dataBR(p.ini) + " · Saída " + dataBR(p.fim)) +
+          " · " + U.numDias(p) + (U.numDias(p) === 1 ? " dia" : " dias") + "</span>" +
+          (o.observacoes ? '<br><span class="ag-end">Obs.: ' + esc(o.observacoes) + "</span>" : "") + "</td>" +
+          '<td class="c">nº ' + esc(o.numero) + "<br>" + U.selo(o) + "</td>" +
+          '<td class="conf"><span class="caixinha"></span></td></tr>';
+      }).join("");
+      return '<section class="ag-dia"><h3>' + esc(U.semana(dia)) + ", " + dataBR(dia) + "</h3>" +
+        '<div class="ag-tab"><table class="rel-es"><thead><tr><th>O quê</th><th>Cliente</th><th>Pacote e período</th><th>Orçamento</th><th class="conf">Visto</th></tr></thead><tbody>' +
+        linhas + "</tbody></table></div></section>";
+    }).join("");
+    return { html: html, n: n, rotulo: "movimento(s)" };
+  }
+
+  // ---------- 2. Reservas do período ----------
+  function reservas() {
+    var l = lista(f.sit.value);
+    if (!l.length) return { html: msg("Nenhuma reserva da chácara nesse período."), n: 0 };
+    return { html: U.listaChacara(l, dados, U.ajudantes(dados)), n: l.length, rotulo: "reserva(s)" };
+  }
+
+  // ---------- 3. Faturamento por mês ----------
+  function faturamento() {
+    var l = aprovadosPorEntrada(true);
+    var meses = [], m = f.de.value.slice(0, 7), fim = f.ate.value.slice(0, 7);
+    while (m <= fim && meses.length < 60) {
+      meses.push(m);
+      var a = Number(m.slice(0, 4)), mm = Number(m.slice(5, 7)) + 1;
+      if (mm > 12) { mm = 1; a++; }
+      m = a + "-" + String(mm).padStart(2, "0");
+    }
+    var tot = { n: 0, dias: 0, ch: 0, total: 0, abN: 0, abCh: 0 };
+    var linhas = meses.map(function (mes) {
+      var r = { n: 0, dias: 0, ch: 0, total: 0, abN: 0, abCh: 0 };
+      l.forEach(function (o) {
+        var p = A.periodo(o);
+        if (p.ini.slice(0, 7) !== mes) return;
+        if (o.situacao === "aprovado") {
+          r.n++; r.dias += U.numDias(p); r.ch += U.valorChacara(o, dados); r.total += U.totalOrc(o, dados);
+        } else { r.abN++; r.abCh += U.valorChacara(o, dados); }
+      });
+      Object.keys(tot).forEach(function (k) { tot[k] += r[k]; });
+      var nome = U.MESES[Number(mes.slice(5, 7)) - 1];
+      return "<tr" + (r.n ? "" : ' class="sem"') + "><td><b>" + esc(nome.charAt(0).toUpperCase() + nome.slice(1)) + "/" + mes.slice(0, 4) + "</b></td>" +
+        '<td class="n">' + r.n + '</td><td class="n">' + r.dias + '</td><td class="n">' + esc(brl(r.ch)) + "</td>" +
+        '<td class="n">' + (r.n ? esc(brl(r.ch / r.n)) : "—") + '</td><td class="n">' + esc(brl(r.total)) + "</td>" +
+        '<td class="n">' + (r.abN ? r.abN + " · " + esc(brl(r.abCh)) : "—") + "</td></tr>";
+    }).join("");
+    var html = '<div class="ag-tab"><table><thead><tr><th>Mês da entrada</th><th class="n">Reservas aprovadas</th><th class="n">Dias ocupados</th>' +
+      '<th class="n">Valor da chácara</th><th class="n">Média por reserva</th><th class="n">Total dos orçamentos</th><th class="n">Em aberto (qtd · valor)</th></tr></thead><tbody>' +
+      linhas + '</tbody><tfoot><tr class="soma"><td><b>Total</b></td><td class="n"><b>' + tot.n + '</b></td><td class="n"><b>' + tot.dias + "</b></td>" +
+      '<td class="n"><b>' + esc(brl(tot.ch)) + '</b></td><td class="n"><b>' + (tot.n ? esc(brl(tot.ch / tot.n)) : "—") + "</b></td>" +
+      '<td class="n"><b>' + esc(brl(tot.total)) + '</b></td><td class="n"><b>' + (tot.abN ? tot.abN + " · " + esc(brl(tot.abCh)) : "—") + "</b></td></tr></tfoot></table></div>" +
+      '<p class="ag-resumo"><b>Valor da chácara:</b> só os pacotes da chácara, já tirando o desconto de indicação e a parte do desconto que cabe a ela (sem frete e sem decoração). ' +
+      "<b>Total dos orçamentos:</b> o valor final do orçamento inteiro, com decoração e frete quando houver. " +
+      "Cada reserva conta no mês da <b>entrada</b>. <b>Em aberto</b> é só previsão: ainda não foi confirmado.</p>";
+    return { html: html, n: tot.n, rotulo: "reserva(s) aprovada(s)" };
+  }
+
+  // ---------- 4. Clientes da chácara ----------
+  function clientes() {
+    var l = aprovadosPorEntrada(false), h = U.ajudantes(dados);
+    var grupos = {};
+    l.forEach(function (o) {
+      var chave = o.cliente_id || "nome:" + (h.nome(o) || "").toLowerCase();
+      var g = grupos[chave] = grupos[chave] || { o: o, n: 0, dias: 0, ch: 0, ultima: "", nums: [] };
+      var p = A.periodo(o);
+      g.n++; g.dias += U.numDias(p); g.ch += U.valorChacara(o, dados); g.nums.push(o.numero);
+      if (p.ini > g.ultima) { g.ultima = p.ini; g.o = o; }
+    });
+    var gs = Object.keys(grupos).map(function (k) { return grupos[k]; })
+      .sort(function (a, b) { return b.ch - a.ch || b.n - a.n; });
+    if (!gs.length) return { html: msg("Nenhum aluguel da chácara aprovado com entrada nesse período."), n: 0 };
+    var soma = gs.reduce(function (s, g) { return s + g.ch; }, 0);
+    var html = '<div class="ag-tab"><table><thead><tr><th>Cliente</th><th>Cidade</th><th class="n">Aluguéis</th><th class="n">Dias</th>' +
+      '<th class="n">Valor da chácara</th><th>Última entrada</th><th>Orçamentos</th></tr></thead><tbody>' +
+      gs.map(function (g) {
+        var c = h.cliente(g.o);
+        return "<tr><td>" + U.clienteHtml(g.o, h, false) + "</td><td>" + esc((c && c.cidade) || "—") + "</td>" +
+          '<td class="n">' + g.n + '</td><td class="n">' + g.dias + '</td><td class="n">' + esc(brl(g.ch)) + "</td>" +
+          '<td class="c">' + dataBR(g.ultima) + "</td><td>nº " + esc(g.nums.sort(function (a, b) { return a - b; }).join(", ")) + "</td></tr>";
+      }).join("") + "</tbody></table></div>" +
+      '<p class="ag-resumo"><b>' + gs.length + "</b> cliente(s) · <b>" + l.length + "</b> aluguel(éis) aprovado(s) · valor da chácara: <b>" + esc(brl(soma)) +
+      "</b>. Conta os orçamentos aprovados com entrada no período.</p>";
+    return { html: html, n: gs.length, rotulo: "cliente(s)" };
+  }
+
+  var MONTAR = { entradas: entradas, reservas: reservas, faturamento: faturamento, clientes: clientes };
+
+  function montar() {
+    var tipo = f.tipo.value;
+    document.getElementById("rot-sit").hidden = soAprovados();
+    var titulo = TITULOS[tipo];
+    document.title = titulo + " – Top Fest";
+    var corpo;
+    if (!f.de.value || !f.ate.value || f.ate.value < f.de.value) corpo = { html: msg('Escolha as datas "De" e "Até" (a segunda depois da primeira).') };
+    else corpo = MONTAR[tipo]();
+    folha.innerHTML =
+      '<header class="cab"><img src="../img/logo.png" alt="Chácara Top Fest"><div>' +
+      "<h1>" + esc((conf.nome || "Chácara Top Fest").toUpperCase()) + "</h1><p>" + esc(conf.slogan || "") + "</p></div></header>" +
+      '<div class="tit"><h2>' + esc(titulo) + "</h2><span>Emitido em " +
+      new Date().toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) + "</span></div>" +
+      (f.de.value && f.ate.value ? '<p class="ag-resumo">' + dataBR(f.de.value) + " a " + dataBR(f.ate.value) + " · " +
+        (soAprovados() ? "orçamentos aprovados" : f.sit.value === "aprovados" ? "só aprovados" : "aprovados e em aberto") +
+        (corpo.rotulo ? " · <b>" + corpo.n + "</b> " + corpo.rotulo : "") + "</p>" : "") +
+      corpo.html;
+    document.getElementById("imprimir").disabled = false;
+    history.replaceState(null, "", "?tipo=" + tipo + "&de=" + f.de.value + "&ate=" + f.ate.value + "&sit=" + f.sit.value);
+  }
+
+  var q = new URLSearchParams(location.search);
+  if (q.get("tipo") && TITULOS[q.get("tipo")]) f.tipo.value = q.get("tipo");
+  var pp = periodoPadrao(f.tipo.value);
+  f.de.value = q.get("de") || pp.de;
+  f.ate.value = q.get("ate") || pp.ate;
+  if (q.get("sit")) f.sit.value = q.get("sit");
+
+  document.getElementById("imprimir").addEventListener("click", function () { window.print(); });
+  // Ao trocar de relatório, o período volta ao mais comum para ele.
+  f.tipo.addEventListener("change", function () {
+    var p = periodoPadrao(f.tipo.value);
+    f.de.value = p.de; f.ate.value = p.ate;
+    if (dados) montar();
+  });
+  ["de", "ate", "sit"].forEach(function (k) { f[k].addEventListener("change", function () { if (dados) montar(); }); });
+
+  sb.auth.getSession().then(function (r) {
+    if (!r.data.session) { erro("Entre na área da administradora primeiro e depois abra o relatório de novo."); return; }
+    return Promise.all([
+      sb.from("orcamentos").select("*"),
+      sb.from("clientes").select("*"),
+      sb.from("produtos").select("id, codigo, nome, quantidade, kit_itens, categoria_id"),
+      sb.from("categorias").select("id, tipo"),
+      sb.from("configuracoes").select("*").eq("id", 1).single()
+    ]).then(function (res) {
+      res.forEach(function (x) { if (x.error) throw x.error; });
+      dados = { orcs: res[0].data, clientes: res[1].data, prods: res[2].data, cats: res[3].data };
+      conf = res[4].data || {};
+      montar();
+    });
+  }).catch(function (e) {
+    console.error(e);
+    erro("Não foi possível carregar os relatórios. Verifique a internet e tente de novo.");
+  });
+})();

@@ -142,7 +142,7 @@ Cada produto tem um **código** de 3 números (ex.: **Cód. 080**). O cliente v�
 
 Serve para conferir o estoque ou ter uma lista em papel com **código, categoria, nome, descrição, quantidade (Quant) e valor** de cada produto. A folha sai deitada (paisagem), para caber tudo.
 
-1. Na fileira de botões do alto, ao lado de **💾 Cópia de segurança**, toque em **📄 Relatório em PDF**. A lista abre em outra aba do navegador. No celular, se o botão não aparecer, arraste a fileira de botões para a esquerda.
+1. Na fileira de botões do alto, ao lado de **💾 Cópia de segurança**, toque em **📄 Relatório de produtos**. A lista abre em outra aba do navegador. No celular, se o botão não aparecer, arraste a fileira de botões para a esquerda.
    - Se você já tiver escolhido uma categoria no filtro da aba **📦 Produtos**, o relatório abre só com ela.
 2. No topo da página, escolha:
    - **Categoria:** todas ou só uma;
@@ -538,6 +538,20 @@ Entram nessa agenda os orçamentos que têm um **pacote da chácara**. Orçament
 - **🖨️ Imprimir / salvar em PDF** abre a mesma lista em folha com a logo.
 
 **Como a agenda sabe os dias ocupados:** ela usa as datas de **entrada** (campo "Data da retirada") e de **saída** (campo "Data da devolução") do orçamento. Se elas estiverem em branco, ela usa só a **data do evento**. Então preencha a entrada e a saída quando o cliente ficar mais de um dia.
+
+### 11.15 Relatórios da chácara (imprimir ou salvar em PDF)
+
+Na fileira de botões do alto, toque em **📄 Relatórios da chácara** (fica depois de **📄 Relatório de produtos**). O mesmo botão também está na aba **🗓️ Agenda da chácara**. A página abre em outra aba do navegador.
+
+1. Em **Relatório**, escolha um dos quatro:
+   - **🔑 Entradas e saídas:** dia a dia, quem **entra** e quem **sai** da chácara (no mesmo dia, quem sai aparece primeiro). Mostra cliente, telefone, pacote, período, número de dias, observações e uma caixinha **Visto** para marcar à mão. É a folha para o caseiro. Começa em hoje até daqui a 30 dias.
+   - **📋 Reservas do período:** uma linha por reserva, com entrada, saída, número de dias, cliente, pacote e valor total. No fim aparece a soma dos aprovados e um aviso se duas reservas aprovadas se cruzarem. Começa em hoje até daqui a 90 dias.
+   - **💰 Faturamento por mês:** para cada mês, o número de reservas aprovadas, os dias ocupados, o **valor da chácara**, a média por reserva, o total dos orçamentos e a previsão dos **em aberto**. Cada reserva conta no mês da **entrada**. Começa no ano atual inteiro.
+   - **👥 Clientes da chácara:** quem alugou no período, quantas vezes, quantos dias, quanto gastou com a chácara e a última entrada. Os clientes que mais gastaram aparecem primeiro. Começa no ano atual inteiro.
+2. Ajuste **De** e **Até** se quiser outro período. Nos relatórios de entradas e saídas e de reservas, escolha também a **Situação**. O faturamento e os clientes contam **só os aprovados**.
+3. Toque em **🖨️ Imprimir / Salvar em PDF** e escolha a impressora ou **Salvar como PDF**.
+
+**Valor da chácara** é só o valor dos pacotes da chácara, já sem o desconto de indicação da chácara e sem a parte do desconto manual que cabe a ela. Não entram o frete nem os itens de decoração. **Total dos orçamentos** é o valor final do orçamento inteiro.
 
 ## 12. Se algo der errado
 
