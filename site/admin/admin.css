@@ -139,3 +139,13 @@ a.btn{text-decoration:none}
 tr.ag-falta td{background:rgba(179,38,30,.12)}
 .ag-alerta{color:var(--erro);font-weight:700}
 @media(max-width:640px){.agenda-res thead{display:none}.agenda-res tr{display:block;padding:10px 12px;border-bottom:1px solid var(--bd)}.agenda-res tr:last-child{border-bottom:0}.agenda-res td{display:block;border:0;padding:2px 0}.agenda-res td.n,.agenda-res td.c{text-align:left}.agenda-res .ag-tipo{font-size:15px}}
+.kit-box{border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin:0 0 14px}
+.kit-box summary{cursor:pointer;font-weight:700;padding:4px 0}
+.kit-box #kit-busca{margin:4px 0 14px}
+.kit-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.kit-lista li{display:grid;grid-template-columns:1fr 80px auto;gap:8px;align-items:center;border:1px solid var(--bd);border-radius:10px;padding:6px 8px;font-size:14px}
+.kit-lista input{margin:0;padding:8px}
+.kit-lista .btn{min-height:38px;padding:4px 10px}
+.selo-kit{font-size:12px;font-weight:700;color:var(--ac)}
+#ch-fotos input{margin:6px;width:auto;padding:8px;font-size:14px}
+#form-chacara textarea{font-size:15px;line-height:1.45}

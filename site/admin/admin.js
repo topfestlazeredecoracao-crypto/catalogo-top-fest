@@ -239,7 +239,8 @@
       sb.from("configuracoes").select("*").eq("id", 1).single(),
       sb.from("clientes").select("*").order("nome"),
       sb.from("orcamentos").select("*").order("numero", { ascending: false }),
-      sb.from("contrato_modelo").select("*").eq("id", 1).maybeSingle()
+      sb.from("contrato_modelo").select("*").eq("id", 1).maybeSingle(),
+      sb.from("chacara_pagina").select("*").eq("id", 1).maybeSingle()
     ]).then(function (r) {
       st.cats = ok(r[0]);
       st.prods = ok(r[1]);
@@ -247,9 +248,111 @@
       st.clientes = ok(r[3]);
       st.orcs = ok(r[4]);
       st.contrato = ok(r[5]);
+      st.chacara = ok(r[6]) || { id: 1, titulo: "", chamada: "", descricao: "", endereco: "", mostrar_endereco: true, fotos: [] };
+      preencherChacara();
       desenharTudo();
     }).catch(falhou);
   }
+
+  // ---------- Aba Chácara (página de aluguel) ----------
+  var formCh = $("#form-chacara");
+
+  function preencherChacara() {
+    var c = st.chacara;
+    ["titulo", "chamada", "descricao", "endereco"].forEach(function (k) { formCh[k].value = c[k] || ""; });
+    formCh.mostrar_endereco.checked = c.mostrar_endereco !== false;
+    desenharFotosChacara();
+  }
+
+  function desenharFotosChacara() {
+    var fotos = st.chacara.fotos || [];
+    $("#ch-fotos").innerHTML = fotos.map(function (f, i) {
+      return '<li data-f="' + i + '"><img src="' + esc(fotoUrl(f.imagem)) + '" alt="Foto ' + (i + 1) + ' da chácara" loading="lazy">' +
+        (i === 0 ? '<span class="dica" style="margin:6px 8px 0">⭐ Capa</span>' : "") +
+        '<input data-legenda maxlength="120" placeholder="Legenda (ex.: Piscina)" value="' + esc(f.legenda || "") + '" aria-label="Legenda da foto ' + (i + 1) + '">' +
+        '<div class="item-acoes">' +
+        '<button class="btn" type="button" data-acao="subir" aria-label="Para trás"' + (i === 0 ? " disabled" : "") + ">◀</button>" +
+        '<button class="btn" type="button" data-acao="excluir" aria-label="Remover foto">🗑️</button>' +
+        '<button class="btn" type="button" data-acao="descer" aria-label="Para frente"' + (i === fotos.length - 1 ? " disabled" : "") + ">▶</button>" +
+        "</div></li>";
+    }).join("") || '<li class="dica">Nenhuma foto ainda.</li>';
+  }
+
+  function gravarChacara(dados) {
+    return sb.from("chacara_pagina").update(dados).eq("id", 1).select().single().then(ok).then(function (novo) {
+      st.chacara = novo;
+      return novo;
+    });
+  }
+
+  formCh.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var dados = {
+      titulo: formCh.titulo.value.trim(), chamada: formCh.chamada.value.trim(),
+      descricao: formCh.descricao.value.trim(), endereco: formCh.endereco.value.trim(),
+      mostrar_endereco: formCh.mostrar_endereco.checked
+    };
+    if (!dados.titulo) { avisar("Preencha o título.", true); return; }
+    ocupado($('button[type="submit"]', formCh), gravarChacara(dados).then(function () { avisar("Página da chácara salva!"); })).catch(falhou);
+  });
+
+  $("#ch-fotos").addEventListener("change", function (e) {
+    if (!e.target.matches("[data-legenda]")) return;
+    var i = Number(e.target.closest("[data-f]").dataset.f);
+    var fotos = JSON.parse(JSON.stringify(st.chacara.fotos));
+    fotos[i].legenda = e.target.value.trim();
+    gravarChacara({ fotos: fotos }).then(function () { avisar("Legenda salva."); }).catch(falhou);
+  });
+
+  $("#ch-fotos").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-acao]");
+    if (!b) return;
+    var i = Number(b.closest("[data-f]").dataset.f);
+    var fotos = JSON.parse(JSON.stringify(st.chacara.fotos));
+    if (b.dataset.acao === "excluir") {
+      confirmar("Remover esta foto da página da chácara?", "Remover").then(function (sim) {
+        if (!sim) return;
+        var tirada = fotos.splice(i, 1)[0];
+        return gravarChacara({ fotos: fotos }).then(function () {
+          apagarFoto(tirada.imagem);
+          desenharFotosChacara();
+          avisar("Foto removida.");
+        });
+      }).catch(falhou);
+      return;
+    }
+    var j = i + (b.dataset.acao === "subir" ? -1 : 1);
+    if (j < 0 || j >= fotos.length) return;
+    var x = fotos[i]; fotos[i] = fotos[j]; fotos[j] = x;
+    ocupado(b, gravarChacara({ fotos: fotos }).then(desenharFotosChacara)).catch(falhou);
+  });
+
+  $("#ch-fotos-add").addEventListener("change", function (e) {
+    var arquivos = Array.prototype.slice.call(e.target.files);
+    e.target.value = "";
+    if (!arquivos.length) return;
+    var novas = [];
+    avisar("Enviando " + arquivos.length + " foto(s)… não feche a página.");
+    arquivos.reduce(function (cadeia, arq) {
+      return cadeia.then(function () {
+        return reduzirFoto(arq, 1600).then(function (b) { return enviarFoto("chacara", b); })
+          .then(function (caminho) { novas.push({ imagem: caminho, legenda: "" }); })
+          .catch(function (er) { falhou(er); });
+      });
+    }, Promise.resolve()).then(function () {
+      if (!novas.length) return;
+      return gravarChacara({ fotos: (st.chacara.fotos || []).concat(novas) }).then(function () {
+        desenharFotosChacara();
+        avisar(novas.length + " foto(s) adicionada(s).");
+      });
+    }).catch(falhou);
+  });
+
+  $("#ch-pacotes").addEventListener("click", function () {
+    var c = st.cats.filter(function (x) { return x.tipo === "chacara"; })[0];
+    $('.abas [data-aba="produtos"]').click();
+    if (c) { $("#filtro-cat").value = String(c.id); desenharProdutos(); }
+  });
 
   // ---------- Aba Agenda ----------
   (function () {
@@ -328,6 +431,7 @@
         '<div class="mini">' + (p.imagem ? '<img src="' + esc(fotoUrl(p.imagem)) + '" alt="" loading="lazy">' : "📷") + "</div>" +
         '<div class="item-info"><b><span class="cod">Cód. ' + cod(p.codigo) + "</span> " + esc(p.nome) +
         (p.ativo ? "" : ' <span class="selo">OCULTO</span>') + "</b>" +
+        (p.kit_itens && p.kit_itens.length ? '<span class="selo-kit">📦 Kit com ' + p.kit_itens.length + " itens</span>" : "") +
         "<span>" + esc(c.nome) + " · Quant: " + esc(p.quantidade == null ? 1 : p.quantidade) + (p.preco != null ? " · " + brl(p.preco) + (p.mostrar_preco ? "" : " (preço escondido no site)") : "") +
         "</span></div>" +
         '<div class="item-acoes">' +
@@ -444,10 +548,84 @@
       formP.quantidade.value = p.quantidade == null ? 1 : p.quantidade;
     }
     previa(p && p.imagem ? fotoUrl(p.imagem) : "");
+    kitEdit = JSON.parse(JSON.stringify((p && p.kit_itens) || []));
+    $("#kit-busca").value = "";
+    $("#kit-sugestoes").innerHTML = "";
+    var g = categoriaGaleria();
+    $("#kit-box").open = kitEdit.length > 0 || !!(g && formP.categoria_id.value === String(g.id));
+    desenharKit();
     $("#dlg-produto").showModal();
   }
 
   $("#novo-produto").addEventListener("click", function () { abrirProduto(null); });
+
+  // ---------- Itens do kit ----------
+  var kitEdit = [];
+
+  function desenharKit() {
+    $("#kit-lista").innerHTML = kitEdit.map(function (k, i) {
+      return '<li data-k="' + i + '"><span>' + (k.codigo != null ? '<span class="cod">Cód. ' + cod(k.codigo) + "</span> " : "") + esc(k.nome) + "</span>" +
+        '<input type="number" min="1" max="999" inputmode="numeric" value="' + esc(k.quantidade) + '" aria-label="Quantidade de ' + esc(k.nome) + '">' +
+        '<button class="btn" type="button" data-k-tirar aria-label="Tirar ' + esc(k.nome) + ' do kit">✖</button></li>';
+    }).join("") || '<li class="dica" style="display:block;border:0">Nenhum item no kit.</li>';
+  }
+
+  function sugestoesKit() {
+    var t = $("#kit-busca").value.trim().toLowerCase();
+    if (!t) return [];
+    var este = produtoEditando && produtoEditando.id;
+    return st.prods.filter(function (p) {
+      if (p.id === este || (p.kit_itens && p.kit_itens.length)) return false;
+      var c = cat(p.categoria_id);
+      if (c && c.tipo !== "produtos") return false;
+      return cod(p.codigo).indexOf(t) === 0 || p.nome.toLowerCase().indexOf(t) >= 0;
+    }).slice(0, 8);
+  }
+
+  function adicionarAoKit(p) {
+    var ja = kitEdit.filter(function (k) { return k.produto_id === p.id; })[0];
+    if (ja) ja.quantidade = (Number(ja.quantidade) || 0) + 1;
+    else kitEdit.push({ produto_id: p.id, codigo: p.codigo, nome: p.nome, quantidade: 1 });
+    $("#kit-busca").value = "";
+    $("#kit-sugestoes").innerHTML = "";
+    desenharKit();
+    $("#kit-busca").focus();
+  }
+
+  $("#kit-busca").addEventListener("input", function () {
+    $("#kit-sugestoes").innerHTML = sugestoesKit().map(function (p) {
+      return '<li><button type="button" data-id="' + esc(p.id) + '"><span class="cod">Cód. ' + cod(p.codigo) + "</span><span>" + esc(p.nome) + "</span></button></li>";
+    }).join("");
+  });
+  $("#kit-busca").addEventListener("keydown", function (e) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    var p = sugestoesKit()[0];
+    if (p) adicionarAoKit(p);
+  });
+  $("#kit-sugestoes").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-id]");
+    if (b) adicionarAoKit(produtoPorId(b.dataset.id));
+  });
+  $("#kit-lista").addEventListener("input", function (e) {
+    var li = e.target.closest("[data-k]");
+    if (li) kitEdit[Number(li.dataset.k)].quantidade = parseInt(e.target.value, 10) || 0;
+  });
+  $("#kit-lista").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-k-tirar]");
+    if (!b) return;
+    kitEdit.splice(Number(b.closest("[data-k]").dataset.k), 1);
+    desenharKit();
+  });
+
+  function lerKit() {
+    return kitEdit.map(function (k) {
+      var q = Number(k.quantidade);
+      if (!Number.isInteger(q) || q < 1 || q > 999) throw new Error('Quantidade inválida no kit: "' + k.nome + '".');
+      var p = produtoPorId(k.produto_id);
+      return { produto_id: k.produto_id, codigo: p ? p.codigo : k.codigo, nome: p ? p.nome : k.nome, quantidade: q };
+    });
+  }
 
   formP.categoria_id.addEventListener("change", function () {
     $("#nova-cat-campos").hidden = formP.categoria_id.value !== "nova";
@@ -510,7 +688,8 @@
       ativo: formP.ativo.checked,
       preco: lerPreco(formP.preco.value),
       mostrar_preco: formP.mostrar_preco.checked,
-      quantidade: lerQuantidade(formP.quantidade.value)
+      quantidade: lerQuantidade(formP.quantidade.value),
+      kit_itens: lerKit()
     };
     if (!dados.nome) throw new Error("Preencha o nome do produto.");
     var p = produtoEditando;
@@ -568,11 +747,11 @@
   }
 
   // Reduz para no máximo 800 px no lado maior e comprime (WebP, ou JPEG se o aparelho não suportar).
-  function reduzirFoto(arq) {
+  function reduzirFoto(arq, lado) {
     if (TIPOS_FOTO.indexOf(arq.type) < 0) return Promise.reject(new Error("Escolha uma foto JPG, PNG ou WebP."));
     if (arq.size > MAX_ENVIO) return Promise.reject(new Error("Essa foto passa de 15 MB. Escolha uma menor."));
     return carregarImagem(arq).then(function (img) {
-      var escala = Math.min(1, MAX_LADO / Math.max(img.naturalWidth, img.naturalHeight));
+      var escala = Math.min(1, (lado || MAX_LADO) / Math.max(img.naturalWidth, img.naturalHeight));
       var c = document.createElement("canvas");
       c.width = Math.round(img.naturalWidth * escala);
       c.height = Math.round(img.naturalHeight * escala);
@@ -833,7 +1012,7 @@
     ocupado(b, carregarTudo().then(function () {
       var copia = {
         sistema: "catalogo-top-fest",
-        versao: 4,
+        versao: 5,
         exportado_em: new Date().toISOString(),
         endereco_fotos: fotoUrl("x").replace(/x$/, ""),
         configuracoes: st.conf,
@@ -841,7 +1020,8 @@
         produtos: st.prods,
         clientes: st.clientes,
         orcamentos: st.orcs,
-        contrato_modelo: st.contrato
+        contrato_modelo: st.contrato,
+        chacara_pagina: st.chacara
       };
       var blob = new Blob([JSON.stringify(copia, null, 2)], { type: "application/json" });
       var a = document.createElement("a");
@@ -888,6 +1068,14 @@
       if (cfg[k] != null) cfgNova[k] = cfg[k];
     });
     return sb.from("configuracoes").update(cfgNova).eq("id", 1).then(ok).then(function () {
+      // Página da chácara (cópias a partir da versão 5).
+      var ch = c.chacara_pagina;
+      if (!ch) return;
+      return sb.from("chacara_pagina").upsert({
+        id: 1, titulo: ch.titulo || "", chamada: ch.chamada || "", descricao: ch.descricao || "",
+        endereco: ch.endereco || "", mostrar_endereco: ch.mostrar_endereco !== false, fotos: ch.fotos || []
+      }).then(ok);
+    }).then(function () {
       // Categorias são casadas pelo nome (o número interno pode mudar).
       return sb.from("categorias").upsert(c.categorias.map(function (x) {
         return { nome: x.nome, icone: x.icone, tipo: x.tipo, ordem: x.ordem };
@@ -904,6 +1092,7 @@
           mostrar_preco: p.mostrar_preco !== false
         };
         if (p.quantidade != null) linha.quantidade = p.quantidade;
+        if (Array.isArray(p.kit_itens)) linha.kit_itens = p.kit_itens;
         if (p.codigo != null) linha.codigo = p.codigo;
         return linha;
       }), { onConflict: "id", defaultToNull: false }).then(ok);
@@ -1404,8 +1593,8 @@
     formO.data_evento.value = orc.data_evento;
     // Situação e datas da locação vêm só do orçamento salvo (uma cópia começa "Em aberto").
     formO.situacao.value = (base && base.situacao) || "aberto";
-    formO.data_retirada.value = (base && base.data_retirada) || "";
-    formO.data_devolucao.value = (base && base.data_devolucao) || "";
+    formO.data_retirada.value = v.data_retirada || "";
+    formO.data_devolucao.value = v.data_devolucao || "";
     formO.desconto.value = numCampo(orc.desconto);
     formO.taxa_entrega.value = numCampo(orc.taxa_entrega);
     formO.observacoes.value = orc.observacoes;
@@ -1459,7 +1648,7 @@
 
   function textoOcupacao(it) {
     var p = periodoForm();
-    if (!p || it.tipo === "servico" || !it.produto_id) return "";
+    if (!p || it.tipo === "servico" || !it.produto_id || eKit(it.produto_id)) return "";
     var oc = ocupacao(it.produto_id, p);
     if (!oc.max) return "";
     var tem = estoque(produtoPorId(it.produto_id));
@@ -1492,7 +1681,7 @@
     var p = periodoForm();
     if (!p) return [];
     return orc.itens.filter(function (it) {
-      if (it.tipo === "servico" || !it.produto_id) return false;
+      if (it.tipo === "servico" || !it.produto_id || eKit(it.produto_id)) return false;
       var livres = estoque(produtoPorId(it.produto_id)) - ocupacao(it.produto_id, p).max;
       return (Number(it.quantidade) || 0) > livres;
     });
@@ -1541,6 +1730,20 @@
     var ja = orc.itens.filter(function (it) { return it.produto_id === p.id; })[0];
     if (ja) ja.quantidade = (Number(ja.quantidade) || 0) + q;
     else orc.itens.push({ tipo: "produto", produto_id: p.id, codigo: p.codigo, nome: p.nome, quantidade: q, preco: Number(p.preco) || 0 });
+    // Kit: os itens dele entram separados, com valor 0 (o valor fica no kit), para a agenda saber o que sai.
+    (p.kit_itens || []).forEach(function (k) {
+      var comp = produtoPorId(k.produto_id) || { id: k.produto_id, codigo: k.codigo, nome: k.nome };
+      var n = (Number(k.quantidade) || 1) * q;
+      var j = orc.itens.filter(function (it) { return it.produto_id === comp.id; })[0];
+      if (j) j.quantidade = (Number(j.quantidade) || 0) + n;
+      else orc.itens.push({ tipo: "produto", produto_id: comp.id, codigo: comp.codigo, nome: comp.nome, quantidade: n, preco: 0 });
+    });
+  }
+
+  // Kit não conta como peça na agenda: contam os itens dele.
+  function eKit(id) {
+    var p = produtoPorId(id);
+    return !!(p && p.kit_itens && p.kit_itens.length);
   }
 
   function sugestoes() {
@@ -1556,7 +1759,7 @@
 
   function etiquetaOcupacao(p) {
     var per = periodoForm();
-    if (!per) return "";
+    if (!per || (p.kit_itens && p.kit_itens.length)) return "";
     var oc = ocupacao(p.id, per).max;
     if (!oc) return "";
     var livres = Math.max(0, estoque(p) - oc);
@@ -1810,7 +2013,8 @@
 
   // Entende a mensagem que o site manda: "- 2x (Cód. 080) Nome", "Nome: …", "Data do evento: dd/mm/aaaa".
   function lerPedido(txt) {
-    var r = { itens: [], nome: "", data: "", faltou: [], indCodigo: "", indNome: "" };
+    var r = { itens: [], nome: "", data: "", entrada: "", saida: "", obs: [], faltou: [], indCodigo: "", indNome: "" };
+    var dataDe = function (m) { return m[3] + "-" + m[2].padStart(2, "0") + "-" + m[1].padStart(2, "0"); };
     var guarda = orc;
     orc = { itens: r.itens };
     txt.split(/\r?\n/).forEach(function (l) {
@@ -1819,6 +2023,15 @@
       var mip = l.match(/^indicad[oa] por:\s*(.+)$/i);
       if (mic) { r.indCodigo = mic[1].toUpperCase(); return; }
       if (mip) { r.indNome = mip[1].trim(); return; }
+      // Itens de um kit ("    • 2x Arco"): o kit já traz os itens dele.
+      if (/^[•↳]/.test(l)) return;
+      var me = l.match(/^entrada:\D*(\d{1,2})\/(\d{1,2})\/(\d{4})/i);
+      var ms = l.match(/^sa[ií]da:\D*(\d{1,2})\/(\d{1,2})\/(\d{4})/i);
+      if (me) { r.entrada = dataDe(me); return; }
+      if (ms) { r.saida = dataDe(ms); return; }
+      if (/^(tipo de evento|convidados):/i.test(l)) { r.obs.push(l); return; }
+      var mo = l.match(/^observa[çc][õo]es:\s*(.+)$/i);
+      if (mo) { r.obs.push(mo[1].trim()); return; }
       var mn = l.match(/^nome:\s*(.+)$/i);
       var md = l.match(/^data do evento:\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/i);
       var mi = l.match(/^[-•*]?\s*(\d+)\s*x\s+(.+)$/i);
@@ -1855,7 +2068,8 @@
     $("#dlg-colar").close();
     orcOriginal = null;
     abrirOrcamento(null, {
-      cliente_id: c ? c.id : null, data_evento: r.data, itens: r.itens,
+      cliente_id: c ? c.id : null, data_evento: r.data || r.entrada, itens: r.itens,
+      data_retirada: r.entrada, data_devolucao: r.saida, observacoes: r.obs.join("\n"),
       indicado_por: quem ? quem.id : null,
       desconto_indicacao_pct: quem && primeiraLocacao(c ? c.id : null) ? pctDescontoIndicacao() : 0
     });

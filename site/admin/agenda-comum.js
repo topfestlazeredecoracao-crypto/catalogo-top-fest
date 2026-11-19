@@ -154,7 +154,7 @@
     var janela = { ini: f.de, fim: f.ate };
     var ids = {};
     lista.forEach(function (o) { (o.itens || []).forEach(function (it) { if (it.produto_id) ids[it.produto_id] = true; }); });
-    var prods = d.prods.filter(function (p) { return ids[p.id]; }).sort(function (a, b) { return (a.codigo || 0) - (b.codigo || 0); });
+    var prods = d.prods.filter(function (p) { return ids[p.id] && !(p.kit_itens && p.kit_itens.length); }).sort(function (a, b) { return (a.codigo || 0) - (b.codigo || 0); });
     var faltas = 0;
     var linhas = prods.map(function (p) {
       var r = reservas(lista, p.id, janela);

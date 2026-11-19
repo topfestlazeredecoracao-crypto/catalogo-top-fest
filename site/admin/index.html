@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261118-6">
+<link rel="stylesheet" href="admin.css?v=20261119-1">
 </head>
 <body>
 <header class="topo">
@@ -56,6 +56,7 @@
       <button role="tab" data-aba="produtos" class="on">📦 Produtos</button>
       <button role="tab" data-aba="orcamentos">🧾 Orçamentos</button>
       <button role="tab" data-aba="agenda">📅 Agenda</button>
+      <button role="tab" data-aba="chacara">🏡 Chácara</button>
       <button role="tab" data-aba="clientes">👥 Clientes</button>
       <button role="tab" data-aba="categorias">🗂️ Categorias</button>
       <button role="tab" data-aba="inspiracoes">📸 Inspirações</button>
@@ -115,6 +116,32 @@
         <a class="btn pri" id="ag-imprimir" href="agenda.html" target="_blank" rel="noopener">🖨️ Imprimir / salvar em PDF</a>
       </div>
       <div id="agenda-res" class="agenda-res"></div>
+    </div>
+
+    <div id="aba-chacara" class="aba" hidden>
+      <div class="barra botoes">
+        <a class="btn" href="/chacara/" target="_blank" rel="noopener">👀 Ver a página da chácara</a>
+        <button class="btn" type="button" id="ch-pacotes">📦 Pacotes (nome, preço, descrição)</button>
+      </div>
+      <form id="form-chacara">
+        <label>Título<input name="titulo" maxlength="80"></label>
+        <label>Chamada (frase abaixo do título)<input name="chamada" maxlength="160"></label>
+        <label>Descrição
+          <textarea name="descricao" rows="16" maxlength="8000"></textarea>
+          <small>Linhas que começam com <b>*</b> viram lista com ✓. A linha logo antes de uma lista vira o título do quadro (ex.: "Lazer:"). O primeiro parágrafo aparece em destaque.</small>
+        </label>
+        <label>Endereço<input name="endereco" maxlength="200"></label>
+        <label class="check"><input type="checkbox" name="mostrar_endereco"> Mostrar o endereço e o botão do mapa na página</label>
+        <div class="acoes"><button class="btn pri" type="submit">Salvar textos</button></div>
+      </form>
+      <h3>Fotos da página</h3>
+      <div class="barra">
+        <label class="btn pri grande arquivo">📷 Adicionar fotos
+          <input id="ch-fotos-add" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+        </label>
+      </div>
+      <p class="dica">A <b>primeira foto é a capa</b> da página. Use ◀ e ▶ para mudar a ordem. A legenda aparece quando o cliente amplia a foto.</p>
+      <ul id="ch-fotos" class="galeria"></ul>
     </div>
 
     <div id="aba-clientes" class="aba" hidden>
@@ -245,6 +272,13 @@
     <small class="abaixo-check">Só vale se "Mostrar preços no site" estiver ligado em Configurações.</small>
     <label>Quant<input name="quantidade" type="number" min="0" max="99999" step="1" inputmode="numeric" value="1" required>
       <small>Quantas peças deste produto você tem. Aparece no site como "Quant".</small></label>
+    <details id="kit-box" class="kit-box">
+      <summary>📦 Itens do kit (opcional)</summary>
+      <p class="dica">Para inspirações e kits prontos: o cliente vê a lista no site e, no orçamento, os itens entram separados (com valor 0, o valor fica no kit).</p>
+      <input id="kit-busca" type="search" autocomplete="off" placeholder="Digite o código ou o nome do item" aria-label="Adicionar item ao kit">
+      <ul id="kit-sugestoes" class="sugestoes"></ul>
+      <ul id="kit-lista" class="kit-lista"></ul>
+    </details>
     <label class="check"><input type="checkbox" name="ativo" checked> Visível no site</label>
     <div class="acoes">
       <button class="btn" value="cancelar" type="button" data-fechar>Cancelar</button>
@@ -380,7 +414,7 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="agenda-comum.js?v=20261118-6"></script>
-<script src="admin.js?v=20261118-6"></script>
+<script src="agenda-comum.js?v=20261119-1"></script>
+<script src="admin.js?v=20261119-1"></script>
 </body>
 </html>

@@ -43,7 +43,7 @@
     return Promise.all([
       sb.from("orcamentos").select("*"),
       sb.from("clientes").select("*"),
-      sb.from("produtos").select("id, codigo, nome, quantidade"),
+      sb.from("produtos").select("id, codigo, nome, quantidade, kit_itens"),
       sb.from("configuracoes").select("*").eq("id", 1).single()
     ]).then(function (res) {
       res.forEach(function (x) { if (x.error) throw x.error; });

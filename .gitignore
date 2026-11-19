@@ -23,3 +23,6 @@ __pycache__/
 CONTAS_E_SERVICOS*
 *_IMPRIMIR.html
 *.docx
+
+# Fotos e texto originais da chácara (já vão para o site pelo scripts/importar_chacara.py)
+chacara/

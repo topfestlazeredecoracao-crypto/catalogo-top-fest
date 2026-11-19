@@ -445,6 +445,45 @@ Quando você preenche essas datas no orçamento:
 4. Em **Situação**, escolha **Aprovados e Em aberto** ou **Só aprovados**.
 5. Para papel ou PDF, toque em **🖨️ Imprimir / salvar em PDF**. Abre uma folha com a logo; escolha a impressora ou **Salvar como PDF**.
 
+### 11.10 Kits prontos (inspirações com a lista de itens)
+
+Uma inspiração (ou qualquer produto) pode virar um **kit**: você diz quais itens vêm nele.
+
+**Montar o kit**
+1. Na aba **📸 Inspirações** (ou **📦 Produtos**), toque em **✏️ Editar**.
+2. Abra o quadro **📦 Itens do kit**.
+3. Digite o código ou o nome de um item e toque nele (ou aperte Enter). Repita para cada item.
+4. Ajuste a quantidade de cada um. Para tirar um item, toque em **✖**.
+5. Coloque o **preço do kit** no campo Preço e toque em **Salvar**.
+
+**O que o cliente vê**
+- No site aparece **📦 Vem neste kit:** com a lista.
+- Ele pede o kit inteiro. Se quiser mudar algo, escreve no campo **"Quer mudar algo no kit?"** do carrinho.
+- A mensagem chega com o kit e, logo abaixo, os itens dele (linhas com •) e as observações.
+
+**No orçamento**
+- Ao colar o pedido (ou adicionar o kit pela busca), entram o **kit com o preço dele** e **cada item separado, com valor 0**. Assim a Agenda e o aviso de ocupado sabem o que vai sair.
+- Ajuste os valores e tire ou troque itens como o cliente pediu.
+- O kit em si não conta como peça na Agenda; contam os itens dele.
+
+### 11.11 Página da Chácara (aluguel do espaço)
+
+O site tem uma página só da chácara: **topfestdecoracoes.com.br/chacara/**. No catálogo, ela aparece como o botão **🏡 Aluguel da Chácara Top Fest** na coluna de categorias e como uma faixa com foto no começo de **Todos**.
+
+**Mudar textos, endereço e fotos:** aba **🏡 Chácara**.
+- **Título** e **Chamada:** aparecem em cima da foto de capa.
+- **Descrição:** escreva como no seu texto. Linhas que começam com **\*** viram lista com ✓. A linha logo antes de uma lista vira o título do quadro (ex.: "Lazer:"). O primeiro parágrafo aparece em destaque.
+- **Endereço:** marque "Mostrar o endereço" para aparecer com o botão **📍 Abrir no mapa**.
+- Toque em **Salvar textos**.
+- **Fotos:** toque em **📷 Adicionar fotos** (pode escolher várias). A **primeira é a capa**. Use ◀ ▶ para mudar a ordem e 🗑️ para remover. A legenda salva sozinha quando você sai do campo.
+
+**Pacotes (nome, preço, descrição):** toque em **📦 Pacotes**. Eles são produtos da categoria **Aluguel da Chácara Top Fest**; edite como qualquer produto. Para criar outro pacote, use **➕ Novo produto** nessa categoria.
+
+**Pedido da chácara**
+- O cliente escolhe a **data de entrada e de saída** (o site mostra os dias da semana), o tipo de evento e o número de convidados.
+- Ao colar o pedido, a **entrada** vira **Data da retirada** e **Data do evento**, e a **saída** vira **Data da devolução**. O tipo de evento e os convidados vão para as observações.
+- A chácara tem **Quant 1**: se já houver outro orçamento no mesmo período, aparece o aviso **⛔** e ela aparece na **📅 Agenda**.
+
 ## 12. Se algo der errado
 
 | O que aconteceu | O que fazer |

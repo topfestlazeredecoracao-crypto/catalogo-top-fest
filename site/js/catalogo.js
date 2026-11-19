@@ -6,6 +6,7 @@
 
   var CFG = window.TOPFEST;
   var GALERIA = "galeria";
+  var CHACARA = "chacara";
   var CARRINHO = "topfest-orcamento";
   var INDICACAO = "topfest-indicacao";
   var DIAS_INDICACAO = 90;   // por quanto tempo o site lembra o link de indicação
@@ -14,6 +15,7 @@
   var prods = [];       // produtos ativos em ordem (categoria, ordem)
   var porId = {};
   var insp = [];
+  var chacara = null;   // { cat, pagina } da página de aluguel da chácara
   var conf = { whatsapp_orcamentos: "5519991616329", mostrar_precos: false };
   var reserva = false;
 
@@ -22,6 +24,7 @@
   var q = "";
   var nome = "";
   var data = "";
+  var obs = "";
   var indicadoPor = "";   // nome digitado em "Quem te indicou?"
   var indicacao = lerIndicacao();   // código do link pessoal (?ind=K7M2P)
 
@@ -82,14 +85,16 @@
     return Promise.all([
       api("configuracoes", "select=*&id=eq.1"),
       api("categorias", "select=id,nome,tipo,ordem&order=ordem,id"),
-      api("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ordem,quantidade&ativo=is.true&order=ordem,nome"),
+      api("produtos", "select=id,codigo,categoria_id,nome,descricao,imagem,ordem,quantidade,kit_itens&ativo=is.true&order=ordem,nome"),
       // Só os preços que a administradora deixou aparecer.
-      api("precos_publicos", "select=id,preco")
+      api("precos_publicos", "select=id,preco"),
+      // Página da chácara: se falhar, o catálogo abre do mesmo jeito.
+      api("chacara_pagina", "select=titulo,chamada,fotos&id=eq.1").catch(function () { return []; })
     ]).then(function (r) {
       var precos = {};
       r[3].forEach(function (x) { precos[x.id] = x.preco; });
       r[2].forEach(function (p) { p.preco = p.id in precos ? precos[p.id] : null; });
-      return { configuracoes: r[0][0], categorias: r[1], produtos: r[2] };
+      return { configuracoes: r[0][0], categorias: r[1], produtos: r[2], chacara: r[4][0] || null };
     });
   }
 
@@ -104,6 +109,10 @@
   function montar(d) {
     if (d.configuracoes) conf = d.configuracoes;
     cats = d.categorias.slice().sort(function (a, b) { return a.ordem - b.ordem || a.id - b.id; });
+    // A categoria da chácara tem página própria: sai da lista e vira um botão.
+    var catChacara = cats.filter(function (c) { return c.tipo === CHACARA; })[0];
+    chacara = catChacara ? { cat: catChacara, pagina: d.chacara || {} } : null;
+    cats = cats.filter(function (c) { return c.tipo !== CHACARA; });
     var posCat = {};
     cats.forEach(function (c, i) { posCat[c.id] = i; c.chave = String(c.id); });
     var gal = cats.filter(function (c) { return c.tipo === GALERIA; })[0];
@@ -142,6 +151,7 @@
     };
     // "Todos" primeiro; logo abaixo, a galeria de inspirações (mesma cor das outras).
     var h = botao("Todos", "Todos");
+    if (chacara) h += '<a class="chip chacara" href="/chacara/">🏡 ' + esc(chacara.cat.nome) + "</a>";
     cats.forEach(function (c) { if (c.tipo === GALERIA) h += botao(c.chave, c.nome); });
     cats.forEach(function (c) { if (c.tipo !== GALERIA) h += botao(c.chave, c.nome); });
     $("#chips").innerHTML = h;
@@ -176,6 +186,17 @@
     return partes.length ? '<span class="cod">' + partes.join(" · ") + "</span>" : "";
   }
 
+  function kit(p) { return p.kit_itens && p.kit_itens.length ? p.kit_itens : null; }
+
+  // Lista "Vem neste kit" (o cliente escolhe o kit inteiro e escreve o que quer mudar).
+  function kitHtml(p) {
+    var k = kit(p);
+    if (!k) return "";
+    return '<div class="kit"><b>📦 Vem neste kit:</b><ul>' + k.map(function (x) {
+      return "<li>" + esc(x.quantidade) + "x " + esc(x.nome) + "</li>";
+    }).join("") + "</ul></div>";
+  }
+
   function preco(p) {
     if (!conf.mostrar_precos || p.preco == null) return "";
     return '<span class="preco">' + Number(p.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) + "</span>";
@@ -191,12 +212,12 @@
         return '<div class="card"><button class="ins" data-z="' + i + '" aria-label="Ampliar foto: ' + esc(nome) + '">' +
           '<img src="' + esc(fotoUrl(x.imagem)) + '" alt="' + esc(nome + (x.descricao ? " – " + x.descricao : "")) + '" loading="lazy" decoding="async"></button>' +
           '<div class="body">' + (cod(x) ? '<span class="cod">Cód. ' + cod(x) + "</span>" : "") + "<h3>" + esc(x.nome) + "</h3>" +
-          (x.descricao ? "<p>" + esc(x.descricao) + "</p>" : "") + preco(x) + ctl(x.id, x.nome) + "</div></div>";
+          (x.descricao ? "<p>" + esc(x.descricao) + "</p>" : "") + kitHtml(x) + preco(x) + ctl(x.id, x.nome) + "</div></div>";
       }).join("") || '<div class="empty">Nenhuma foto ainda.</div>');
       return;
     }
     var t = q.trim().toLowerCase();
-    var h = !c && !t ? destaqueInspiracoes() : "";
+    var h = !c && !t ? bannerChacara() + destaqueInspiracoes() : "";
     var ultimaCat = null;
     prods.forEach(function (p) {
       var pc = catPorId(p.categoria_id);
@@ -216,9 +237,20 @@
         // O nome da categoria só aparece na busca (fora dela, o título da seção já mostra).
         '</div><div class="body">' + (t ? '<span class="cat">' + esc(pc.nome) + "</span>" : "") +
         codQuant(p) + "<h3>" + esc(p.nome) + "</h3><p>" +
-        esc(p.descricao) + "</p>" + preco(p) + ctl(p.id, p.nome) + "</div></div>";
+        esc(p.descricao) + "</p>" + kitHtml(p) + preco(p) + ctl(p.id, p.nome) + "</div></div>";
     });
     $("#grid").innerHTML = aviso + (h || '<div class="empty">Nenhum item encontrado.</div>');
+  }
+
+  // Faixa com a chácara, no começo de "Todos": leva para a página do aluguel.
+  function bannerChacara() {
+    if (!chacara) return "";
+    var pg = chacara.pagina || {};
+    var foto = pg.fotos && pg.fotos[0] && pg.fotos[0].imagem;
+    return '<a class="banner-chacara" href="/chacara/">' +
+      (foto ? '<img src="' + esc(fotoUrl(foto)) + '" alt="" loading="lazy" decoding="async">' : "") +
+      '<span class="bc-texto"><small>🏡 ' + esc(chacara.cat.nome) + "</small><b>" + esc(pg.titulo || "Espaço Top Fest") + "</b>" +
+      (pg.chamada ? "<span>" + esc(pg.chamada) + "</span>" : "") + '<em>Conhecer a chácara ›</em></span></a>';
   }
 
   // Faixa com fotos de festas montadas, no começo de "Todos".
@@ -272,10 +304,14 @@
     Object.keys(cart).forEach(function (id) {
       var p = porId[id];
       m += "- " + cart[id] + "x " + (cod(p) ? "(Cód. " + cod(p) + ") " : "") + p.nome + "\n";
+      (kit(p) || []).forEach(function (x) {
+        m += "    • " + (Number(x.quantidade) || 1) * cart[id] + "x " + (x.codigo != null ? "(Cód. " + String(x.codigo).padStart(3, "0") + ") " : "") + x.nome + "\n";
+      });
     });
     var n = nome.trim();
     if (n) m += "\nNome: " + n;
     if (data) m += "\nData do evento: " + data.split("-").reverse().join("/");
+    if (obs.trim()) m += "\nObservações: " + obs.trim().replace(/\s*\n\s*/g, " ");
     if (programaIndicacao()) {
       if (indicacao) m += "\nIndicação: código " + indicacao;
       else if (indicadoPor.trim()) m += "\nIndicado por: " + indicadoPor.trim();
@@ -289,12 +325,15 @@
     if (!ids.length) h += '<p class="empty">Nenhum item ainda.</p>';
     ids.forEach(function (id) {
       var p = porId[id];
-      h += '<div class="row"><span>' + (cod(p) ? '<small class="cod">Cód. ' + cod(p) + "</small> " : "") + esc(p.nome) + '</span><div class="qty">' +
+      h += '<div class="row"><span>' + (cod(p) ? '<small class="cod">Cód. ' + cod(p) + "</small> " : "") + esc(p.nome) +
+        (kit(p) ? '<small class="kit-n">📦 kit com ' + kit(p).length + (kit(p).length === 1 ? " item" : " itens") + "</small>" : "") + '</span><div class="qty">' +
         '<button data-a="-" data-i="' + esc(id) + '" aria-label="Diminuir quantidade de ' + esc(p.nome) + '">−</button><b>' + cart[id] + "</b>" +
         '<button data-a="+" data-i="' + esc(id) + '" aria-label="Aumentar quantidade de ' + esc(p.nome) + '">+</button></div></div>';
     });
     h += '<label class="f">Seu nome<input id="nm" autocomplete="name" value="' + esc(nome) + '"></label>' +
       '<label class="f">Data do evento<input id="dt" type="date" value="' + esc(data) + '"></label>' +
+      '<label class="f">' + (ids.some(function (id) { return kit(porId[id]); }) ? "Quer mudar algo no kit? Escreva aqui (opcional)" : "Observações (opcional)") +
+      '<textarea id="obs" rows="2" maxlength="500">' + esc(obs) + "</textarea></label>" +
       blocoIndicacao() +
       '<a id="send" class="' + (ids.length ? "" : "off") + '" target="_blank" rel="noopener" href="#">Enviar orçamento pelo WhatsApp</a>' +
       '<div class="sec"><button data-a="x">Continuar escolhendo</button><button data-a="clr">Limpar</button></div>';
@@ -356,7 +395,8 @@
     $("#lb").innerHTML =
       '<div class="lb-topo"><button class="lb-voltar" data-lb="fechar" aria-label="Voltar ao catálogo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg> Voltar</button></div>' +
       '<div class="lb-foto"><img src="' + esc(fotoUrl(x.imagem)) + '" alt="' + esc(nome) + '"></div>' +
-      '<p class="lb-nome">' + esc(nome) + (x.descricao ? "<small>" + esc(x.descricao) + "</small>" : "") + "</p>" +
+      '<p class="lb-nome">' + esc(nome) + (x.descricao ? "<small>" + esc(x.descricao) + "</small>" : "") +
+      (kit(x) ? '<small class="lb-kit">📦 ' + kit(x).map(function (k) { return esc(k.quantidade) + "x " + esc(k.nome); }).join(" · ") + "</small>" : "") + "</p>" +
       // Setas numa barra abaixo da foto, para não cobrir a imagem.
       '<div class="lb-nav">' +
       (varias ? '<button class="lb-seta" data-lb="ant" aria-label="Foto anterior">‹</button>' : "<span></span>") +
@@ -491,6 +531,7 @@
   $("#panel").addEventListener("input", function (e) {
     if (e.target.id === "nm") nome = e.target.value;
     if (e.target.id === "dt") data = e.target.value;
+    if (e.target.id === "obs") obs = e.target.value;
     if (e.target.id === "ind") indicadoPor = e.target.value;
     upd();
   });

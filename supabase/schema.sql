@@ -451,3 +451,50 @@ create trigger credito_indicacao before insert or update on public.orcamentos
   for each row execute function public.calcular_credito_indicacao();
 
 -- Orçamentos antigos já aprovados não geram crédito retroativo (não têm "indicado por").
+
+-- ---------- Kits e página da Chácara (19/11/2026) ----------
+-- Kits: um produto (ex.: uma inspiração) pode ter a lista dos itens que vêm nele.
+-- Formato: [{ "produto_id": "...", "codigo": 12, "nome": "Arco redondo", "quantidade": 1 }]
+alter table public.produtos add column if not exists kit_itens jsonb not null default '[]'::jsonb;
+alter table public.produtos drop constraint if exists produtos_kit_itens_lista;
+alter table public.produtos add constraint produtos_kit_itens_lista check (jsonb_typeof(kit_itens) = 'array');
+grant select (kit_itens) on public.produtos to anon;
+
+-- Novo tipo de categoria: "chacara" (os produtos dela são os pacotes de aluguel da chácara).
+alter table public.categorias drop constraint if exists categorias_tipo_check;
+alter table public.categorias add constraint categorias_tipo_check check (tipo in ('produtos', 'galeria', 'chacara'));
+
+insert into public.categorias (nome, tipo, ordem)
+select 'Aluguel da Chácara Top Fest', 'chacara', 0
+where not exists (select 1 from public.categorias where tipo = 'chacara');
+
+insert into public.produtos (categoria_id, nome, descricao, ativo, ordem, quantidade)
+select c.id, 'Pacote completo', 'Chácara inteira: piscina, casa, salão, área gourmet e toda a estrutura.', true, 1, 1
+from public.categorias c
+where c.tipo = 'chacara'
+  and not exists (select 1 from public.produtos p where p.categoria_id = c.id);
+
+-- Conteúdo da página da chácara (uma linha só). Leitura pública; só a administradora altera.
+-- fotos: [{ "imagem": "chacara/....webp", "legenda": "Piscina" }]
+create table if not exists public.chacara_pagina (
+  id int primary key default 1 check (id = 1),
+  titulo text not null default '',
+  chamada text not null default '',
+  descricao text not null default '',
+  endereco text not null default '',
+  mostrar_endereco boolean not null default true,
+  fotos jsonb not null default '[]'::jsonb check (jsonb_typeof(fotos) = 'array'),
+  atualizado_em timestamptz not null default now()
+);
+alter table public.chacara_pagina enable row level security;
+drop policy if exists "leitura publica" on public.chacara_pagina;
+create policy "leitura publica" on public.chacara_pagina for select using (true);
+drop policy if exists "admin altera" on public.chacara_pagina;
+create policy "admin altera" on public.chacara_pagina for update to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "admin insere" on public.chacara_pagina;
+create policy "admin insere" on public.chacara_pagina for insert to authenticated
+  with check (public.is_admin());
+grant select on public.chacara_pagina to anon, authenticated;
+grant insert, update on public.chacara_pagina to authenticated;
+insert into public.chacara_pagina (id) values (1) on conflict (id) do nothing;
