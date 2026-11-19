@@ -415,20 +415,35 @@ Em **⚙️ Configurações → Contrato** você muda o **título**, o **sinal**
 
 ---
 
-### 11.8 Aviso de data ocupada (agenda)
+### 11.8 Aviso de produto ocupado no orçamento
 
-Quando você coloca a **Data do evento** no orçamento, o sistema confere os outros orçamentos dessa mesma data:
+O sistema considera que os itens ficam fora **da Data da retirada até a Data da devolução**. Se o orçamento só tiver a Data do evento, vale só esse dia.
 
-- Logo abaixo da data aparece **📅 Já agendado para …** com os clientes daquele dia, ou **✅ Nenhum outro cliente agendado**.
-- Em cada produto do orçamento, se ele já estiver reservado nesse dia, aparece:
+Quando você preenche essas datas no orçamento:
+
+- Logo abaixo aparece **📅 Já agendado em …** com os clientes que têm itens fora nesse período, ou **✅ Nenhum outro cliente**.
+- Em cada produto do orçamento, se ele já estiver reservado no período, aparece:
   - **⚠️ (amarelo):** já tem reserva, mas ainda sobram unidades. Ex.: "Vocês têm 3, livres: 1".
   - **⛔ (vermelho):** não sobra unidade para a quantidade pedida.
-- Na busca de produtos, aparece **⛔ ocupado na data** ou **⚠️ 1 livre(s) na data** ao lado do nome.
+- Na busca de produtos, aparece **⛔ ocupado no período** ou **⚠️ 1 livre(s) no período** ao lado do nome.
 - Ao salvar com algum item em vermelho, o sistema pergunta se quer **salvar mesmo assim**. A decisão é sua.
 
-> Contam como reservados os orçamentos **Em aberto** e **Aprovado** do mesmo dia. **Cancelado** não conta.
+> Contam como reservados os orçamentos **Em aberto** e **Aprovado**. **Cancelado** não conta.
+> Se um cliente devolve no mesmo dia em que outro retira, o sistema avisa (conta como o mesmo dia). Você decide se dá tempo.
 > O número de unidades vem do campo **Quant** do produto. Deixe o Quant certo para o aviso funcionar.
 > Kits contam como um produto só: o sistema não sabe quais peças estão dentro de cada kit.
+> **Dica:** preencha sempre a retirada e a devolução. Sem elas, o sistema só olha o dia do evento.
+
+### 11.9 Aba 📅 Agenda (programação e relatórios)
+
+1. Toque na aba **📅 Agenda**.
+2. Escolha o período em **De** e **Até**. Ela começa em hoje até daqui a 30 dias.
+3. Em **Ver**, escolha:
+   - **Programação por dia:** dia a dia, o que tem de 🚚 retirada/entrega, 🎉 evento e ↩️ devolução, com cliente, telefone, endereço e itens. É a lista para separar e entregar.
+   - **Clientes agendados:** um cliente por linha, com as três datas.
+   - **Produtos agendados:** cada produto reservado no período, para quem e em quais datas. A coluna **Máx. no mesmo dia** mostra o dia mais cheio e avisa **⛔ faltam** se passar da Quant.
+4. Em **Situação**, escolha **Aprovados e Em aberto** ou **Só aprovados**.
+5. Para papel ou PDF, toque em **🖨️ Imprimir / salvar em PDF**. Abre uma folha com a logo; escolha a impressora ou **Salvar como PDF**.
 
 ## 12. Se algo der errado
 

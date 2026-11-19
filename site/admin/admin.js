@@ -251,6 +251,24 @@
     }).catch(falhou);
   }
 
+  // ---------- Aba Agenda ----------
+  (function () {
+    var hoje = hojeISO();
+    $("#ag-de").value = hoje;
+    $("#ag-ate").value = window.TF_AGENDA.somaDias(hoje, 30);
+  })();
+
+  function desenharAgenda() {
+    if (!st.orcs) return;
+    var f = { de: $("#ag-de").value, ate: $("#ag-ate").value, ver: $("#ag-ver").value, sit: $("#ag-sit").value };
+    var r = window.TF_AGENDA.montar({ orcs: st.orcs, clientes: st.clientes, prods: st.prods }, f);
+    $("#agenda-res").innerHTML = r.html;
+    $("#ag-imprimir").href = "agenda.html?de=" + f.de + "&ate=" + f.ate + "&ver=" + f.ver + "&sit=" + f.sit;
+  }
+
+  ["#ag-de", "#ag-ate", "#ag-ver", "#ag-sit"].forEach(function (id) { $(id).addEventListener("change", desenharAgenda); });
+  $('.abas [data-aba="agenda"]').addEventListener("click", desenharAgenda);
+
   function desenharTudo() {
     preencherFiltroCategorias();
     desenharProdutos();
@@ -1417,74 +1435,75 @@
     dl.innerHTML = Object.keys(nomes).sort().map(function (n) { return '<option value="' + esc(n) + '">'; }).join("");
   }
 
-  // ---------- Agenda: quem já está marcado na data do evento ----------
-  // Conta orçamentos Em aberto e Aprovados da mesma data (menos o que está aberto na tela).
-  function orcsNaData(data) {
-    if (!data) return [];
+  // ---------- Agenda: quem já está com itens fora no mesmo período ----------
+  // O período vai da retirada até a devolução (sem elas, vale a data do evento).
+  // Contam os orçamentos Em aberto e Aprovados (menos o que está aberto na tela).
+  var AG = window.TF_AGENDA;
+
+  function periodoForm() {
+    return AG.periodo({ data_retirada: formO.data_retirada.value, data_evento: formO.data_evento.value, data_devolucao: formO.data_devolucao.value });
+  }
+
+  function orcsNoPeriodo(p) {
+    if (!p) return [];
     var este = orcOriginal && orcOriginal.id;
     return st.orcs.filter(function (o) {
-      return o.data_evento === data && o.id !== este && o.situacao !== "cancelado";
+      return o.id !== este && o.situacao !== "cancelado" && AG.sobrepoe(AG.periodo(o), p);
     }).sort(function (a, b) { return a.numero - b.numero; });
   }
 
-  // Quantas unidades do produto já estão reservadas na data, e para quem.
-  function ocupacao(produtoId, data) {
-    var r = { total: 0, quem: [] };
-    orcsNaData(data).forEach(function (o) {
-      var q = 0;
-      (o.itens || []).forEach(function (it) { if (it.produto_id === produtoId) q += Number(it.quantidade) || 0; });
-      if (q) { r.total += q; r.quem.push({ o: o, q: q }); }
-    });
-    return r;
-  }
+  // Unidades do produto já reservadas no dia mais cheio do período, e para quem.
+  function ocupacao(produtoId, p) { return AG.reservas(orcsNoPeriodo(p), produtoId, p); }
 
-  function estoque(p) { return p && p.quantidade != null ? Number(p.quantidade) : 1; }
+  function estoque(p) { return AG.estoque(p); }
 
   function textoOcupacao(it) {
-    var data = formO.data_evento.value;
-    if (!data || it.tipo === "servico" || !it.produto_id) return "";
-    var oc = ocupacao(it.produto_id, data);
-    if (!oc.total) return "";
+    var p = periodoForm();
+    if (!p || it.tipo === "servico" || !it.produto_id) return "";
+    var oc = ocupacao(it.produto_id, p);
+    if (!oc.max) return "";
     var tem = estoque(produtoPorId(it.produto_id));
-    var livres = Math.max(0, tem - oc.total);
+    var livres = Math.max(0, tem - oc.max);
     var falta = (Number(it.quantidade) || 0) > livres;
     var quem = oc.quem.map(function (x) {
-      return x.q + " para " + nomeCliente(x.o) + " (nº " + x.o.numero + ", " + SITUACOES[x.o.situacao] + ")";
+      return x.q + " para " + nomeCliente(x.o) + " (nº " + x.o.numero + ", " + SITUACOES[x.o.situacao] + ", " + AG.textoPeriodo(x.p) + ")";
     }).join("; ");
     return '<div class="ocup' + (falta ? " falta" : "") + '" data-ocup>' + (falta ? "⛔ " : "⚠️ ") +
-      "Já reservado em " + esc(dataBR(data)) + ": " + esc(quem) + ". Vocês têm " + tem + ", livres: " + livres + "." +
+      "Já reservado neste período: " + esc(quem) + ". Vocês têm " + tem + ", livres: " + livres + "." +
       (falta ? " Não dá para atender esta quantidade." : "") + "</div>";
   }
 
   function desenharAgendaDia() {
     var caixa = $("#orc-agenda");
-    var data = formO.data_evento.value;
-    if (!data) { caixa.hidden = true; return; }
-    var lista = orcsNaData(data);
+    var p = periodoForm();
+    if (!p) { caixa.hidden = true; return; }
+    var lista = orcsNoPeriodo(p);
     caixa.hidden = false;
     caixa.classList.toggle("livre", !lista.length);
     caixa.innerHTML = lista.length
-      ? "<p>📅 <b>Já agendado para " + esc(dataBR(data)) + ":</b></p><ul>" + lista.map(function (o) {
-          return "<li>" + esc(nomeCliente(o)) + " – orçamento nº " + o.numero + " (" + SITUACOES[o.situacao] + ")</li>";
+      ? "<p>📅 <b>Já agendado em " + esc(AG.textoPeriodo(p)) + ":</b></p><ul>" + lista.map(function (o) {
+          return "<li>" + esc(nomeCliente(o)) + " – nº " + o.numero + " (" + SITUACOES[o.situacao] + ") · itens fora " + esc(AG.textoPeriodo(AG.periodo(o))) + "</li>";
         }).join("") + "</ul>"
-      : "<p>✅ Nenhum outro cliente agendado para " + esc(dataBR(data)) + ".</p>";
+      : "<p>✅ Nenhum outro cliente com itens fora em " + esc(AG.textoPeriodo(p)) + ".</p>";
   }
 
-  // Produtos sem unidades livres para a quantidade pedida, na data do evento.
+  // Produtos sem unidades livres para a quantidade pedida, no período.
   function itensEmFalta() {
-    var data = formO.data_evento.value;
-    if (!data) return [];
+    var p = periodoForm();
+    if (!p) return [];
     return orc.itens.filter(function (it) {
       if (it.tipo === "servico" || !it.produto_id) return false;
-      var livres = estoque(produtoPorId(it.produto_id)) - ocupacao(it.produto_id, data).total;
+      var livres = estoque(produtoPorId(it.produto_id)) - ocupacao(it.produto_id, p).max;
       return (Number(it.quantidade) || 0) > livres;
     });
   }
 
-  formO.data_evento.addEventListener("change", function () {
-    desenharAgendaDia();
-    desenharItensOrc();
-    desenharSugestoes();
+  ["data_evento", "data_retirada", "data_devolucao"].forEach(function (k) {
+    formO[k].addEventListener("change", function () {
+      desenharAgendaDia();
+      desenharItensOrc();
+      desenharSugestoes();
+    });
   });
 
   function desenharItensOrc() {
@@ -1536,12 +1555,12 @@
   }
 
   function etiquetaOcupacao(p) {
-    var data = formO.data_evento.value;
-    if (!data) return "";
-    var oc = ocupacao(p.id, data).total;
+    var per = periodoForm();
+    if (!per) return "";
+    var oc = ocupacao(p.id, per).max;
     if (!oc) return "";
     var livres = Math.max(0, estoque(p) - oc);
-    return '<span class="ocup-tag">' + (livres ? "⚠️ " + livres + " livre(s) na data" : "⛔ ocupado na data") + "</span>";
+    return '<span class="ocup-tag">' + (livres ? "⚠️ " + livres + " livre(s) no período" : "⛔ ocupado no período") + "</span>";
   }
 
   function desenharSugestoes() {
@@ -1722,7 +1741,7 @@
     var botao = $('button[type="submit"]', formO);
     var falta = formO.situacao.value === "cancelado" ? [] : itensEmFalta();
     var seguir = falta.length
-      ? confirmar("Atenção: em " + dataBR(formO.data_evento.value) + " não há unidades livres suficientes de: " +
+      ? confirmar("Atenção: em " + AG.textoPeriodo(periodoForm()) + " não há unidades livres suficientes de: " +
           falta.map(function (it) { return it.nome; }).join(", ") + ". Salvar mesmo assim?", "Salvar mesmo assim")
       : Promise.resolve(true);
     seguir.then(function (sim) {

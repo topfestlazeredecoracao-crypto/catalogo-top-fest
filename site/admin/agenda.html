@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Agenda – Chácara Top Fest</title>
+<style>@page{size:A4 landscape}</style>
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
+<link rel="stylesheet" href="imprimir.css?v=20261118-6">
+</head>
+<body class="relatorio agenda">
+<div class="barra-tela">
+  <div class="opcoes">
+    <label>De <input type="date" id="f-de"></label>
+    <label>Até <input type="date" id="f-ate"></label>
+    <label>Ver
+      <select id="f-ver">
+        <option value="dia">Programação por dia</option>
+        <option value="clientes">Clientes agendados</option>
+        <option value="produtos">Produtos agendados</option>
+      </select>
+    </label>
+    <label>Situação
+      <select id="f-sit">
+        <option value="ativos">Aprovados e Em aberto</option>
+        <option value="aprovados">Só aprovados</option>
+      </select>
+    </label>
+  </div>
+  <button id="imprimir" type="button" disabled>🖨️ Imprimir / Salvar em PDF</button>
+  <span>Para PDF: escolha <b>"Salvar como PDF"</b> no lugar da impressora.</span>
+</div>
+<main id="folha"><p class="msg">Carregando a agenda…</p></main>
+<script src="vendor/supabase-2.117.3.js"></script>
+<script src="../js/config.js"></script>
+<script src="agenda-comum.js?v=20261118-6"></script>
+<script src="agenda.js?v=20261118-6"></script>
+</body>
+</html>

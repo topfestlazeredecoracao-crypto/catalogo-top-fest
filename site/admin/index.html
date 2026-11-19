@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261118-5">
+<link rel="stylesheet" href="admin.css?v=20261118-6">
 </head>
 <body>
 <header class="topo">
@@ -55,6 +55,7 @@
     <nav class="abas" role="tablist">
       <button role="tab" data-aba="produtos" class="on">📦 Produtos</button>
       <button role="tab" data-aba="orcamentos">🧾 Orçamentos</button>
+      <button role="tab" data-aba="agenda">📅 Agenda</button>
       <button role="tab" data-aba="clientes">👥 Clientes</button>
       <button role="tab" data-aba="categorias">🗂️ Categorias</button>
       <button role="tab" data-aba="inspiracoes">📸 Inspirações</button>
@@ -90,6 +91,30 @@
         </select>
       </div>
       <ul id="lista-orcamentos" class="lista"></ul>
+    </div>
+
+    <div id="aba-agenda" class="aba" hidden>
+      <div class="agenda-filtros">
+        <label>De<input id="ag-de" type="date"></label>
+        <label>Até<input id="ag-ate" type="date"></label>
+        <label>Ver
+          <select id="ag-ver">
+            <option value="dia">Programação por dia (entregas, eventos, devoluções)</option>
+            <option value="clientes">Clientes agendados</option>
+            <option value="produtos">Produtos agendados</option>
+          </select>
+        </label>
+        <label>Situação
+          <select id="ag-sit">
+            <option value="ativos">Aprovados e Em aberto</option>
+            <option value="aprovados">Só aprovados</option>
+          </select>
+        </label>
+      </div>
+      <div class="barra botoes">
+        <a class="btn pri" id="ag-imprimir" href="agenda.html" target="_blank" rel="noopener">🖨️ Imprimir / salvar em PDF</a>
+      </div>
+      <div id="agenda-res" class="agenda-res"></div>
     </div>
 
     <div id="aba-clientes" class="aba" hidden>
@@ -355,6 +380,7 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="admin.js?v=20261118-5"></script>
+<script src="agenda-comum.js?v=20261118-6"></script>
+<script src="admin.js?v=20261118-6"></script>
 </body>
 </html>
