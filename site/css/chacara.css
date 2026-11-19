@@ -13,8 +13,10 @@ button{font:inherit;cursor:pointer}
 .topo{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(8px + env(safe-area-inset-top,0px)) 14px 8px;background:var(--gold-bg);color:#fff}
 .marca{display:flex;align-items:center;gap:8px;text-decoration:none;font:700 17px Georgia,serif}
 .marca img{border-radius:50%}
-.voltar{text-decoration:none;font-size:14px;font-weight:600;border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:7px 14px;background:rgba(255,255,255,.12)}
-.voltar:hover{background:rgba(255,255,255,.25)}
+.voltar{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:16px;font-weight:700;border-radius:12px;padding:11px 16px;min-height:46px;background:#fff;color:#6b4e0a;box-shadow:0 2px 8px rgba(0,0,0,.25);white-space:nowrap}
+.voltar span{font-size:20px;line-height:1}
+.voltar:hover{background:#fff6dc}
+@media(max-width:360px){.marca span{display:none}}
 
 /* Carrossel principal */
 .hero{position:relative;height:min(78vh,640px);min-height:420px;background:#1d2733;overflow:hidden;color:#fff}
