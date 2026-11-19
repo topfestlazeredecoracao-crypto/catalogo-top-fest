@@ -207,9 +207,9 @@
   function blocoIndicacao() {
     if (!programaIndicacao()) return "";
     if (indicacao) {
-      var pct = Number(conf.indicacao_desconto_pct) || 0;
+      var pct = Number(conf.indicacao_chacara_desconto_pct) || 0;
       return '<p class="indic">🎁 Você chegou pela indicação de um cliente nosso' +
-        (pct ? " e ganha <b>" + pct + "% de desconto</b> na sua primeira locação" : "") + ".</p>";
+        (pct ? " e ganha <b>" + pct + "% de desconto</b> no seu primeiro aluguel da chácara" : "") + ".</p>";
     }
     return '<label>Quem te indicou? (opcional)<input id="ind" autocomplete="off" maxlength="80"></label>';
   }

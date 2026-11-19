@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261119-5">
+<link rel="stylesheet" href="admin.css?v=20261119-6">
 </head>
 <body>
 <header class="topo">
@@ -203,10 +203,17 @@
         <h3>Programa de indicação</h3>
         <label class="check"><input type="checkbox" name="indicacao_ativa"> Programa de indicação ligado</label>
         <small class="abaixo-check">Ligado: quem chega pelo link de um cliente vê o desconto no site, e quem indicou ganha crédito quando o orçamento da pessoa indicada é aprovado.</small>
+        <p class="dica"><b>🎈 Decoração</b> (itens e serviços)</p>
         <div class="valores">
           <label>Crédito para quem indica (%)<input name="indicacao_credito_pct" type="number" min="0" max="100" step="1" inputmode="numeric" required></label>
           <label>Desconto para quem foi indicado (%)<input name="indicacao_desconto_pct" type="number" min="0" max="100" step="1" inputmode="numeric" required></label>
         </div>
+        <p class="dica"><b>🏡 Aluguel da chácara</b></p>
+        <div class="valores">
+          <label>Crédito para quem indica (%)<input name="indicacao_chacara_credito_pct" type="number" min="0" max="100" step="1" inputmode="numeric" required></label>
+          <label>Desconto para quem foi indicado (%)<input name="indicacao_chacara_desconto_pct" type="number" min="0" max="100" step="1" inputmode="numeric" required></label>
+        </div>
+        <small class="abaixo-check" style="margin-left:0">Use 0 para não dar crédito ou desconto. Num orçamento com chácara e decoração, cada parte usa o seu percentual.</small>
         <label>Validade do crédito (meses)<input name="indicacao_validade_meses" type="number" min="1" max="60" step="1" inputmode="numeric" required>
           <small>As mudanças valem para os próximos créditos. Os créditos que já existem não mudam.</small></label>
         <button class="btn pri grande" type="submit">Salvar configurações</button>
@@ -429,7 +436,7 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="agenda-comum.js?v=20261119-5"></script>
-<script src="admin.js?v=20261119-5"></script>
+<script src="agenda-comum.js?v=20261119-6"></script>
+<script src="admin.js?v=20261119-6"></script>
 </body>
 </html>

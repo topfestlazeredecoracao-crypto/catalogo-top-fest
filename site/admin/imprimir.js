@@ -51,8 +51,12 @@
     var soma = function (l) { return l.reduce(function (s, it) { return s + it.quantidade * it.preco; }, 0); };
     var sub = soma(itens) + soma(servs);
     var desconto = Number(o.desconto) || 0, taxa = Number(o.taxa_entrega) || 0;
-    var pctInd = Number(o.desconto_indicacao_pct) || 0;
-    var descInd = Math.round(sub * pctInd) / 100;
+    // Desconto de indicação: um % para a decoração e outro para a chácara (itens marcados "chacara").
+    var subCh = soma(itens.filter(function (it) { return it.chacara; }));
+    var pD = Number(o.desconto_indicacao_pct) || 0, pC = Number(o.desconto_indicacao_chacara_pct) || 0;
+    var descInd = Math.round((sub - subCh) * pD) / 100 + Math.round(subCh * pC) / 100;
+    var partes = [sub - subCh > 0 && pD, subCh > 0 && pC].filter(Boolean);
+    var pctInd = partes.length === 1 ? partes[0] : 0;
     var credito = Number(o.credito_usado) || 0;
     var total = Math.max(0, sub - desconto - descInd - credito + taxa);
     var linha = function (r, v, cls) { return "<div" + (cls ? ' class="' + cls + '"' : "") + "><span>" + r + "</span><span>" + v + "</span></div>"; };
@@ -75,7 +79,7 @@
       '<div class="totais">' +
       ((desconto || taxa || descInd || credito) ? linha("Subtotal", brl(sub)) : "") +
       (desconto ? linha("Desconto", "- " + brl(desconto)) : "") +
-      (descInd ? linha("Desconto por indicação (" + pctInd.toLocaleString("pt-BR") + "%)", "- " + brl(descInd)) : "") +
+      (descInd ? linha("Desconto por indicação" + (pctInd ? " (" + pctInd.toLocaleString("pt-BR") + "%)" : ""), "- " + brl(descInd)) : "") +
       (credito ? linha("Crédito de indicação", "- " + brl(credito)) : "") +
       (taxa ? linha("Taxa de entrega", brl(taxa)) : "") +
       linha("Total", brl(total), "total") + "</div>" +

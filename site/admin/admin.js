@@ -941,6 +941,8 @@
     formCfg.indicacao_credito_pct.value = c.indicacao_credito_pct == null ? 10 : c.indicacao_credito_pct;
     formCfg.indicacao_desconto_pct.value = c.indicacao_desconto_pct == null ? 5 : c.indicacao_desconto_pct;
     formCfg.indicacao_validade_meses.value = c.indicacao_validade_meses == null ? 6 : c.indicacao_validade_meses;
+    formCfg.indicacao_chacara_credito_pct.value = c.indicacao_chacara_credito_pct || 0;
+    formCfg.indicacao_chacara_desconto_pct.value = c.indicacao_chacara_desconto_pct || 0;
   }
 
   function lerInteiro(txt, campo, min, max) {
@@ -969,12 +971,17 @@
         indicacao_ativa: formCfg.indicacao_ativa.checked,
         indicacao_credito_pct: lerInteiro(formCfg.indicacao_credito_pct.value, "Crédito para quem indica", 0, 100),
         indicacao_desconto_pct: lerInteiro(formCfg.indicacao_desconto_pct.value, "Desconto para quem foi indicado", 0, 100),
-        indicacao_validade_meses: lerInteiro(formCfg.indicacao_validade_meses.value, "Validade do crédito", 1, 60)
+        indicacao_validade_meses: lerInteiro(formCfg.indicacao_validade_meses.value, "Validade do crédito", 1, 60),
+        indicacao_chacara_credito_pct: lerInteiro(formCfg.indicacao_chacara_credito_pct.value, "Crédito para quem indica a chácara", 0, 100),
+        indicacao_chacara_desconto_pct: lerInteiro(formCfg.indicacao_chacara_desconto_pct.value, "Desconto na chácara para quem foi indicado", 0, 100)
       };
       return sb.from("configuracoes").update(dados).eq("id", 1).select().single().then(ok);
     }).then(function (c) {
       st.conf = c;
       preencherConfig();
+      // As mensagens prontas dos clientes e orçamentos usam os percentuais da indicação.
+      desenharClientes();
+      desenharOrcamentos();
       avisar("Configurações salvas.");
     });
     ocupado($('button[type="submit"]', formCfg), acao.catch(falhou));
@@ -1085,7 +1092,8 @@
       mostrar_precos: !!cfg.mostrar_precos
     };
     // Cópias antigas não têm o programa de indicação: fica como está.
-    ["indicacao_ativa", "indicacao_credito_pct", "indicacao_desconto_pct", "indicacao_validade_meses"].forEach(function (k) {
+    ["indicacao_ativa", "indicacao_credito_pct", "indicacao_desconto_pct", "indicacao_validade_meses",
+      "indicacao_chacara_credito_pct", "indicacao_chacara_desconto_pct"].forEach(function (k) {
       if (cfg[k] != null) cfgNova[k] = cfg[k];
     });
     return sb.from("configuracoes").update(cfgNova).eq("id", 1).then(ok).then(function () {
@@ -1148,6 +1156,8 @@
           taxa_entrega: x.taxa_entrega || 0, observacoes: x.observacoes || "", criado_em: x.criado_em,
           situacao: x.situacao || "aberto", data_retirada: x.data_retirada || null, data_devolucao: x.data_devolucao || null,
           indicado_por: x.indicado_por || null, desconto_indicacao_pct: x.desconto_indicacao_pct || 0,
+          desconto_indicacao_chacara_pct: x.desconto_indicacao_chacara_pct || 0,
+          credito_chacara_pct: x.credito_chacara_pct == null ? null : x.credito_chacara_pct,
           credito_usado: x.credito_usado || 0, credito_pct: x.credito_pct == null ? null : x.credito_pct,
           credito_em: x.credito_em || null, credito_validade: x.credito_validade || null
         };
@@ -1245,11 +1255,18 @@
     var cf = st.conf;
     var m = "Oi, " + primeiroNome(c.nome) + "! Obrigada por escolher a " + cf.nome + " 💛\n\n" +
       "Este é o seu link pessoal do nosso catálogo de decoração:\n" + linkIndicacao(c) + "\n\n" +
-      "Compartilhe com amigos e familiares! Quando alguém alugar com a gente por este link, você ganha " +
-      cf.indicacao_credito_pct + "% do valor da locação em crédito para a sua próxima festa (válido por " +
-      cf.indicacao_validade_meses + (cf.indicacao_validade_meses === 1 ? " mês)" : " meses)");
-    if (cf.indicacao_desconto_pct) m += ", e quem você indicou ganha " + cf.indicacao_desconto_pct + "% de desconto na primeira locação";
-    return m + ".";
+      "Compartilhe com amigos e familiares! Quando alguém alugar com a gente por este link, você ganha crédito para a sua próxima festa (válido por " +
+      cf.indicacao_validade_meses + (cf.indicacao_validade_meses === 1 ? " mês" : " meses") + "):";
+    var cDec = Number(cf.indicacao_credito_pct) || 0, cCh = Number(cf.indicacao_chacara_credito_pct) || 0;
+    var dDec = Number(cf.indicacao_desconto_pct) || 0, dCh = Number(cf.indicacao_chacara_desconto_pct) || 0;
+    if (cDec) m += "\n• " + cDec + "% do valor da locação de decoração";
+    if (cCh) m += "\n• " + cCh + "% do valor do aluguel da chácara";
+    if (dDec || dCh) {
+      m += "\n\nE quem você indicou ganha desconto na primeira locação:";
+      if (dDec) m += "\n• " + dDec + "% na decoração";
+      if (dCh) m += "\n• " + dCh + "% no aluguel da chácara";
+    }
+    return m;
   }
 
   // Créditos de um cliente. Ganhos: orçamentos aprovados de quem ele indicou.
@@ -1425,15 +1442,19 @@
   function produtoPorCodigo(n) { return st.prods.filter(function (p) { return p.codigo === n; })[0]; }
 
   function contas(o) {
-    var itens = 0, servicos = 0;
+    var itens = 0, servicos = 0, chacara = 0;
     (o.itens || []).forEach(function (it) {
       var v = (Number(it.quantidade) || 0) * (Number(it.preco) || 0);
       if (it.tipo === "servico") servicos += v; else itens += v;
+      if (it.tipo !== "servico" && (it.chacara || eProdutoChacara(it.produto_id))) chacara += v;
     });
     var desconto = Number(o.desconto) || 0, taxa = Number(o.taxa_entrega) || 0;
-    // Desconto de indicação (%) sobre itens + serviços; crédito de indicação usado (R$).
-    var pctInd = Number(o.desconto_indicacao_pct) || 0;
-    var descInd = Math.round((itens + servicos) * pctInd) / 100;
+    // Desconto de indicação (%): um percentual para a decoração (itens + serviços) e outro para a chácara.
+    var pD = Number(o.desconto_indicacao_pct) || 0, pC = Number(o.desconto_indicacao_chacara_pct) || 0;
+    var dec = itens + servicos - chacara;
+    var descInd = Math.round(dec * pD) / 100 + Math.round(chacara * pC) / 100;
+    var partes = [dec > 0 && pD, chacara > 0 && pC].filter(Boolean);
+    var pctInd = partes.length === 1 ? partes[0] : 0;
     var credito = Number(o.credito_usado) || 0;
     return {
       itens: itens, servicos: servicos, desconto: desconto, taxa: taxa, pctInd: pctInd, descInd: descInd, credito: credito,
@@ -1463,7 +1484,7 @@
     if (servs.length) m += "\nServiços:\n" + servs.map(linhaItem).join("\n") + "\n";
     if (v.desconto || v.taxa || v.descInd || v.credito) m += "\nSubtotal: " + brl(v.itens + v.servicos);
     if (v.desconto) m += "\nDesconto: - " + brl(v.desconto);
-    if (v.descInd) m += "\nDesconto por indicação (" + v.pctInd + "%): - " + brl(v.descInd);
+    if (v.descInd) m += "\nDesconto por indicação" + (v.pctInd ? " (" + v.pctInd + "%)" : "") + ": - " + brl(v.descInd);
     if (v.credito) m += "\nCrédito de indicação: - " + brl(v.credito);
     if (v.taxa) m += "\nTaxa de entrega: " + brl(v.taxa);
     m += "\nTotal: " + brl(v.total) + "\n";
@@ -1632,6 +1653,7 @@
       observacoes: v.observacoes || "",
       indicado_por: v.indicado_por || null,
       desconto_indicacao_pct: Number(v.desconto_indicacao_pct) || 0,
+      desconto_indicacao_chacara_pct: Number(v.desconto_indicacao_chacara_pct) || 0,
       credito_usado: Number(v.credito_usado) || 0
     };
     formO.reset();
@@ -1766,7 +1788,7 @@
     $("#orc-totais").innerHTML = linha("Itens", brl(v.itens)) +
       (v.servicos ? linha("Serviços", brl(v.servicos)) : "") +
       (v.desconto ? linha("Desconto", "- " + brl(v.desconto)) : "") +
-      (v.descInd ? linha("Desconto por indicação (" + v.pctInd + "%)", "- " + brl(v.descInd)) : "") +
+      (v.descInd ? linha("Desconto por indicação" + (v.pctInd ? " (" + v.pctInd + "%)" : ""), "- " + brl(v.descInd)) : "") +
       (v.credito ? linha("Crédito de indicação usado", "- " + brl(v.credito)) : "") +
       (v.taxa ? linha("Taxa de entrega", brl(v.taxa)) : "") +
       linha("Total", brl(v.total), "total");
@@ -1905,12 +1927,20 @@
   function pctDescontoIndicacao() {
     return st.conf.indicacao_ativa !== false ? Number(st.conf.indicacao_desconto_pct) || 0 : 0;
   }
+  function pctDescontoIndicacaoChacara() {
+    return st.conf.indicacao_ativa !== false ? Number(st.conf.indicacao_chacara_desconto_pct) || 0 : 0;
+  }
+  // Marca (ou tira) o desconto de indicação: cada parte com o seu percentual.
+  function marcarDescontoIndicacao(sim) {
+    orc.desconto_indicacao_pct = sim ? pctDescontoIndicacao() : 0;
+    orc.desconto_indicacao_chacara_pct = sim ? pctDescontoIndicacaoChacara() : 0;
+  }
 
   // "Indicado por": todos os clientes, menos o próprio cliente do orçamento.
   function opcoesIndicado() {
     if (orc.indicado_por && orc.indicado_por === orc.cliente_id) {
       orc.indicado_por = null;
-      orc.desconto_indicacao_pct = 0;
+      marcarDescontoIndicacao(false);
     }
     formO.indicado_por.innerHTML = '<option value="">— Ninguém —</option>' + st.clientes.filter(function (c) {
       return c.id !== orc.cliente_id;
@@ -1922,24 +1952,29 @@
   }
 
   function atualizarDescontoIndicacao() {
-    var pct = orc.desconto_indicacao_pct || pctDescontoIndicacao();
-    formO.desc_ind.checked = orc.desconto_indicacao_pct > 0;
-    formO.desc_ind.disabled = !orc.indicado_por || (!pct && !orc.desconto_indicacao_pct);
-    $("#orc-desc-ind-txt").textContent = pct
-      ? "Dar " + pct.toLocaleString("pt-BR") + "% de desconto por indicação"
-      : "Desconto por indicação (desligado em Configurações)";
+    var marcado = orc.desconto_indicacao_pct > 0 || orc.desconto_indicacao_chacara_pct > 0;
+    var pD = marcado ? orc.desconto_indicacao_pct : pctDescontoIndicacao();
+    var pC = marcado ? orc.desconto_indicacao_chacara_pct : pctDescontoIndicacaoChacara();
+    formO.desc_ind.checked = marcado;
+    formO.desc_ind.disabled = !orc.indicado_por || (!pD && !pC);
+    var partes = [];
+    if (pD) partes.push(pD.toLocaleString("pt-BR") + "% na decoração");
+    if (pC) partes.push(pC.toLocaleString("pt-BR") + "% na chácara");
+    $("#orc-desc-ind-txt").textContent = partes.length
+      ? "Dar desconto por indicação: " + partes.join(" e ")
+      : "Desconto por indicação (0% em Configurações)";
   }
 
   formO.indicado_por.addEventListener("change", function () {
     orc.indicado_por = formO.indicado_por.value || null;
     // Escolheu quem indicou: já marca o desconto, se for a primeira locação do cliente.
-    orc.desconto_indicacao_pct = orc.indicado_por && primeiraLocacao(orc.cliente_id) ? pctDescontoIndicacao() : 0;
+    marcarDescontoIndicacao(!!orc.indicado_por && primeiraLocacao(orc.cliente_id));
     atualizarDescontoIndicacao();
     desenharTotais();
   });
 
   formO.desc_ind.addEventListener("change", function () {
-    orc.desconto_indicacao_pct = formO.desc_ind.checked ? pctDescontoIndicacao() : 0;
+    marcarDescontoIndicacao(formO.desc_ind.checked);
     atualizarDescontoIndicacao();
     desenharTotais();
   });
@@ -1968,7 +2003,8 @@
   });
 
   $("#orc-usar-credito").addEventListener("click", function () {
-    var v = contas({ itens: orc.itens, desconto: orc.desconto, taxa_entrega: 0, desconto_indicacao_pct: orc.desconto_indicacao_pct, credito_usado: 0 });
+    var v = contas({ itens: orc.itens, desconto: orc.desconto, taxa_entrega: 0, desconto_indicacao_pct: orc.desconto_indicacao_pct,
+      desconto_indicacao_chacara_pct: orc.desconto_indicacao_chacara_pct, credito_usado: 0 });
     orc.credito_usado = Math.min(creditoDisponivel(), v.total);
     formO.credito_usado.value = numCampo(orc.credito_usado);
     desenharTotais();
@@ -2007,7 +2043,10 @@
       var q = Number(it.quantidade);
       if (!Number.isInteger(q) || q < 1) throw new Error('Quantidade inválida em "' + nome + '".');
       if (isNaN(it.preco)) throw new Error('Valor inválido em "' + nome + '". Use só números, ex.: 35,00');
-      return { tipo: it.tipo, produto_id: it.produto_id || null, codigo: it.codigo == null ? null : it.codigo, nome: nome, quantidade: q, preco: Number(it.preco) || 0 };
+      var item = { tipo: it.tipo, produto_id: it.produto_id || null, codigo: it.codigo == null ? null : it.codigo, nome: nome, quantidade: q, preco: Number(it.preco) || 0 };
+      // Marca os pacotes da chácara: o crédito e o desconto de indicação usam os percentuais da chácara.
+      if (it.tipo !== "servico" && eProdutoChacara(it.produto_id)) item.chacara = true;
+      return item;
     });
     var retirada = formO.data_retirada.value || null, devolucao = formO.data_devolucao.value || null;
     if (retirada && devolucao && devolucao < retirada) throw new Error("A data da devolução é antes da data da retirada.");
@@ -2022,6 +2061,7 @@
     var dados = {
       indicado_por: indicadoPor,
       desconto_indicacao_pct: indicadoPor ? orc.desconto_indicacao_pct || 0 : 0,
+      desconto_indicacao_chacara_pct: indicadoPor ? orc.desconto_indicacao_chacara_pct || 0 : 0,
       credito_usado: creditoUsado,
       situacao: formO.situacao.value,
       data_retirada: retirada,
@@ -2118,7 +2158,8 @@
       cliente_id: c ? c.id : null, data_evento: r.data || r.entrada, itens: r.itens,
       data_retirada: r.entrada, data_devolucao: r.saida, observacoes: r.obs.join("\n"),
       indicado_por: quem ? quem.id : null,
-      desconto_indicacao_pct: quem && primeiraLocacao(c ? c.id : null) ? pctDescontoIndicacao() : 0
+      desconto_indicacao_pct: quem && primeiraLocacao(c ? c.id : null) ? pctDescontoIndicacao() : 0,
+      desconto_indicacao_chacara_pct: quem && primeiraLocacao(c ? c.id : null) ? pctDescontoIndicacaoChacara() : 0
     });
     nomePedido = r.nome;
     var avisos = [];

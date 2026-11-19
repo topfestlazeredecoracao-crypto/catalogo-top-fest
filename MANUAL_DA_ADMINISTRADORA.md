@@ -499,6 +499,18 @@ Ao gerar o **📄 Contrato** de um orçamento aprovado:
 - **Chácara + decoração:** usa o título e o sinal da chácara, mostra as duas tabelas (Aluguel da chácara e Itens de decoração) e as cláusulas da chácara seguidas das da decoração.
 - **Só decoração:** continua como antes.
 
+### 11.13 Indicação no aluguel da chácara (percentuais separados)
+
+A chácara tem **percentuais próprios** de indicação, separados dos da decoração. Em **⚙️ Configurações → Programa de indicação**:
+- **🎈 Decoração:** crédito para quem indica e desconto para quem foi indicado, sobre os itens de decoração e os serviços.
+- **🏡 Aluguel da chácara:** crédito para quem indica e desconto para quem foi indicado, sobre o pacote da chácara. **Começam em 0%**, ou seja, sem crédito e sem desconto, até você configurar.
+
+Como funciona:
+- Num orçamento com **chácara e decoração**, cada parte usa o seu percentual. O desconto manual é dividido entre as duas partes na proporção dos valores, e o frete não entra.
+- No orçamento, a caixa de desconto mostra os dois (ex.: "5% na decoração e 2% na chácara").
+- A página da chácara mostra ao indicado o desconto da chácara, e a mensagem do **🔗 link de indicação** explica os dois.
+- Os percentuais ficam guardados no orçamento quando ele é aprovado. Mudar as Configurações depois não altera créditos que já existem.
+
 ## 12. Se algo der errado
 
 | O que aconteceu | O que fazer |

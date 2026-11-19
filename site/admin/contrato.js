@@ -38,13 +38,16 @@
   function calcular(o, pct, ch) {
     var soma = function (l) { return l.reduce(function (s, it) { return s + it.quantidade * it.preco; }, 0); };
     var todos = o.itens.filter(function (it) { return it.tipo !== "servico"; });
-    var chacara = todos.filter(function (it) { return ch[it.produto_id]; });
-    var itens = todos.filter(function (it) { return !ch[it.produto_id]; });
+    var chacara = todos.filter(function (it) { return ch[it.produto_id] || it.chacara; });
+    var itens = todos.filter(function (it) { return !(ch[it.produto_id] || it.chacara); });
     var servs = o.itens.filter(function (it) { return it.tipo === "servico"; });
     var sub = soma(todos) + soma(servs);
     var desconto = Number(o.desconto) || 0, taxa = Number(o.taxa_entrega) || 0;
-    var pctInd = Number(o.desconto_indicacao_pct) || 0;
-    var descInd = Math.round(sub * pctInd) / 100;
+    var subCh = soma(chacara);
+    var pD = Number(o.desconto_indicacao_pct) || 0, pC = Number(o.desconto_indicacao_chacara_pct) || 0;
+    var descInd = Math.round((sub - subCh) * pD) / 100 + Math.round(subCh * pC) / 100;
+    var partes = [sub - subCh > 0 && pD, subCh > 0 && pC].filter(Boolean);
+    var pctInd = partes.length === 1 ? partes[0] : 0;
     var credito = Number(o.credito_usado) || 0;
     var total = Math.max(0, sub - desconto - descInd - credito + taxa);
     var sinal = Math.round(total * pct) / 100;
@@ -73,7 +76,7 @@
     var l = [];
     if (v.desconto || v.taxa || v.descInd || v.credito) l.push(["Subtotal", brl(v.sub)]);
     if (v.desconto) l.push(["Desconto", "- " + brl(v.desconto)]);
-    if (v.descInd) l.push(["Desconto por indicação (" + v.pctInd.toLocaleString("pt-BR") + "%)", "- " + brl(v.descInd)]);
+    if (v.descInd) l.push(["Desconto por indicação" + (v.pctInd ? " (" + v.pctInd.toLocaleString("pt-BR") + "%)" : ""), "- " + brl(v.descInd)]);
     if (v.credito) l.push(["Crédito de indicação", "- " + brl(v.credito)]);
     if (v.taxa) l.push(["Taxa de entrega", brl(v.taxa)]);
     l.push(["VALOR TOTAL DA LOCAÇÃO", brl(v.total), true]);
@@ -296,7 +299,7 @@
       var catCh = {};
       (res[3].data || []).forEach(function (x) { if (x.tipo === "chacara") catCh[x.id] = true; });
       (res[4].data || []).forEach(function (p) { if (catCh[p.categoria_id]) ch[p.id] = true; });
-      var temChacara = o.itens.some(function (it) { return ch[it.produto_id]; });
+      var temChacara = o.itens.some(function (it) { return ch[it.produto_id] || it.chacara; });
       var pct = temChacara && modelo.chacara_percentual_sinal != null ? modelo.chacara_percentual_sinal : modelo.percentual_sinal;
       dados = { o: o, c: o.clientes, conf: res[1].data, modelo: modelo, contas: calcular(o, pct, ch) };
       montarFolha();

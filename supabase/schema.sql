@@ -506,3 +506,76 @@ alter table public.contrato_modelo add column if not exists chacara_clausulas te
 alter table public.contrato_modelo add column if not exists chacara_percentual_sinal int not null default 50;
 alter table public.contrato_modelo drop constraint if exists contrato_chacara_sinal_valido;
 alter table public.contrato_modelo add constraint contrato_chacara_sinal_valido check (chacara_percentual_sinal between 0 and 100);
+
+-- ---------- Indicação: percentuais próprios para o aluguel da chácara (19/11/2026) ----------
+-- Começam em 0 (sem crédito e sem desconto na chácara) até a administradora configurar.
+alter table public.configuracoes add column if not exists indicacao_chacara_credito_pct int not null default 0;
+alter table public.configuracoes add column if not exists indicacao_chacara_desconto_pct int not null default 0;
+alter table public.configuracoes drop constraint if exists configuracoes_ind_chacara_validos;
+alter table public.configuracoes add constraint configuracoes_ind_chacara_validos
+  check (indicacao_chacara_credito_pct between 0 and 100 and indicacao_chacara_desconto_pct between 0 and 100);
+
+-- Cada item do orçamento pode ter "chacara": true (o painel marca ao salvar os pacotes da chácara).
+alter table public.orcamentos add column if not exists desconto_indicacao_chacara_pct numeric(5,2) not null default 0;
+alter table public.orcamentos add column if not exists credito_chacara_pct numeric(5,2);
+
+-- Crédito = % da decoração sobre a parte de decoração (itens + serviços)
+--         + % da chácara sobre a parte da chácara.
+-- O desconto manual é dividido entre as duas partes na proporção dos valores. O frete não entra.
+create or replace function public.calcular_credito_indicacao()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+declare
+  cfg public.configuracoes;
+  sub_dec numeric;
+  sub_ch numeric;
+  desc_dec numeric := 0;
+  desc_ch numeric := 0;
+  base_dec numeric;
+  base_ch numeric;
+  hoje date := (now() at time zone 'America/Sao_Paulo')::date;
+begin
+  if new.situacao = 'aprovado' and new.indicado_por is not null
+     and new.indicado_por is distinct from new.cliente_id then
+    if new.credito_pct is null then
+      select * into cfg from public.configuracoes where id = 1;
+      if not coalesce(cfg.indicacao_ativa, false)
+         or (coalesce(cfg.indicacao_credito_pct, 0) = 0 and coalesce(cfg.indicacao_chacara_credito_pct, 0) = 0) then
+        new.credito_chacara_pct := null;
+        new.credito_gerado := null;
+        new.credito_em := null;
+        new.credito_validade := null;
+        return new;
+      end if;
+      new.credito_pct := coalesce(cfg.indicacao_credito_pct, 0);
+      new.credito_chacara_pct := coalesce(cfg.indicacao_chacara_credito_pct, 0);
+      new.credito_em := hoje;
+      new.credito_validade := (hoje + make_interval(months => cfg.indicacao_validade_meses))::date;
+    end if;
+    select
+      coalesce(sum(case when coalesce((it->>'chacara')::boolean, false) then 0
+        else coalesce((it->>'quantidade')::numeric, 0) * coalesce((it->>'preco')::numeric, 0) end), 0),
+      coalesce(sum(case when coalesce((it->>'chacara')::boolean, false)
+        then coalesce((it->>'quantidade')::numeric, 0) * coalesce((it->>'preco')::numeric, 0) else 0 end), 0)
+      into sub_dec, sub_ch
+      from jsonb_array_elements(new.itens) it;
+    if sub_dec + sub_ch > 0 then
+      desc_ch := round(new.desconto * sub_ch / (sub_dec + sub_ch), 2);
+      desc_dec := new.desconto - desc_ch;
+    end if;
+    base_dec := sub_dec - round(sub_dec * new.desconto_indicacao_pct / 100, 2) - desc_dec;
+    base_ch := sub_ch - round(sub_ch * new.desconto_indicacao_chacara_pct / 100, 2) - desc_ch;
+    new.credito_gerado := greatest(0, round(base_dec * new.credito_pct / 100, 2))
+                        + greatest(0, round(base_ch * coalesce(new.credito_chacara_pct, 0) / 100, 2));
+  else
+    new.credito_pct := null;
+    new.credito_chacara_pct := null;
+    new.credito_gerado := null;
+    new.credito_em := null;
+    new.credito_validade := null;
+  end if;
+  return new;
+end;
+$$;
