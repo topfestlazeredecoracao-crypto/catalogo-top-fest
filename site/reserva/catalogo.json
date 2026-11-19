@@ -1,25 +1,25 @@
 {
  "categorias": [
   {
-   "icone": "🎉",
-   "id": 60,
-   "nome": "Aluguel da Chácara Top Fest",
-   "ordem": 0,
-   "tipo": "chacara"
-  },
-  {
    "icone": "🏺",
    "id": 2,
    "nome": "Inspirações de decorações",
-   "ordem": 2,
+   "ordem": 1,
    "tipo": "galeria"
   },
   {
    "icone": "⭕",
    "id": 3,
    "nome": "Capas: arco redondo 1,5 m",
-   "ordem": 3,
+   "ordem": 2,
    "tipo": "produtos"
+  },
+  {
+   "icone": "🎉",
+   "id": 60,
+   "nome": "Aluguel da Chácara Top Fest",
+   "ordem": 3,
+   "tipo": "chacara"
   },
   {
    "icone": "🎀",
@@ -156,6 +156,19 @@
   "whatsapp_orcamentos": "5519991616329"
  },
  "produtos": [
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 427,
+   "descricao": "Chácara inteira: piscina, casa, salão, área gourmet e toda a estrutura.",
+   "id": "p482b5d9f7b",
+   "imagem": null,
+   "kit_itens": [],
+   "nome": "Aluguel chácara pacote completo",
+   "ordem": 1,
+   "preco": null,
+   "quantidade": 1
+  },
   {
    "ativo": true,
    "categoria_id": 7,
@@ -295,19 +308,6 @@
    "imagem": "reserva/fotos/produtos/p080.jpg",
    "kit_itens": [],
    "nome": "Neon",
-   "ordem": 1,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 60,
-   "codigo": 427,
-   "descricao": "Chácara inteira: piscina, casa, salão, área gourmet e toda a estrutura.",
-   "id": "p482b5d9f7b",
-   "imagem": null,
-   "kit_itens": [],
-   "nome": "Pacote completo",
    "ordem": 1,
    "preco": null,
    "quantidade": 1
