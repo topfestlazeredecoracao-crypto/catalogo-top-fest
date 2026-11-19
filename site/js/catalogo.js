@@ -151,7 +151,6 @@
     };
     // "Todos" primeiro; logo abaixo, a galeria de inspirações (mesma cor das outras).
     var h = botao("Todos", "Todos");
-    if (chacara) h += '<a class="chip chacara" href="/chacara/">🏡 ' + esc(chacara.cat.nome) + "</a>";
     cats.forEach(function (c) { if (c.tipo === GALERIA) h += botao(c.chave, c.nome); });
     cats.forEach(function (c) { if (c.tipo !== GALERIA) h += botao(c.chave, c.nome); });
     $("#chips").innerHTML = h;
