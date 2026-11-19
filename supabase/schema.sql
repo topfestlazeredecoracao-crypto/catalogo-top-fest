@@ -579,3 +579,30 @@ begin
   return new;
 end;
 $$;
+
+
+-- ---------- Despesas da chácara (só a administradora vê e altera) ----------
+-- Cada gasto entra na conta do mês da data. "fixa" = gasto que se repete todo mês (o painel copia do mês anterior).
+create table if not exists public.despesas (
+  id uuid primary key default gen_random_uuid(),
+  data date not null,
+  categoria text not null default 'Outros',
+  descricao text not null default '',
+  valor numeric(12,2) not null,
+  pago boolean not null default true,
+  fixa boolean not null default false,
+  criado_em timestamptz not null default now(),
+  atualizado_em timestamptz not null default now(),
+  constraint despesas_valor_valido check (valor >= 0 and valor < 100000000),
+  constraint despesas_textos_validos check (char_length(categoria) between 1 and 60 and char_length(descricao) <= 300)
+);
+create index if not exists despesas_data on public.despesas (data);
+alter table public.despesas enable row level security;
+drop policy if exists "somente admin" on public.despesas;
+create policy "somente admin" on public.despesas for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+revoke all on public.despesas from anon;
+grant select, insert, update, delete on public.despesas to authenticated;
+drop trigger if exists tocar_atualizado_em on public.despesas;
+create trigger tocar_atualizado_em before update on public.despesas
+  for each row execute function public.tocar_atualizado_em();

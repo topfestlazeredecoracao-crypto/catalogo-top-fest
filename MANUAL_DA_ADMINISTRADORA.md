@@ -48,7 +48,7 @@ Para sair, toque em **Sair**, no canto de cima. Faça isso sempre que usar um co
 ## 3. As abas da área da administradora
 
 ```
-[ 📦 Produtos ] [ 🧾 Orçamentos ] [ 📅 Agenda ] [ 🗓️ Agenda da chácara ] [ 🏡 Chácara ] [ 👥 Clientes ] [ 🗂️ Categorias ] [ 📸 Inspirações ] [ ⚙️ Configurações ] [ 💾 Cópia de segurança ]
+[ 📦 Produtos ] [ 🧾 Orçamentos ] [ 📅 Agenda ] [ 🗓️ Agenda da chácara ] [ 💸 Despesas da chácara ] [ 🏡 Chácara ] [ 👥 Clientes ] [ 🗂️ Categorias ] [ 📸 Inspirações ] [ ⚙️ Configurações ] [ 💾 Cópia de segurança ]
 ```
 
 No celular, arraste as abas para o lado para ver todas.
@@ -547,11 +547,47 @@ Na fileira de botões do alto, toque em **📄 Relatórios da chácara** (fica d
    - **🔑 Entradas e saídas:** dia a dia, quem **entra** e quem **sai** da chácara (no mesmo dia, quem sai aparece primeiro). Mostra cliente, telefone, pacote, período, número de dias, observações e uma caixinha **Visto** para marcar à mão. É a folha para o caseiro. Começa em hoje até daqui a 30 dias.
    - **📋 Reservas do período:** uma linha por reserva, com entrada, saída, número de dias, cliente, pacote e valor total. No fim aparece a soma dos aprovados e um aviso se duas reservas aprovadas se cruzarem. Começa em hoje até daqui a 90 dias.
    - **💰 Faturamento por mês:** para cada mês, o número de reservas aprovadas, os dias ocupados, o **valor da chácara**, a média por reserva, o total dos orçamentos e a previsão dos **em aberto**. Cada reserva conta no mês da **entrada**. Começa no ano atual inteiro.
+   - **📈 Lucro por mês** e **💸 Despesas do período:** veja a seção 11.16.
    - **👥 Clientes da chácara:** quem alugou no período, quantas vezes, quantos dias, quanto gastou com a chácara e a última entrada. Os clientes que mais gastaram aparecem primeiro. Começa no ano atual inteiro.
 2. Ajuste **De** e **Até** se quiser outro período. Nos relatórios de entradas e saídas e de reservas, escolha também a **Situação**. O faturamento e os clientes contam **só os aprovados**.
 3. Toque em **🖨️ Imprimir / Salvar em PDF** e escolha a impressora ou **Salvar como PDF**.
 
 **Valor da chácara** é só o valor dos pacotes da chácara, já sem o desconto de indicação da chácara e sem a parte do desconto manual que cabe a ela. Não entram o frete nem os itens de decoração. **Total dos orçamentos** é o valor final do orçamento inteiro.
+
+### 11.16 Despesas da chácara e lucro
+
+Anote aqui tudo o que a chácara gasta. O painel faz a conta **receita − despesas = lucro** de cada mês.
+
+**Lançar uma despesa**
+1. Toque na aba **💸 Despesas da chácara**. Ela abre no mês atual. Use **◀ ▶** para trocar de mês.
+2. Toque em **➕ Nova despesa** e preencha:
+   - **Data:** o dia do gasto. A despesa entra na conta do mês dessa data.
+   - **Tipo de gasto:** escolha uma das sugestões (Água, Luz, Internet, Gás, Caseiro / funcionários, Limpeza, Piscina, Jardinagem, Manutenção e consertos, Compras e equipamentos, Impostos e taxas, Propaganda, Outros) ou escreva um tipo novo. O tipo novo passa a aparecer nas sugestões.
+   - **Descrição (opcional):** ex.: "conserto da bomba".
+   - **Valor:** ex.: 150,00.
+   - **Já foi pago:** desmarque se a conta ainda vai ser paga. Ela aparece como **A pagar**.
+   - **Gasto fixo:** marque nos gastos que se repetem todo mês (luz, água, internet, caseiro).
+3. Toque em **Salvar**.
+
+Em cada despesa há os botões **✏️ Editar**, **🗑️ Excluir** e, se estiver a pagar, **✔️ Marcar como pago**.
+
+**Gastos fixos: copiar do mês anterior**
+- No mês novo, aparece o botão **📋 Copiar N despesa(s) fixa(s) de (mês anterior)**. Ele copia todos os gastos marcados como fixos, com o **mesmo valor**, marcados como **A pagar**.
+- Depois, corrija o valor dos que mudaram (a conta de luz nunca vem igual) e marque como pago quando pagar.
+- O botão some quando todos os fixos já foram copiados, para não lançar em dobro.
+
+**Os três quadros do alto**
+- **Receita da chácara:** a soma dos aluguéis **aprovados** com **entrada** no mês. Conta só o valor do pacote da chácara, sem decoração e sem frete.
+- **Despesas:** a soma dos gastos do mês, pagos e a pagar.
+- **Lucro:** receita − despesas, com a margem em %. Fica **verde** quando sobra dinheiro e **vermelho** quando o mês fecha no prejuízo.
+- Embaixo da lista aparece o quadro **Gastos do mês por tipo**.
+
+**Relatório de lucro (imprimir ou PDF)**
+- Toque em **📈 Relatório de lucro**. Ou abra **📄 Relatórios da chácara** e escolha **📈 Lucro por mês**.
+- Ele mostra cada mês com os aluguéis aprovados, a receita, as despesas, o lucro e a margem, com o total do período e as **despesas por tipo**.
+- Em **💸 Despesas do período** sai a lista de todos os gastos, com o total e o que ainda está a pagar.
+
+**Quem vê:** as despesas ficam guardadas no banco com a mesma proteção dos clientes. **Só você**, com login, consegue ver e alterar. Elas também vão junto na **💾 Cópia de segurança**.
 
 ## 12. Se algo der errado
 

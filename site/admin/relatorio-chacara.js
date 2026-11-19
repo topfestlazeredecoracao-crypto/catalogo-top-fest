@@ -17,16 +17,38 @@
     entradas: "Entradas e saídas da chácara",
     reservas: "Reservas da chácara",
     faturamento: "Faturamento da chácara por mês",
-    clientes: "Clientes da chácara"
+    clientes: "Clientes da chácara",
+    lucro: "Lucro da chácara por mês",
+    despesas: "Despesas da chácara"
   };
   // Faturamento e clientes contam só o que foi fechado (Aprovado).
-  function soAprovados() { return f.tipo.value === "faturamento" || f.tipo.value === "clientes"; }
+  function soAprovados() { return ["faturamento", "clientes", "lucro", "despesas"].indexOf(f.tipo.value) >= 0; }
 
   function hoje() { return new Date().toLocaleDateString("sv-SE"); }
   function periodoPadrao(tipo) {
     var h = hoje(), ano = h.slice(0, 4);
-    if (tipo === "faturamento" || tipo === "clientes") return { de: ano + "-01-01", ate: ano + "-12-31" };
+    if (tipo === "faturamento" || tipo === "clientes" || tipo === "lucro") return { de: ano + "-01-01", ate: ano + "-12-31" };
+    if (tipo === "despesas") return { de: h.slice(0, 7) + "-01", ate: A.somaDias(somaMesISO(h.slice(0, 7), 1) + "-01", -1) };
     return { de: h, ate: A.somaDias(h, tipo === "entradas" ? 30 : 90) };
+  }
+
+  function somaMesISO(ym, n) {
+    var a = Number(ym.slice(0, 4)), m = Number(ym.slice(5, 7)) + n;
+    while (m > 12) { m -= 12; a++; }
+    while (m < 1) { m += 12; a--; }
+    return a + "-" + String(m).padStart(2, "0");
+  }
+  function mesesDoPeriodo() {
+    var meses = [], m = f.de.value.slice(0, 7), fim = f.ate.value.slice(0, 7);
+    while (m <= fim && meses.length < 60) { meses.push(m); m = somaMesISO(m, 1); }
+    return meses;
+  }
+  function nomeMes(mes) { var n = U.MESES[Number(mes.slice(5, 7)) - 1]; return n.charAt(0).toUpperCase() + n.slice(1) + "/" + mes.slice(0, 4); }
+  function despesasDoPeriodo() {
+    return (dados.despesas || []).filter(function (x) { return x.data >= f.de.value && x.data <= f.ate.value; });
+  }
+  function semDespesas() {
+    return dados.despesas == null ? '<p class="ag-alerta">⚠️ As despesas ainda não foram ativadas no banco de dados (falta rodar o supabase/schema.sql).</p>' : "";
   }
 
   function erro(texto) { folha.innerHTML = '<p class="msg">' + esc(texto) + "</p>"; }
@@ -160,7 +182,59 @@
     return { html: html, n: gs.length, rotulo: "cliente(s)" };
   }
 
-  var MONTAR = { entradas: entradas, reservas: reservas, faturamento: faturamento, clientes: clientes };
+  // ---------- 5. Lucro por mês ----------
+  function lucro() {
+    var l = aprovadosPorEntrada(false), ds = despesasDoPeriodo();
+    var tot = { rec: 0, n: 0, desp: 0, apagar: 0 };
+    var linhas = mesesDoPeriodo().map(function (mes) {
+      var r = { rec: 0, n: 0, desp: 0, apagar: 0 };
+      l.forEach(function (o) { if (A.periodo(o).ini.slice(0, 7) === mes) { r.n++; r.rec += U.valorChacara(o, dados); } });
+      ds.forEach(function (x) { if (x.data.slice(0, 7) === mes) { r.desp += Number(x.valor); if (!x.pago) r.apagar += Number(x.valor); } });
+      Object.keys(tot).forEach(function (k) { tot[k] += r[k]; });
+      return linhaLucro(nomeMes(mes), r, !r.n && !r.desp);
+    }).join("");
+    function linhaLucro(rot, r, vazio, forte) {
+      var lu = r.rec - r.desp, b = function (s) { return forte ? "<b>" + s + "</b>" : s; };
+      return "<tr" + (vazio ? ' class="sem"' : forte ? ' class="soma"' : "") + "><td>" + b(rot) + "</td>" +
+        '<td class="n">' + b(r.n) + '</td><td class="n">' + b(esc(brl(r.rec))) + "</td>" +
+        '<td class="n">' + b(esc(brl(r.desp))) + (r.apagar ? '<br><span class="ag-end">a pagar ' + esc(brl(r.apagar)) + "</span>" : "") + "</td>" +
+        '<td class="n ' + (lu < 0 ? "neg" : lu > 0 ? "pos" : "") + '">' + b(esc(brl(lu))) + "</td>" +
+        '<td class="n">' + (r.rec > 0 ? b(Math.round(lu / r.rec * 100) + "%") : "—") + "</td></tr>";
+    }
+    // Despesas por tipo no período
+    var tipos = {};
+    ds.forEach(function (x) { tipos[x.categoria] = (tipos[x.categoria] || 0) + Number(x.valor); });
+    var chaves = Object.keys(tipos).sort(function (a, b) { return tipos[b] - tipos[a]; });
+    var html = semDespesas() +
+      '<div class="ag-tab"><table><thead><tr><th>Mês</th><th class="n">Aluguéis aprovados</th><th class="n">Receita da chácara</th>' +
+      '<th class="n">Despesas</th><th class="n">Lucro</th><th class="n">Margem</th></tr></thead><tbody>' + linhas + "</tbody>" +
+      "<tfoot>" + linhaLucro("Total", tot, false, true) + "</tfoot></table></div>" +
+      (chaves.length ? "<h3 class=\"sub\">Despesas por tipo no período</h3>" +
+        '<div class="ag-tab"><table><thead><tr><th>Tipo de gasto</th><th class="n">Total</th><th class="n">% das despesas</th></tr></thead><tbody>' +
+        chaves.map(function (k) {
+          return "<tr><td>" + esc(k) + '</td><td class="n">' + esc(brl(tipos[k])) + '</td><td class="n">' + Math.round(tipos[k] / tot.desp * 100) + "%</td></tr>";
+        }).join("") + "</tbody></table></div>" : "") +
+      '<p class="ag-resumo"><b>Receita da chácara:</b> valor só dos pacotes da chácara nos orçamentos <b>aprovados</b>, no mês da <b>entrada</b> ' +
+      "(sem decoração e sem frete). <b>Despesas:</b> todos os gastos lançados com data no mês, pagos ou a pagar. <b>Lucro</b> = receita − despesas.</p>";
+    return { html: html, n: tot.n, rotulo: "aluguel(éis) aprovado(s)" };
+  }
+
+  // ---------- 6. Despesas do período ----------
+  function despesas() {
+    var ds = despesasDoPeriodo().sort(function (a, b) { return a.data < b.data ? -1 : a.data > b.data ? 1 : a.categoria.localeCompare(b.categoria); });
+    if (!ds.length) return { html: semDespesas() + msg("Nenhuma despesa nesse período."), n: 0 };
+    var total = 0, apagar = 0;
+    var html = semDespesas() + '<div class="ag-tab"><table><thead><tr><th>Data</th><th>Tipo de gasto</th><th>Descrição</th><th>Situação</th><th class="n">Valor</th></tr></thead><tbody>' +
+      ds.map(function (x) {
+        total += Number(x.valor); if (!x.pago) apagar += Number(x.valor);
+        return '<tr><td class="c">' + dataBR(x.data) + "</td><td><b>" + esc(x.categoria) + "</b>" + (x.fixa ? ' <span class="ag-end">(fixa)</span>' : "") +
+          "</td><td>" + esc(x.descricao || "—") + "</td><td>" + (x.pago ? "Pago" : "<b>A pagar</b>") + '</td><td class="n">' + esc(brl(x.valor)) + "</td></tr>";
+      }).join("") + '</tbody><tfoot><tr class="soma"><td colspan="4"><b>Total</b>' + (apagar ? " (a pagar: " + esc(brl(apagar)) + ")" : "") +
+      '</td><td class="n"><b>' + esc(brl(total)) + "</b></td></tr></tfoot></table></div>";
+    return { html: html, n: ds.length, rotulo: "despesa(s)" };
+  }
+
+  var MONTAR = { entradas: entradas, reservas: reservas, faturamento: faturamento, clientes: clientes, lucro: lucro, despesas: despesas };
 
   function montar() {
     var tipo = f.tipo.value;
@@ -176,7 +250,7 @@
       '<div class="tit"><h2>' + esc(titulo) + "</h2><span>Emitido em " +
       new Date().toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) + "</span></div>" +
       (f.de.value && f.ate.value ? '<p class="ag-resumo">' + dataBR(f.de.value) + " a " + dataBR(f.ate.value) + " · " +
-        (soAprovados() ? "orçamentos aprovados" : f.sit.value === "aprovados" ? "só aprovados" : "aprovados e em aberto") +
+        (tipo === "despesas" ? "despesas lançadas" : soAprovados() ? "orçamentos aprovados" : f.sit.value === "aprovados" ? "só aprovados" : "aprovados e em aberto") +
         (corpo.rotulo ? " · <b>" + corpo.n + "</b> " + corpo.rotulo : "") + "</p>" : "") +
       corpo.html;
     document.getElementById("imprimir").disabled = false;
@@ -206,10 +280,12 @@
       sb.from("clientes").select("*"),
       sb.from("produtos").select("id, codigo, nome, quantidade, kit_itens, categoria_id"),
       sb.from("categorias").select("id, tipo"),
-      sb.from("configuracoes").select("*").eq("id", 1).single()
+      sb.from("configuracoes").select("*").eq("id", 1).single(),
+      Promise.resolve(sb.from("despesas").select("*")).catch(function (e) { return { error: e }; })
     ]).then(function (res) {
-      res.forEach(function (x) { if (x.error) throw x.error; });
-      dados = { orcs: res[0].data, clientes: res[1].data, prods: res[2].data, cats: res[3].data };
+      res.slice(0, 5).forEach(function (x) { if (x.error) throw x.error; });
+      dados = { orcs: res[0].data, clientes: res[1].data, prods: res[2].data, cats: res[3].data,
+        despesas: res[5].error ? null : res[5].data };
       conf = res[4].data || {};
       montar();
     });

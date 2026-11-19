@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261119-8">
+<link rel="stylesheet" href="admin.css?v=20261119-9">
 </head>
 <body>
 <header class="topo">
@@ -57,6 +57,7 @@
       <button role="tab" data-aba="orcamentos">🧾 Orçamentos</button>
       <button role="tab" data-aba="agenda">📅 Agenda</button>
       <button role="tab" data-aba="agchacara">🗓️ Agenda da chácara</button>
+      <button role="tab" data-aba="despesas">💸 Despesas da chácara</button>
       <button role="tab" data-aba="chacara">🏡 Chácara</button>
       <button role="tab" data-aba="clientes">👥 Clientes</button>
       <button role="tab" data-aba="categorias">🗂️ Categorias</button>
@@ -130,6 +131,27 @@
         <a class="btn pri" id="ag-imprimir" href="agenda.html" target="_blank" rel="noopener">🖨️ Imprimir / salvar em PDF</a>
       </div>
       <div id="agenda-res" class="agenda-res"></div>
+    </div>
+
+    <div id="aba-despesas" class="aba" hidden>
+      <p class="aviso-sql" id="desp-sem-tabela" hidden>⚠️ As despesas ainda não foram ativadas no banco de dados. Rode o arquivo <b>supabase/schema.sql</b> no Supabase (SQL Editor → New query) e recarregue esta página.</p>
+      <div class="agc-nav">
+        <button class="btn" id="desp-ant" type="button" aria-label="Mês anterior">◀</button>
+        <h2 id="desp-mes"></h2>
+        <button class="btn" id="desp-prox" type="button" aria-label="Próximo mês">▶</button>
+      </div>
+      <div class="desp-cards">
+        <div class="desp-card"><span>Receita da chácara</span><b id="desp-receita"></b><small id="desp-receita-info"></small></div>
+        <div class="desp-card"><span>Despesas</span><b id="desp-total"></b><small id="desp-total-info"></small></div>
+        <div class="desp-card desp-lucro" id="desp-lucro-card"><span>Lucro</span><b id="desp-lucro"></b><small id="desp-lucro-info"></small></div>
+      </div>
+      <div class="barra botoes">
+        <button class="btn pri" id="nova-despesa" type="button">➕ Nova despesa</button>
+        <button class="btn" id="copiar-fixas" type="button">📋 Copiar despesas fixas do mês anterior</button>
+        <a class="btn" id="desp-relatorio" href="relatorio-chacara.html?tipo=lucro" target="_blank" rel="noopener">📈 Relatório de lucro</a>
+      </div>
+      <ul id="lista-despesas" class="lista"></ul>
+      <div id="desp-por-tipo"></div>
     </div>
 
     <div id="aba-agchacara" class="aba" hidden>
@@ -398,6 +420,24 @@
   </form>
 </dialog>
 
+<!-- Formulário de despesa -->
+<dialog id="dlg-despesa" aria-labelledby="dlg-despesa-tit">
+  <form id="form-despesa" method="dialog">
+    <h2 id="dlg-despesa-tit">Despesa</h2>
+    <label>Data<input name="data" type="date" required></label>
+    <label>Tipo de gasto<input name="categoria" list="tipos-despesa" maxlength="60" required autocomplete="off" placeholder="Ex.: Luz, Água, Caseiro…"></label>
+    <datalist id="tipos-despesa"></datalist>
+    <label>Descrição (opcional)<input name="descricao" maxlength="300" autocomplete="off" placeholder="Ex.: conta de outubro, conserto da bomba"></label>
+    <label>Valor (R$)<input name="valor" inputmode="decimal" required autocomplete="off" placeholder="0,00"></label>
+    <label class="check"><input type="checkbox" name="pago"> Já foi pago</label>
+    <label class="check"><input type="checkbox" name="fixa"> Gasto fixo (se repete todo mês)</label>
+    <div class="acoes">
+      <button class="btn" type="button" data-fechar>Cancelar</button>
+      <button class="btn pri" type="submit">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
 <!-- Formulário de orçamento -->
 <dialog id="dlg-orcamento" class="largo" aria-labelledby="dlg-orcamento-tit">
   <form id="form-orcamento" method="dialog">
@@ -483,7 +523,7 @@
 
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="agenda-comum.js?v=20261119-8"></script>
-<script src="admin.js?v=20261119-8"></script>
+<script src="agenda-comum.js?v=20261119-9"></script>
+<script src="admin.js?v=20261119-9"></script>
 </body>
 </html>

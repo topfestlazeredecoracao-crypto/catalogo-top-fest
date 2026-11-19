@@ -90,3 +90,6 @@ tfoot .soma td{border-top:2px solid #1d2733;border-bottom:0;background:#f6f4ef}
 table.rel-es{table-layout:fixed}
 .rel-es th:nth-child(1){width:21%}.rel-es th:nth-child(2){width:20%}.rel-es th:nth-child(4){width:12%}.rel-es th:nth-child(5){width:56px}
 @media(max-width:560px){table.rel-es{table-layout:auto}.rel-es th{width:auto!important}}
+td.neg,td.neg b{color:#b3261e}
+td.pos,td.pos b{color:#14532d}
+h3.sub{font:700 15px Georgia,serif;color:#0f5f85;margin:18px 0 6px}

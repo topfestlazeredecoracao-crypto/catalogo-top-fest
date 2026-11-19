@@ -250,8 +250,8 @@
       st.contrato = ok(r[5]);
       st.chacara = ok(r[6]) || { id: 1, titulo: "", chamada: "", descricao: "", endereco: "", mostrar_endereco: true, fotos: [] };
       preencherChacara();
-      desenharTudo();
-    }).catch(falhou);
+      return carregarDespesas();
+    }).then(desenharTudo).catch(falhou);
   }
 
   // ---------- Aba Chácara (página de aluguel) ----------
@@ -374,6 +374,195 @@
   ["#ag-de", "#ag-ate", "#ag-ver", "#ag-sit", "#ag-tipo"].forEach(function (id) { $(id).addEventListener("change", desenharAgenda); });
   $('.abas [data-aba="agenda"]').addEventListener("click", desenharAgenda);
 
+  // ---------- Aba Despesas da chácara ----------
+  // Lucro do mês = receita da chácara (orçamentos aprovados com entrada no mês) − despesas com data no mês.
+  var TIPOS_DESPESA = ["Água", "Luz", "Internet", "Gás", "Caseiro / funcionários", "Limpeza", "Piscina", "Jardinagem",
+    "Manutenção e consertos", "Compras e equipamentos", "Impostos e taxas", "Propaganda", "Outros"];
+  var despMes = (function () { var h = hojeISO(); return h.slice(0, 7); })();
+  var despEditando = null;
+  var formDesp = $("#form-despesa");
+
+  function mesNome(ym) {
+    var n = window.TF_AGENDA.util.MESES[Number(ym.slice(5, 7)) - 1];
+    return n.charAt(0).toUpperCase() + n.slice(1) + " de " + ym.slice(0, 4);
+  }
+  function somaMes(ym, n) {
+    var a = Number(ym.slice(0, 4)), m = Number(ym.slice(5, 7)) + n;
+    while (m < 1) { m += 12; a--; }
+    while (m > 12) { m -= 12; a++; }
+    return a + "-" + String(m).padStart(2, "0");
+  }
+  function despesasDoMes(ym) { return (st.despesas || []).filter(function (x) { return x.data.slice(0, 7) === ym; }); }
+  function receitaChacaraMes(ym) {
+    var d = dadosAgenda(), U = window.TF_AGENDA.util, r = { valor: 0, n: 0 };
+    st.orcs.forEach(function (o) {
+      if (o.situacao !== "aprovado") return;
+      var p = window.TF_AGENDA.periodo(o);
+      if (!p || p.ini.slice(0, 7) !== ym || !window.TF_AGENDA.tipoOrc(o, d).chacara) return;
+      r.n++; r.valor += U.valorChacara(o, d);
+    });
+    return r;
+  }
+
+  function desenharDespesas() {
+    if (!st.orcs) return;
+    var semTabela = st.despesas == null;
+    $("#desp-sem-tabela").hidden = !semTabela;
+    ["#nova-despesa", "#copiar-fixas"].forEach(function (id) { $(id).disabled = semTabela; });
+    $("#desp-mes").textContent = mesNome(despMes);
+    var lista = despesasDoMes(despMes).sort(function (a, b) { return a.data < b.data ? -1 : a.data > b.data ? 1 : a.categoria.localeCompare(b.categoria); });
+    var total = lista.reduce(function (s, x) { return s + Number(x.valor); }, 0);
+    var aPagar = lista.filter(function (x) { return !x.pago; }).reduce(function (s, x) { return s + Number(x.valor); }, 0);
+    var rec = receitaChacaraMes(despMes), lucro = rec.valor - total;
+    $("#desp-receita").textContent = brl(rec.valor);
+    $("#desp-receita-info").textContent = rec.n + (rec.n === 1 ? " aluguel aprovado" : " aluguéis aprovados") + " com entrada no mês";
+    $("#desp-total").textContent = brl(total);
+    $("#desp-total-info").textContent = lista.length + (lista.length === 1 ? " gasto" : " gastos") + (aPagar ? " · a pagar: " + brl(aPagar) : "");
+    $("#desp-lucro").textContent = brl(lucro);
+    $("#desp-lucro-info").textContent = rec.valor > 0 ? "Margem: " + Math.round(lucro / rec.valor * 100) + "%" : (total ? "Sem receita no mês" : "");
+    $("#desp-lucro-card").className = "desp-card desp-lucro " + (lucro > 0 ? "pos" : lucro < 0 ? "neg" : "");
+    var fixasAnt = fixasParaCopiar();
+    $("#copiar-fixas").hidden = !fixasAnt.length;
+    $("#copiar-fixas").textContent = "📋 Copiar " + fixasAnt.length + " despesa(s) fixa(s) de " + mesNome(somaMes(despMes, -1)).split(" de ")[0].toLowerCase();
+    $("#desp-relatorio").href = "relatorio-chacara.html?tipo=lucro&de=" + despMes.slice(0, 4) + "-01-01&ate=" + despMes.slice(0, 4) + "-12-31";
+
+    $("#lista-despesas").innerHTML = lista.map(function (x) {
+      return '<li class="item" data-id="' + esc(x.id) + '">' +
+        '<div class="mini">💸</div>' +
+        '<div class="item-info"><b>' + esc(x.categoria) + (x.fixa ? ' <span class="selo-desp">Fixa</span>' : "") +
+        (x.pago ? "" : ' <span class="selo-desp apagar">A pagar</span>') + "</b>" +
+        "<span>" + esc(dataBR(x.data)) + (x.descricao ? " · " + esc(x.descricao) : "") + ' · <span class="desp-valor">' + esc(brl(x.valor)) + "</span></span></div>" +
+        '<div class="item-acoes">' +
+        (x.pago ? "" : '<button class="btn" data-acao="pagar">✔️ Marcar como pago</button>') +
+        '<button class="btn" data-acao="editar">✏️ Editar</button>' +
+        '<button class="btn" data-acao="excluir">🗑️ Excluir</button></div></li>';
+    }).join("") || '<li class="dica">' + (semTabela ? "" : "Nenhuma despesa em " + mesNome(despMes).toLowerCase() + ". Toque em ➕ Nova despesa.") + "</li>";
+
+    var tipos = {};
+    lista.forEach(function (x) { tipos[x.categoria] = (tipos[x.categoria] || 0) + Number(x.valor); });
+    var chaves = Object.keys(tipos).sort(function (a, b) { return tipos[b] - tipos[a]; });
+    $("#desp-por-tipo").innerHTML = chaves.length > 1
+      ? "<h3>Gastos do mês por tipo</h3><table class=\"desp-tipos\"><tbody>" + chaves.map(function (k) {
+        return "<tr><td>" + esc(k) + '</td><td class="n">' + esc(brl(tipos[k])) + '</td><td class="n">' + Math.round(tipos[k] / total * 100) + "%</td></tr>";
+      }).join("") + "</tbody></table>"
+      : "";
+  }
+
+  // Fixas do mês anterior que ainda não estão no mês da tela (mesmo tipo e descrição).
+  function fixasParaCopiar() {
+    var jaTem = {};
+    despesasDoMes(despMes).forEach(function (x) { jaTem[(x.categoria + "|" + x.descricao).toLowerCase()] = true; });
+    return despesasDoMes(somaMes(despMes, -1)).filter(function (x) {
+      return x.fixa && !jaTem[(x.categoria + "|" + x.descricao).toLowerCase()];
+    });
+  }
+
+  function tiposUsados() {
+    var t = {};
+    TIPOS_DESPESA.forEach(function (k) { t[k] = true; });
+    (st.despesas || []).forEach(function (x) { t[x.categoria] = true; });
+    return Object.keys(t).sort(function (a, b) { return a.localeCompare(b, "pt-BR"); });
+  }
+
+  function abrirDespesa(x) {
+    despEditando = x || null;
+    formDesp.reset();
+    $("#dlg-despesa-tit").textContent = x ? "Editar despesa" : "Nova despesa";
+    $("#tipos-despesa").innerHTML = tiposUsados().map(function (k) { return '<option value="' + esc(k) + '">'; }).join("");
+    var hoje = hojeISO();
+    formDesp.data.value = x ? x.data : (hoje.slice(0, 7) === despMes ? hoje : despMes + "-01");
+    formDesp.categoria.value = x ? x.categoria : "";
+    formDesp.descricao.value = x ? x.descricao : "";
+    formDesp.valor.value = x ? numCampo(x.valor) : "";
+    formDesp.pago.checked = x ? !!x.pago : true;
+    formDesp.fixa.checked = x ? !!x.fixa : false;
+    $("#dlg-despesa").showModal();
+  }
+
+  function gravarDespesa(x, dados) {
+    var req = x ? sb.from("despesas").update(dados).eq("id", x.id) : sb.from("despesas").insert(dados);
+    return req.select().single().then(ok).then(function (novo) {
+      if (x) Object.assign(x, novo); else st.despesas.push(novo);
+      desenharDespesas();
+      return novo;
+    });
+  }
+
+  formDesp.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var acao = Promise.resolve().then(function () {
+      var dados = {
+        data: formDesp.data.value,
+        categoria: formDesp.categoria.value.trim().replace(/\s+/g, " "),
+        descricao: formDesp.descricao.value.trim(),
+        valor: lerValor(formDesp.valor.value, "Valor"),
+        pago: formDesp.pago.checked,
+        fixa: formDesp.fixa.checked
+      };
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dados.data)) throw new Error("Escolha a data da despesa.");
+      if (!dados.categoria) throw new Error("Escolha ou escreva o tipo de gasto (ex.: Luz).");
+      if (!(dados.valor > 0)) throw new Error("Digite o valor da despesa, ex.: 150,00");
+      // Usa a mesma grafia de um tipo já existente (ex.: "luz" vira "Luz").
+      var igual = tiposUsados().filter(function (k) { return k.toLowerCase() === dados.categoria.toLowerCase(); })[0];
+      if (igual) dados.categoria = igual;
+      var x = despEditando;
+      return gravarDespesa(x, dados).then(function (novo) {
+        $("#dlg-despesa").close();
+        if (novo.data.slice(0, 7) !== despMes) { despMes = novo.data.slice(0, 7); desenharDespesas(); }
+        avisar(x ? "Despesa salva." : "Despesa lançada.");
+      });
+    });
+    ocupado($('button[type="submit"]', formDesp), acao.catch(falhou));
+  });
+
+  $("#nova-despesa").addEventListener("click", function () { abrirDespesa(null); });
+  $("#desp-ant").addEventListener("click", function () { despMes = somaMes(despMes, -1); desenharDespesas(); });
+  $("#desp-prox").addEventListener("click", function () { despMes = somaMes(despMes, 1); desenharDespesas(); });
+  $('.abas [data-aba="despesas"]').addEventListener("click", desenharDespesas);
+
+  $("#lista-despesas").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-acao]");
+    if (!b) return;
+    var li = b.closest("[data-id]");
+    var x = (st.despesas || []).filter(function (d) { return d.id === li.dataset.id; })[0];
+    if (!x) return;
+    if (b.dataset.acao === "editar") abrirDespesa(x);
+    if (b.dataset.acao === "pagar") ocupado(b, gravarDespesa(x, { pago: true }).then(function () { avisar("Marcada como paga."); }).catch(falhou));
+    if (b.dataset.acao === "excluir") {
+      confirmar("Excluir a despesa \"" + x.categoria + "\" de " + dataBR(x.data) + " (" + brl(x.valor) + ")?", "Excluir").then(function (sim) {
+        if (!sim) return;
+        return sb.from("despesas").delete().eq("id", x.id).then(ok).then(function () {
+          st.despesas = st.despesas.filter(function (d) { return d !== x; });
+          desenharDespesas();
+          avisar("Despesa excluída.");
+        });
+      }).catch(falhou);
+    }
+  });
+
+  // Copia as despesas fixas do mês anterior para o mês na tela (mesmo dia, mesmo valor; marcadas "a pagar").
+  // Pula as que já foram copiadas (mesmo tipo e descrição no mês).
+  $("#copiar-fixas").addEventListener("click", function (e) {
+    var b = e.currentTarget, ant = somaMes(despMes, -1);
+    var novas = fixasParaCopiar();
+    if (!novas.length) { avisar("As despesas fixas de " + mesNome(ant).toLowerCase() + " já estão neste mês."); return; }
+    var ultimoDia = new Date(Number(despMes.slice(0, 4)), Number(despMes.slice(5, 7)), 0).getDate();
+    confirmar("Copiar " + novas.length + " despesa(s) fixa(s) de " + mesNome(ant).toLowerCase() + " para " + mesNome(despMes).toLowerCase() +
+      "? Elas entram com o mesmo valor e marcadas como \"a pagar\". Depois é só corrigir o que mudou.", "Copiar").then(function (sim) {
+      if (!sim) return;
+      var linhas = novas.map(function (x) {
+        var dia = Math.min(Number(x.data.slice(8, 10)), ultimoDia);
+        return { data: despMes + "-" + String(dia).padStart(2, "0"), categoria: x.categoria, descricao: x.descricao,
+          valor: Number(x.valor), pago: false, fixa: true };
+      });
+      return ocupado(b, sb.from("despesas").insert(linhas).select().then(ok).then(function (feitas) {
+        st.despesas = st.despesas.concat(feitas);
+        desenharDespesas();
+        avisar(feitas.length + " despesa(s) fixa(s) copiada(s). Confira os valores.");
+      }));
+    }).catch(falhou);
+  });
+
   // ---------- Aba Agenda da chácara ----------
   // A chácara é um lugar só: o que importa é se a data está livre. Aprovado ocupa; Em aberto só avisa.
   var agcMes = (function () { var h = hojeISO(); return { ano: Number(h.slice(0, 4)), mes: Number(h.slice(5, 7)) }; })();
@@ -450,7 +639,15 @@
   ["#agc-de", "#agc-ate", "#agc-sit"].forEach(function (id) { $(id).addEventListener("change", desenharListaChacara); });
   $('.abas [data-aba="agchacara"]').addEventListener("click", desenharAgendaChacara);
 
+  // Despesas: se a tabela ainda não existe no banco (SQL não rodado), o resto do painel continua funcionando.
+  function carregarDespesas() {
+    return sb.from("despesas").select("*").order("data").then(function (r) {
+      if (r.error) { console.warn(r.error); st.despesas = null; } else st.despesas = r.data;
+    }, function (e) { console.warn(e); st.despesas = null; });
+  }
+
   function desenharTudo() {
+    desenharDespesas();
     preencherFiltroCategorias();
     desenharProdutos();
     desenharCategorias();
@@ -1118,7 +1315,7 @@
     ocupado(b, carregarTudo().then(function () {
       var copia = {
         sistema: "catalogo-top-fest",
-        versao: 5,
+        versao: 6,
         exportado_em: new Date().toISOString(),
         endereco_fotos: fotoUrl("x").replace(/x$/, ""),
         configuracoes: st.conf,
@@ -1127,7 +1324,8 @@
         clientes: st.clientes,
         orcamentos: st.orcs,
         contrato_modelo: st.contrato,
-        chacara_pagina: st.chacara
+        chacara_pagina: st.chacara,
+        despesas: st.despesas || []
       };
       var blob = new Blob([JSON.stringify(copia, null, 2)], { type: "application/json" });
       var a = document.createElement("a");
@@ -1153,7 +1351,8 @@
       var quando = c.exportado_em ? new Date(c.exportado_em).toLocaleString("pt-BR") : "data desconhecida";
       return confirmar("Restaurar a cópia de " + quando + "? (" + c.categorias.length + " categorias, " +
         c.produtos.length + " produtos" + (c.inspiracoes && c.inspiracoes.length ? ", " + c.inspiracoes.length + " fotos de inspiração" : "") +
-        (c.clientes ? ", " + c.clientes.length + " clientes, " + (c.orcamentos || []).length + " orçamentos" : "") + ")", "Restaurar").then(function (sim) {
+        (c.clientes ? ", " + c.clientes.length + " clientes, " + (c.orcamentos || []).length + " orçamentos" : "") +
+        (c.despesas && c.despesas.length ? ", " + c.despesas.length + " despesas" : "") + ")", "Restaurar").then(function (sim) {
         if (sim) return restaurar(c);
       });
     }).catch(falhou);
@@ -1250,6 +1449,13 @@
         linhaCt.chacara_percentual_sinal = ct.chacara_percentual_sinal;
       }
       return sb.from("contrato_modelo").upsert(linhaCt, { onConflict: "id" }).then(ok);
+    }).then(function () {
+      // Despesas (cópias a partir da versão 6).
+      if (!c.despesas || !c.despesas.length) return;
+      return sb.from("despesas").upsert(c.despesas.map(function (x) {
+        return { id: x.id, data: x.data, categoria: x.categoria || "Outros", descricao: x.descricao || "",
+          valor: Number(x.valor) || 0, pago: x.pago !== false, fixa: !!x.fixa };
+      }), { onConflict: "id" }).then(ok);
     }).then(carregarTudo).then(function () { avisar("Cópia restaurada com sucesso!"); });
   }
 
@@ -1631,6 +1837,7 @@
         "</div></li>";
     }).join("") || '<li class="dica">' + (st.orcs.length ? "Nenhum orçamento encontrado." : "Nenhum orçamento ainda.") + "</li>";
     if (!$("#aba-agchacara").hidden) desenharAgendaChacara();
+    if (!$("#aba-despesas").hidden) desenharDespesas();
     if (!$("#aba-agenda").hidden) desenharAgenda();
   }
 

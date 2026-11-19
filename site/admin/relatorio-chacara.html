@@ -7,7 +7,7 @@
 <title>Relatórios da chácara – Chácara Top Fest</title>
 <style>@page{size:A4 landscape}</style>
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="imprimir.css?v=20261119-9">
+<link rel="stylesheet" href="imprimir.css?v=20261119-10">
 </head>
 <body class="relatorio agenda">
 <div class="barra-tela">
@@ -18,6 +18,8 @@
         <option value="reservas">📋 Reservas do período</option>
         <option value="faturamento">💰 Faturamento por mês</option>
         <option value="clientes">👥 Clientes da chácara</option>
+        <option value="lucro">📈 Lucro por mês</option>
+        <option value="despesas">💸 Despesas do período</option>
       </select>
     </label>
     <label>De <input type="date" id="f-de"></label>
@@ -35,7 +37,7 @@
 <main id="folha"><p class="msg">Carregando os relatórios…</p></main>
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
-<script src="agenda-comum.js?v=20261119-8"></script>
-<script src="relatorio-chacara.js?v=20261119-8"></script>
+<script src="agenda-comum.js?v=20261119-9"></script>
+<script src="relatorio-chacara.js?v=20261119-9"></script>
 </body>
 </html>

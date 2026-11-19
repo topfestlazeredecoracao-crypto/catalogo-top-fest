@@ -187,3 +187,19 @@ tr.ag-falta td{background:rgba(179,38,30,.12)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ch-livre{background:rgba(47,191,104,.16)}}
 :root[data-theme="dark"] .ch-livre{background:rgba(47,191,104,.16)}
 @media(min-width:760px){.ch-d{min-height:72px}.ch-quem{font-size:12px}.agc-filtros{grid-template-columns:160px 160px 220px}}
+/* Despesas da chácara */
+.aviso-sql{border:2px solid var(--erro);border-radius:12px;padding:10px 14px;color:var(--erro)}
+.desp-cards{display:grid;grid-template-columns:1fr;gap:10px;margin:10px 0 14px}
+@media(min-width:640px){.desp-cards{grid-template-columns:repeat(3,1fr)}}
+.desp-card{border:1px solid var(--bd);border-radius:14px;padding:12px 14px;background:var(--card);display:flex;flex-direction:column;gap:2px}
+.desp-card span{font-size:14px;color:var(--mu)}
+.desp-card b{font-size:24px}
+.desp-card small{font-size:13px;color:var(--mu)}
+.desp-lucro.pos{border:2px solid var(--ok)}.desp-lucro.pos b{color:var(--ok)}
+.desp-lucro.neg{border:2px solid var(--erro)}.desp-lucro.neg b{color:var(--erro)}
+.desp-valor{font-weight:700;white-space:nowrap}
+.selo-desp{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--tile);margin-left:4px}
+.selo-desp.apagar{background:#fff1b8;color:#4d3800}
+.desp-tipos{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);border:1px solid var(--bd);border-radius:12px}
+.desp-tipos td,.desp-tipos th{padding:8px 10px;border-bottom:1px solid var(--bd);text-align:left}
+.desp-tipos .n{text-align:right;white-space:nowrap}
