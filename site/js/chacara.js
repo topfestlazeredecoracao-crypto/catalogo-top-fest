@@ -231,9 +231,6 @@
     var m = "Olá! Gostaria de um orçamento para alugar a chácara (" + (pagina.titulo || "Espaço Top Fest") + "):\n\n";
     if (p) m += "- 1x " + (cod(p) ? "(Cód. " + cod(p) + ") " : "") + p.nome + "\n\n";
     m += "Entrada: " + dataLonga(e) + "\nSaída: " + dataLonga(s);
-    var tipo = $("#tipo").value, conv = $("#convidados").value.trim();
-    if (tipo) m += "\nTipo de evento: " + tipo;
-    if (conv) m += "\nConvidados: " + conv;
     var nome = $("#nome").value.trim(), obs = $("#obs").value.trim();
     if (nome) m += "\n\nNome: " + nome;
     if (obs) m += (nome ? "" : "\n") + "\nObservações: " + obs.replace(/\s*\n\s*/g, " ");

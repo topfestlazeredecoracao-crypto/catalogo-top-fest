@@ -481,8 +481,8 @@ O site tem uma página só da chácara: **topfestdecoracoes.com.br/chacara/**. N
 **Pacotes (nome, preço, descrição):** toque em **📦 Pacotes**. Eles são produtos da categoria **Aluguel da Chácara Top Fest**; edite como qualquer produto. Para criar outro pacote, use **➕ Novo produto** nessa categoria.
 
 **Pedido da chácara**
-- O cliente escolhe a **data de entrada e de saída** (o site mostra os dias da semana), o tipo de evento e o número de convidados.
-- Ao colar o pedido, a **entrada** vira **Data da retirada** e **Data do evento**, e a **saída** vira **Data da devolução**. O tipo de evento e os convidados vão para as observações.
+- O cliente escolhe a **data de entrada e de saída** (o site mostra os dias da semana), escreve o nome e, se quiser, uma observação.
+- Ao colar o pedido, a **entrada** vira **Data da retirada** e **Data do evento**, e a **saída** vira **Data da devolução**.
 - A chácara tem **Quant 1**: se já houver outro orçamento no mesmo período, aparece o aviso **⛔** e ela aparece na **📅 Agenda**.
 
 ### 11.12 Orçamentos da chácara: filtro e contrato próprio
