@@ -95,6 +95,7 @@
     if (code === "23505" && /codigo/.test(m)) return "Já existe um produto com esse código. Escolha outro ou deixe vazio.";
     if (code === "23505") return "Já existe um item com esse nome.";
     if (code === "23503") return "Não dá para excluir: ainda há produtos nessa categoria.";
+    if (/pagamentos/.test(m) && (code === "PGRST204" || code === "42703")) return "Os pagamentos ainda não foram ativados no banco de dados. Rode o arquivo supabase/schema.sql no Supabase e recarregue a página.";
     if (code === "42501" || /row-level security|permission denied|Unauthorized|JWT/i.test(m)) return "Sem permissão. Saia e entre de novo.";
     if (/mime type|invalid_mime/i.test(m)) return "Formato de foto não aceito. Use JPG, PNG ou WebP.";
     if (/exceeded the maximum allowed size|Payload too large/i.test(m)) return "A foto é grande demais.";
@@ -1426,8 +1427,10 @@
       }), { onConflict: "id", defaultToNull: false }).then(ok);
     }).then(function () {
       if (!c.orcamentos || !c.orcamentos.length) return;
+      // Cópias antigas não têm pagamentos: aí os pagamentos atuais ficam como estão.
+      var temPag = c.orcamentos.some(function (x) { return Array.isArray(x.pagamentos); });
       return sb.from("orcamentos").upsert(c.orcamentos.map(function (x) {
-        return {
+        var linha = {
           id: x.id, numero: x.numero, cliente_id: x.cliente_id || null, cliente_nome: x.cliente_nome || "",
           data_evento: x.data_evento || null, itens: x.itens || [], desconto: x.desconto || 0,
           taxa_entrega: x.taxa_entrega || 0, observacoes: x.observacoes || "", criado_em: x.criado_em,
@@ -1438,6 +1441,8 @@
           credito_usado: x.credito_usado || 0, credito_pct: x.credito_pct == null ? null : x.credito_pct,
           credito_em: x.credito_em || null, credito_validade: x.credito_validade || null
         };
+        if (temPag) linha.pagamentos = Array.isArray(x.pagamentos) ? x.pagamentos : [];
+        return linha;
       }), { onConflict: "id" }).then(ok);
     }).then(function () {
       var ct = c.contrato_modelo;
@@ -1790,27 +1795,72 @@
     return { chacara: ch, decoracao: dec };
   }
 
+  // ----- Pagamentos (entrada, restante, tudo adiantado…) -----
+  var FORMAS = { pix: "Pix", dinheiro: "Dinheiro", cartao: "Cartão", transferencia: "Transferência/depósito" };
+  function listaPag(o) { return Array.isArray(o.pagamentos) ? o.pagamentos : []; }
+  function somaPag(o) {
+    return Math.round(listaPag(o).reduce(function (s, x) { return s + (Number(x.valor) || 0); }, 0) * 100) / 100;
+  }
+  // tipo: "pago" (quitado), "entrada" (pagou uma parte) ou "falta" (nada pago).
+  function situacaoPag(o) {
+    var total = contas(o).total, pago = somaPag(o);
+    var falta = Math.max(0, Math.round((total - pago) * 100) / 100);
+    return {
+      total: total, pago: pago, falta: falta, mais: Math.max(0, Math.round((pago - total) * 100) / 100),
+      tipo: falta <= 0 && (pago > 0 || total > 0) ? "pago" : pago > 0 ? "entrada" : "falta"
+    };
+  }
+  // Mostra a situação do pagamento nos aprovados (e em qualquer um que já tenha pagamento).
+  function mostraPag(o) { return o.situacao === "aprovado" || listaPag(o).length > 0; }
+  function seloPag(o) {
+    var s = situacaoPag(o);
+    var txt = { pago: "✅ Pago", entrada: "Entrada paga", falta: "Falta pagar" }[s.tipo];
+    return '<span class="selo-pag ' + s.tipo + '">' + txt + "</span>";
+  }
+  function aReceber(o) { return o.situacao === "aprovado" && situacaoPag(o).falta > 0; }
+  function dataOrc(o) { return o.data_retirada || o.data_evento || "9999"; }
+
+  function desenharResumoReceber() {
+    var l = st.orcs.filter(aReceber);
+    var box = $("#resumo-receber");
+    box.hidden = !l.length;
+    if (!l.length) return;
+    var soma = l.reduce(function (s, o) { return s + situacaoPag(o).falta; }, 0);
+    var vendo = $("#filtro-pag").value === "receber";
+    box.innerHTML = "<span>💰 A receber: <b>" + esc(brl(soma)) + "</b> de " + l.length + (l.length === 1 ? " orçamento aprovado" : " orçamentos aprovados") + "</span>" +
+      '<button class="btn" type="button" data-acao="ver-receber">' + (vendo ? "Mostrar todos" : "Ver a lista") + "</button>";
+  }
+
   function desenharOrcamentos() {
     var t = $("#busca-orc").value.trim().toLowerCase();
     var sit = $("#filtro-situacao").value;
     var tipo = $("#filtro-tipo").value;
+    var pag = $("#filtro-pag").value;
+    desenharResumoReceber();
     var lista = st.orcs.filter(function (o) {
       if (sit && o.situacao !== sit) return false;
       if (tipo && !tipoOrc(o)[tipo]) return false;
+      if (pag === "receber" && !aReceber(o)) return false;
+      if (pag === "pago" && !(listaPag(o).length && situacaoPag(o).falta <= 0)) return false;
       return !t || String(o.numero) === t.replace(/^n[º°o]?\s*/, "") || (nomeCliente(o) || "").toLowerCase().indexOf(t) >= 0;
     });
+    // A receber: primeiro quem tem a data mais próxima.
+    if (pag === "receber") lista.sort(function (a, b) { return dataOrc(a) < dataOrc(b) ? -1 : dataOrc(a) > dataOrc(b) ? 1 : a.numero - b.numero; });
     $("#lista-orcamentos").innerHTML = lista.map(function (o) {
       var c = cliente(o.cliente_id);
+      var sp = mostraPag(o) ? situacaoPag(o) : null;
       var n = o.itens.length;
       var quem = cliente(o.indicado_por);
       var info = [o.data_evento ? "Evento: " + dataBR(o.data_evento) : "",
         tipoOrc(o).chacara && o.data_retirada && o.data_devolucao ? "Chácara: " + dataBR(o.data_retirada) + " a " + dataBR(o.data_devolucao) : "", n + (n === 1 ? " item" : " itens"), "Total: " + brl(contas(o).total),
+        sp ? "Pago: " + brl(sp.pago) + (sp.falta > 0 ? " · Falta: " + brl(sp.falta) : "") : "",
         quem ? "Indicado por " + quem.nome + (Number(o.credito_gerado) > 0 ? " (crédito de " + brl(o.credito_gerado) + ")" : "") : ""]
         .filter(Boolean).join(" · ");
       return '<li class="item" data-id="' + esc(o.id) + '">' +
         '<div class="mini">' + (tipoOrc(o).chacara ? "🏡" : "🧾") + "</div>" +
         '<div class="item-info"><b>Nº ' + o.numero + " · " + esc(nomeCliente(o) || "Sem cliente") +
         (tipoOrc(o).chacara ? ' <span class="selo-chacara">🏡 Chácara' + (tipoOrc(o).decoracao ? " + decoração" : "") + "</span>" : "") +
+        (sp ? " " + seloPag(o) : "") +
         "</b><span>" + esc(info) + "</span></div>" +
         // A situação muda direto na lista (salva na hora).
         '<label class="sit-troca">Situação:<select data-acao="situacao" class="sit-' + esc(o.situacao) + '">' +
@@ -1819,6 +1869,7 @@
         }).join("") + "</select></label>" +
         '<div class="item-acoes">' +
         '<button class="btn" data-acao="abrir">✏️ Abrir</button>' +
+        (o.situacao !== "cancelado" || listaPag(o).length ? '<button class="btn" data-acao="pagamentos">💰 Pagamentos</button>' : "") +
         '<a class="btn" href="imprimir.html?id=' + encodeURIComponent(o.id) + '" target="_blank" rel="noopener">🖨️ Imprimir / PDF</a>' +
         (o.situacao === "aprovado"
           ? '<a class="btn pri" href="contrato.html?id=' + encodeURIComponent(o.id) + '" target="_blank" rel="noopener">📄 Contrato</a>'
@@ -1857,6 +1908,133 @@
   $("#busca-orc").addEventListener("input", desenharOrcamentos);
   $("#filtro-situacao").addEventListener("change", desenharOrcamentos);
   $("#filtro-tipo").addEventListener("change", desenharOrcamentos);
+  $("#filtro-pag").addEventListener("change", desenharOrcamentos);
+  $("#resumo-receber").addEventListener("click", function (e) {
+    if (!e.target.closest('[data-acao="ver-receber"]')) return;
+    var f = $("#filtro-pag");
+    f.value = f.value === "receber" ? "" : "receber";
+    if (f.value === "receber") { $("#filtro-situacao").value = ""; $("#busca-orc").value = ""; }
+    desenharOrcamentos();
+  });
+
+  // ----- Janela de pagamentos -----
+  var formPag = $("#form-pag");
+  var orcPag = null;
+
+  // Pagamentos em ordem de data, guardando a posição original na lista (para excluir o certo).
+  function pagsOrdenados(o) {
+    return listaPag(o).map(function (p, i) { return { p: p, i: i }; }).sort(function (a, b) {
+      return a.p.data < b.p.data ? -1 : a.p.data > b.p.data ? 1 : a.i - b.i;
+    });
+  }
+
+  // Recibo do pagamento i: "pago até agora" soma os pagamentos até esse (em ordem de data).
+  function msgRecibo(o, i) {
+    var s = situacaoPag(o), ate = 0, este = null;
+    pagsOrdenados(o).some(function (x) { ate += Number(x.p.valor) || 0; if (x.i === i) { este = x.p; return true; } return false; });
+    ate = Math.round(ate * 100) / 100;
+    var falta = Math.max(0, Math.round((s.total - ate) * 100) / 100);
+    var primeiro = primeiroNome(nomeCliente(o) || "");
+    var ch = tipoOrc(o).chacara;
+    var m = "Olá" + (primeiro ? ", " + primeiro : "") + "! Confirmamos o recebimento do seu pagamento ✅\n\n" +
+      "Orçamento nº " + o.numero + (ch ? " – aluguel da chácara" : "");
+    if (ch && o.data_retirada && o.data_devolucao) m += "\nEntrada: " + dataBR(o.data_retirada) + " · Saída: " + dataBR(o.data_devolucao);
+    else if (o.data_evento) m += "\nData do evento: " + dataBR(o.data_evento);
+    m += "\n\nValor recebido: " + brl(este.valor) + " (" + (FORMAS[este.forma] || este.forma) + ") em " + dataBR(este.data);
+    if (este.obs) m += "\nObs.: " + este.obs;
+    m += "\n\nTotal do orçamento: " + brl(s.total) + "\nTotal pago até agora: " + brl(ate) + "\n" +
+      (falta > 0 ? "Falta pagar: " + brl(falta) : "Pagamento completo. Muito obrigada! 💛");
+    return m + "\n\n" + st.conf.nome;
+  }
+
+  function desenharPagamentos() {
+    var o = orcPag, s = situacaoPag(o), c = cliente(o.cliente_id);
+    $("#dlg-pag-tit").textContent = "Pagamentos – orçamento nº " + o.numero;
+    $("#pag-quem").textContent = (nomeCliente(o) || "Sem cliente") + " · " + SITUACOES[o.situacao] +
+      (o.situacao !== "aprovado" ? " (o orçamento ainda não está aprovado)" : "");
+    var linha = function (rot, val, cls) { return "<div" + (cls ? ' class="' + cls + '"' : "") + "><span>" + rot + "</span><span>" + val + "</span></div>"; };
+    $("#pag-resumo").innerHTML = linha("Total do orçamento", esc(brl(s.total))) + linha("Já pago", esc(brl(s.pago))) +
+      (s.mais > 0 ? linha("Pago a mais", esc(brl(s.mais))) : "") +
+      linha(s.falta > 0 ? "Falta pagar" : "Tudo pago ✅", s.falta > 0 ? "<b>" + esc(brl(s.falta)) + "</b>" : "", "total " + (s.falta > 0 ? "falta" : "quitado"));
+    $("#pag-lista").innerHTML = pagsOrdenados(o).map(function (x) {
+      var p = x.p;
+      return '<li data-i="' + x.i + '"><div class="pag-info"><b>' + esc(dataBR(p.data)) + "</b> · " + esc(FORMAS[p.forma] || p.forma) +
+        (p.obs ? "<small>" + esc(p.obs) + "</small>" : "") + "</div>" +
+        '<span class="pag-valor">' + esc(brl(p.valor)) + "</span>" +
+        (c && c.whatsapp
+          ? '<a class="btn" href="' + esc(linkWhats(c.whatsapp, msgRecibo(o, x.i))) + '" target="_blank" rel="noopener">💬 Recibo</a>'
+          : '<button class="btn" type="button" data-acao="sem-whats">💬 Recibo</button>') +
+        '<button class="btn" type="button" data-acao="excluir-pag" aria-label="Excluir pagamento de ' + esc(brl(p.valor)) + '">🗑️</button></li>';
+    }).join("") || '<li class="dica">Nenhum pagamento lançado ainda.</li>';
+  }
+
+  function abrirPagamentos(o) {
+    orcPag = o;
+    formPag.reset();
+    formPag.data.value = hojeISO();
+    desenharPagamentos();
+    $("#dlg-pag").showModal();
+  }
+
+  function gravarPagamentos(lista) {
+    var o = orcPag;
+    return sb.from("orcamentos").update({ pagamentos: lista }).eq("id", o.id).select().single().then(ok).then(function (novo) {
+      Object.assign(o, novo);
+      desenharOrcamentos();
+      if (orcPag === o) desenharPagamentos();
+    });
+  }
+
+  $("#pag-falta").addEventListener("click", function () {
+    var f = situacaoPag(orcPag).falta;
+    formPag.valor.value = f > 0 ? numCampo(f) : "";
+    if (!(f > 0)) avisar("Este orçamento já está todo pago.");
+  });
+
+  formPag.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var acao = Promise.resolve().then(function () {
+      var novo = {
+        data: formPag.data.value,
+        valor: lerValor(formPag.valor.value, "Valor"),
+        forma: formPag.forma.value,
+        obs: formPag.obs.value.trim()
+      };
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(novo.data)) throw new Error("Escolha a data do pagamento.");
+      if (!(novo.valor > 0)) throw new Error("Digite o valor recebido, ex.: 500,00");
+      if (!FORMAS[novo.forma]) throw new Error("Escolha a forma de pagamento.");
+      var falta = situacaoPag(orcPag).falta;
+      var pergunta = novo.valor > falta + 0.004
+        ? confirmar("O valor (" + brl(novo.valor) + ") é maior do que falta pagar (" + brl(falta) + "). Lançar mesmo assim?", "Lançar")
+        : Promise.resolve(true);
+      return pergunta.then(function (sim) {
+        if (!sim) return;
+        return gravarPagamentos(listaPag(orcPag).concat([novo])).then(function () {
+          formPag.valor.value = "";
+          formPag.obs.value = "";
+          var s = situacaoPag(orcPag);
+          avisar("Pagamento de " + brl(novo.valor) + " lançado. " + (s.falta > 0 ? "Falta " + brl(s.falta) + "." : "Tudo pago! ✅") +
+            ' Toque em "💬 Recibo" para avisar o cliente.');
+        });
+      });
+    });
+    ocupado($('button[type="submit"]', formPag), acao.catch(falhou));
+  });
+
+  $("#pag-lista").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-acao]");
+    if (!b) return;
+    if (b.dataset.acao === "sem-whats") {
+      avisar("Este cliente não tem WhatsApp cadastrado. Cadastre o número na aba Clientes.", true);
+      return;
+    }
+    var i = Number(b.closest("[data-i]").dataset.i);
+    var p = listaPag(orcPag)[i];
+    confirmar("Excluir o pagamento de " + brl(p.valor) + " do dia " + dataBR(p.data) + "?", "Excluir").then(function (sim) {
+      if (!sim) return;
+      return gravarPagamentos(listaPag(orcPag).filter(function (x, j) { return j !== i; })).then(function () { avisar("Pagamento excluído."); });
+    }).catch(falhou);
+  });
   $("#novo-orcamento").addEventListener("click", function () { abrirOrcamento(null); });
 
   $("#lista-orcamentos").addEventListener("change", function (e) {
@@ -1889,6 +2067,7 @@
     var o = orcPorId(b.closest("[data-id]").dataset.id);
     var acao = b.dataset.acao;
     if (acao === "abrir") abrirOrcamento(o);
+    else if (acao === "pagamentos") abrirPagamentos(o);
     else if (acao === "copiar") {
       // Novo orçamento com os mesmos itens (ex.: para outro cliente ou outra data).
       abrirOrcamento(null, { cliente_id: o.cliente_id, itens: o.itens, desconto: o.desconto, taxa_entrega: o.taxa_entrega, observacoes: o.observacoes });
@@ -2079,6 +2258,13 @@
       (v.credito ? linha("Crédito de indicação usado", "- " + brl(v.credito)) : "") +
       (v.taxa ? linha("Taxa de entrega", brl(v.taxa)) : "") +
       linha("Total", brl(v.total), "total");
+    // Pagamentos já lançados (são lançados pelo botão "💰 Pagamentos" da lista).
+    var pago = orcOriginal ? somaPag(orcOriginal) : 0;
+    if (pago > 0) {
+      var falta = Math.max(0, Math.round((v.total - pago) * 100) / 100);
+      $("#orc-totais").innerHTML += linha("Já pago", brl(pago)) +
+        linha(falta > 0 ? "Falta pagar" : "Tudo pago ✅", falta > 0 ? "<b>" + brl(falta) + "</b>" : "", falta > 0 ? "falta" : "quitado");
+    }
   }
 
   function adicionarProduto(p, quantidade) {

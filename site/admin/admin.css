@@ -203,3 +203,18 @@ tr.ag-falta td{background:rgba(179,38,30,.12)}
 .desp-tipos{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);border:1px solid var(--bd);border-radius:12px}
 .desp-tipos td,.desp-tipos th{padding:8px 10px;border-bottom:1px solid var(--bd);text-align:left}
 .desp-tipos .n{text-align:right;white-space:nowrap}
+/* Pagamentos do orçamento */
+.selo-pag{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;margin-left:4px;vertical-align:middle}
+.selo-pag.pago{background:#d4f2dd;color:#135c2c}
+.selo-pag.entrada{background:#f6e2a8;color:#4a3500}
+.selo-pag.falta{background:#fde2df;color:#8c1d18}
+.resumo-receber{border:2px solid var(--ac);border-radius:12px;padding:10px 14px;margin:0 0 12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.resumo-receber b{font-size:18px}
+.pag-lista{list-style:none;padding:0;margin:0 0 14px;display:flex;flex-direction:column;gap:8px}
+.pag-lista li{border:1px solid var(--bd);border-radius:12px;padding:10px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;background:var(--card)}
+.pag-lista .pag-info{flex:1 1 180px}
+.pag-lista .pag-info small{display:block;color:var(--mu)}
+.pag-lista .pag-valor{font-weight:700;font-size:18px;white-space:nowrap}
+.pag-lista .btn{padding:8px 12px}
+.totais .falta b{color:var(--erro)}
+.totais .quitado b{color:var(--ok)}

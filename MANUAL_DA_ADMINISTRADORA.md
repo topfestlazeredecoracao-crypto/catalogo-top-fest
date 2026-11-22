@@ -543,11 +543,12 @@ Entram nessa agenda os orçamentos que têm um **pacote da chácara**. Orçament
 
 Na fileira de botões do alto, toque em **📄 Relatórios da chácara** (fica depois de **📄 Relatório de produtos**). O mesmo botão também está na aba **🗓️ Agenda da chácara**. A página abre em outra aba do navegador.
 
-1. Em **Relatório**, escolha um dos quatro:
+1. Em **Relatório**, escolha um destes:
    - **🔑 Entradas e saídas:** dia a dia, quem **entra** e quem **sai** da chácara (no mesmo dia, quem sai aparece primeiro). Mostra cliente, telefone, pacote, período, número de dias, observações e uma caixinha **Visto** para marcar à mão. É a folha para o caseiro. Começa em hoje até daqui a 30 dias.
    - **📋 Reservas do período:** uma linha por reserva, com entrada, saída, número de dias, cliente, pacote e valor total. No fim aparece a soma dos aprovados e um aviso se duas reservas aprovadas se cruzarem. Começa em hoje até daqui a 90 dias.
    - **💰 Faturamento por mês:** para cada mês, o número de reservas aprovadas, os dias ocupados, o **valor da chácara**, a média por reserva, o total dos orçamentos e a previsão dos **em aberto**. Cada reserva conta no mês da **entrada**. Começa no ano atual inteiro.
    - **📈 Lucro por mês** e **💸 Despesas do período:** veja a seção 11.16.
+   - **💵 Recebimentos por mês** e **⏳ A receber:** veja a seção 11.17.
    - **👥 Clientes da chácara:** quem alugou no período, quantas vezes, quantos dias, quanto gastou com a chácara e a última entrada. Os clientes que mais gastaram aparecem primeiro. Começa no ano atual inteiro.
 2. Ajuste **De** e **Até** se quiser outro período. Nos relatórios de entradas e saídas e de reservas, escolha também a **Situação**. O faturamento e os clientes contam **só os aprovados**.
 3. Toque em **🖨️ Imprimir / Salvar em PDF** e escolha a impressora ou **Salvar como PDF**.
@@ -588,6 +589,38 @@ Em cada despesa há os botões **✏️ Editar**, **🗑️ Excluir** e, se esti
 - Em **💸 Despesas do período** sai a lista de todos os gastos, com o total e o que ainda está a pagar.
 
 **Quem vê:** as despesas ficam guardadas no banco com a mesma proteção dos clientes. **Só você**, com login, consegue ver e alterar. Elas também vão junto na **💾 Cópia de segurança**.
+
+### 11.17 Pagamentos (entrada, restante ou tudo adiantado)
+
+Cada orçamento tem o botão **💰 Pagamentos**. Use para anotar **cada dinheiro que o cliente pagou**: tudo adiantado, uma entrada (sinal) e o restante depois, ou o pagamento só no fim. Vale para a chácara e para a decoração.
+
+**Lançar um pagamento**
+1. Na aba **🧾 Orçamentos**, ache o orçamento e toque em **💰 Pagamentos**.
+2. No alto aparecem o **Total do orçamento**, quanto **já foi pago** e quanto **falta pagar**.
+3. Em **Lançar pagamento recebido**, preencha:
+   - **Data:** o dia em que o dinheiro entrou (começa com a data de hoje).
+   - **Valor:** ex.: 500,00. Se o cliente pagou tudo o que faltava, toque em **Preencher o valor que falta**.
+   - **Forma de pagamento:** Pix, Dinheiro, Cartão ou Transferência / depósito.
+   - **Observação (opcional):** ex.: "entrada (sinal)", "restante no dia". Ela aparece no recibo do cliente.
+4. Toque em **💰 Lançar pagamento**. Se o valor for maior do que falta, o sistema pergunta antes.
+
+**Recibo para o cliente:** em cada pagamento há o botão **💬 Recibo**. Ele abre o WhatsApp do cliente com a mensagem pronta: valor recebido, forma, data, total pago até aquele pagamento e quanto ainda falta (ou "Pagamento completo").
+
+**Lançou errado?** Toque na **🗑️** do pagamento para excluí-lo e lance de novo com o valor certo.
+
+**Na lista de orçamentos**
+- Os orçamentos **aprovados** mostram um selo: **Falta pagar** (nada pago), **Entrada paga** (pagou uma parte) ou **✅ Pago** (quitado), e a linha "Pago: R$ … · Falta: R$ …".
+- O quadro **💰 A receber** mostra a soma do que falta receber de todos os aprovados. Toque em **Ver a lista** para ver só esses, com a data mais próxima primeiro. **Mostrar todos** volta à lista completa.
+- O filtro **Todos os pagamentos / Falta receber / Pagos** faz o mesmo pelo menu.
+- Se você mudar os itens ou o desconto do orçamento, o "falta pagar" se ajusta sozinho. A janela do orçamento também mostra **Já pago** e **Falta pagar** embaixo do total.
+
+**Relatórios da chácara (📄 Relatórios da chácara)**
+- **💵 Recebimentos por mês:** o dinheiro que **entrou de verdade** em cada mês, pela data de cada pagamento, separado por Pix, Dinheiro, Cartão e Transferência. Mostra também as despesas e a **sobra no caixa** (recebido − despesas), e embaixo a lista de todos os pagamentos.
+- **⏳ A receber:** os aluguéis da chácara aprovados que ainda têm valor a pagar, com total, já pago, falta e a data do último pagamento.
+- Diferença para o **📈 Lucro por mês:** o lucro conta o aluguel inteiro no mês da **entrada** na chácara; os recebimentos contam o dinheiro no mês em que ele **foi pago**.
+- Os pagamentos são do **orçamento inteiro**: se o orçamento tem chácara e decoração (ou frete), o valor recebido inclui tudo.
+
+**Quem vê:** os pagamentos ficam no orçamento, com a mesma proteção. **Só você**, com login. Eles também vão junto na **💾 Cópia de segurança**.
 
 ## 12. Se algo der errado
 

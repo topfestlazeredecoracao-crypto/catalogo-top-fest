@@ -606,3 +606,10 @@ grant select, insert, update, delete on public.despesas to authenticated;
 drop trigger if exists tocar_atualizado_em on public.despesas;
 create trigger tocar_atualizado_em before update on public.despesas
   for each row execute function public.tocar_atualizado_em();
+
+-- ---------- Pagamentos de cada orçamento (22/11/2026) ----------
+-- Lista com { data: "AAAA-MM-DD", valor, forma: "pix" | "dinheiro" | "cartao" | "transferencia", obs }.
+-- Serve para quem paga tudo adiantado, dá uma entrada ou paga depois. Só a administradora vê (mesma regra dos orçamentos).
+alter table public.orcamentos add column if not exists pagamentos jsonb not null default '[]'::jsonb;
+alter table public.orcamentos drop constraint if exists orcamentos_pagamentos_lista;
+alter table public.orcamentos add constraint orcamentos_pagamentos_lista check (jsonb_typeof(pagamentos) = 'array');

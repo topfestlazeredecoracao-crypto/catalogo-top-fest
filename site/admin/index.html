@@ -7,7 +7,7 @@
 <title>Administração – Catálogo Top Fest</title>
 <meta name="theme-color" content="#8f6d14">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
-<link rel="stylesheet" href="admin.css?v=20261119-9">
+<link rel="stylesheet" href="admin.css?v=20261122-1">
 </head>
 <body>
 <header class="topo">
@@ -98,7 +98,13 @@
           <option value="chacara">🏡 Só chácara</option>
           <option value="decoracao">🎈 Só decoração</option>
         </select>
+        <select id="filtro-pag" aria-label="Filtrar por pagamento">
+          <option value="">Todos os pagamentos</option>
+          <option value="receber">💰 Falta receber (aprovados)</option>
+          <option value="pago">✅ Pagos</option>
+        </select>
       </div>
+      <div id="resumo-receber" class="resumo-receber" hidden></div>
       <ul id="lista-orcamentos" class="lista"></ul>
     </div>
 
@@ -494,6 +500,37 @@
   </form>
 </dialog>
 
+<!-- Pagamentos do orçamento -->
+<dialog id="dlg-pag" aria-labelledby="dlg-pag-tit">
+  <form id="form-pag" method="dialog">
+    <h2 id="dlg-pag-tit">Pagamentos</h2>
+    <p class="dica" id="pag-quem"></p>
+    <div id="pag-resumo" class="totais"></div>
+    <ul id="pag-lista" class="pag-lista"></ul>
+    <h3>Lançar pagamento recebido</h3>
+    <div class="valores">
+      <label>Data<input name="data" type="date" required></label>
+      <label>Valor (R$)<input name="valor" inputmode="decimal" autocomplete="off" placeholder="0,00"></label>
+    </div>
+    <div class="botoes">
+      <button class="btn" type="button" id="pag-falta">Preencher o valor que falta</button>
+    </div>
+    <label>Forma de pagamento
+      <select name="forma">
+        <option value="pix">Pix</option>
+        <option value="dinheiro">Dinheiro</option>
+        <option value="cartao">Cartão</option>
+        <option value="transferencia">Transferência / depósito</option>
+      </select>
+    </label>
+    <label>Observação (opcional)<input name="obs" maxlength="200" autocomplete="off" placeholder="Ex.: entrada (sinal), restante no dia"></label>
+    <div class="acoes">
+      <button class="btn" type="button" data-fechar>Fechar</button>
+      <button class="btn pri" type="submit">💰 Lançar pagamento</button>
+    </div>
+  </form>
+</dialog>
+
 <!-- Colar pedido do WhatsApp -->
 <dialog id="dlg-colar" aria-labelledby="dlg-colar-tit">
   <form id="form-colar" method="dialog">
@@ -524,6 +561,6 @@
 <script src="vendor/supabase-2.117.3.js"></script>
 <script src="../js/config.js"></script>
 <script src="agenda-comum.js?v=20261119-9"></script>
-<script src="admin.js?v=20261119-9"></script>
+<script src="admin.js?v=20261122-1"></script>
 </body>
 </html>
