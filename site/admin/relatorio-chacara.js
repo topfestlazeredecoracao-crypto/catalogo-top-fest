@@ -9,7 +9,8 @@
   var folha = document.getElementById("folha");
   var f = {
     tipo: document.getElementById("f-tipo"), de: document.getElementById("f-de"),
-    ate: document.getElementById("f-ate"), sit: document.getElementById("f-sit")
+    ate: document.getElementById("f-ate"), sit: document.getElementById("f-sit"),
+    pag: document.getElementById("f-pag")
   };
   var dados = null, conf = {};
 
@@ -241,26 +242,36 @@
   var FORMAS = { pix: "Pix", dinheiro: "Dinheiro", cartao: "Cartão", transferencia: "Transferência" };
   function pags(o) { return Array.isArray(o.pagamentos) ? o.pagamentos : []; }
   function somaPags(o) { return Math.round(pags(o).reduce(function (s, x) { return s + (Number(x.valor) || 0); }, 0) * 100) / 100; }
-  var NOTA_PAG = "Os pagamentos são do <b>orçamento inteiro</b>: se o orçamento tem chácara e decoração (ou frete), o valor recebido inclui tudo.";
+  var NOTA_PAG = "Os pagamentos são do <b>orçamento inteiro</b> (não são divididos): um orçamento com chácara <b>e</b> decoração conta inteiro em <b>Chácara</b>, com o frete quando houver.";
+  var NOMES_PAG = { chacara: "chácara", decoracao: "decoração", tudo: "chácara e decoração" };
+  // Tipo escolhido no filtro: Chácara (orçamentos com chácara), Decoração (sem chácara) ou Tudo.
+  function doTipo(o) {
+    var t = f.pag.value, ch = A.tipoOrc(o, dados).chacara;
+    return t === "tudo" || (t === "chacara" ? ch : !ch);
+  }
+  function usaTipoPag() { return f.tipo.value === "recebimentos" || f.tipo.value === "receber"; }
 
   // 7. Dinheiro que entrou, pela data de cada pagamento (orçamentos com chácara).
   function recebimentos() {
     var de = f.de.value, ate = f.ate.value, h = U.ajudantes(dados);
     var lanc = [];
     dados.orcs.forEach(function (o) {
-      if (!A.tipoOrc(o, dados).chacara) return;
+      if (!doTipo(o)) return;
       pags(o).forEach(function (p) { if (p.data >= de && p.data <= ate) lanc.push({ o: o, p: p }); });
     });
     lanc.sort(function (a, b) { return a.p.data < b.p.data ? -1 : a.p.data > b.p.data ? 1 : a.o.numero - b.o.numero; });
-    var ds = despesasDoPeriodo(), formas = Object.keys(FORMAS);
+    // As despesas são da chácara: só entram no relatório da chácara.
+    var comDesp = f.pag.value === "chacara", tudo = f.pag.value === "tudo";
+    var ds = comDesp ? despesasDoPeriodo() : [], formas = Object.keys(FORMAS);
     var tot = { rec: 0, desp: 0 };
     formas.forEach(function (k) { tot[k] = 0; });
     function linha(rot, r, vazio, forte) {
       var b = function (x) { return forte ? "<b>" + x + "</b>" : x; }, sobra = r.rec - r.desp;
       return "<tr" + (vazio ? ' class="sem"' : forte ? ' class="soma"' : "") + "><td>" + b(rot) + "</td>" +
         formas.map(function (k) { return '<td class="n">' + (r[k] ? b(esc(brl(r[k]))) : "—") + "</td>"; }).join("") +
-        '<td class="n">' + b(esc(brl(r.rec))) + '</td><td class="n">' + b(esc(brl(r.desp))) + "</td>" +
-        '<td class="n ' + (sobra < 0 ? "neg" : sobra > 0 ? "pos" : "") + '">' + b(esc(brl(sobra))) + "</td></tr>";
+        '<td class="n">' + b(esc(brl(r.rec))) + "</td>" +
+        (comDesp ? '<td class="n">' + b(esc(brl(r.desp))) + "</td>" +
+          '<td class="n ' + (sobra < 0 ? "neg" : sobra > 0 ? "pos" : "") + '">' + b(esc(brl(sobra))) + "</td>" : "") + "</tr>";
     }
     var linhas = mesesDoPeriodo().map(function (mes) {
       var r = { rec: 0, desp: 0 };
@@ -274,45 +285,55 @@
       Object.keys(tot).forEach(function (k) { tot[k] += r[k]; });
       return linha(nomeMes(mes), r, !r.rec && !r.desp);
     }).join("");
-    var html = semDespesas() + '<div class="ag-tab"><table><thead><tr><th>Mês</th>' +
+    var html = (comDesp ? semDespesas() : "") + '<div class="ag-tab"><table><thead><tr><th>Mês</th>' +
       formas.map(function (k) { return '<th class="n">' + FORMAS[k] + "</th>"; }).join("") +
-      '<th class="n">Total recebido</th><th class="n">Despesas</th><th class="n">Sobra no caixa</th></tr></thead><tbody>' + linhas +
+      '<th class="n">Total recebido</th>' + (comDesp ? '<th class="n">Despesas</th><th class="n">Sobra no caixa</th>' : "") + "</tr></thead><tbody>" + linhas +
       "</tbody><tfoot>" + linha("Total", tot, false, true) + "</tfoot></table></div>" +
       (lanc.length ? '<h3 class="sub">Pagamentos recebidos no período</h3><div class="ag-tab"><table><thead><tr><th>Data</th><th>Cliente</th>' +
-        '<th>Orçamento</th><th>Forma</th><th>Observação</th><th class="n">Valor</th></tr></thead><tbody>' +
+        '<th>Orçamento</th>' + (tudo ? "<th>Tipo</th>" : "") + '<th>Forma</th><th>Observação</th><th class="n">Valor</th></tr></thead><tbody>' +
         lanc.map(function (x) {
-          return '<tr><td class="c">' + dataBR(x.p.data) + "</td><td>" + U.clienteHtml(x.o, h, false) + '</td><td class="c">nº ' + esc(x.o.numero) +
-            "</td><td>" + esc(FORMAS[x.p.forma] || x.p.forma) + "</td><td>" + esc(x.p.obs || "—") + '</td><td class="n">' + esc(brl(x.p.valor)) + "</td></tr>";
-        }).join("") + "</tbody></table></div>" : msg("Nenhum pagamento da chácara lançado nesse período.")) +
+          return '<tr><td class="c">' + dataBR(x.p.data) + "</td><td>" + U.clienteHtml(x.o, h, false) + '</td><td class="c">nº ' + esc(x.o.numero) + "</td>" +
+            (tudo ? "<td>" + (A.tipoOrc(x.o, dados).chacara ? "🏡 Chácara" : "🎈 Decoração") + "</td>" : "") +
+            "<td>" + esc(FORMAS[x.p.forma] || x.p.forma) + "</td><td>" + esc(x.p.obs || "—") + '</td><td class="n">' + esc(brl(x.p.valor)) + "</td></tr>";
+        }).join("") + "</tbody></table></div>" : msg("Nenhum pagamento lançado nesse período.")) +
       '<p class="ag-resumo"><b>Total recebido:</b> o dinheiro que entrou de verdade, pela <b>data de cada pagamento</b> (entradas, restantes e pagamentos adiantados). ' +
-      NOTA_PAG + " <b>Sobra no caixa</b> = recebido − despesas lançadas no mês.</p>";
+      NOTA_PAG + (comDesp ? " <b>Sobra no caixa</b> = recebido − despesas da chácara lançadas no mês." : "") + "</p>";
     return { html: html, n: lanc.length, rotulo: "pagamento(s)" };
   }
 
   // 8. Aluguéis aprovados com valor em aberto (pela data da entrada).
   function receber() {
     var h = U.ajudantes(dados);
-    var l = aprovadosPorEntrada(false).map(function (o) {
+    var de = f.de.value, ate = f.ate.value;
+    var l = dados.orcs.filter(function (o) {
+      if (o.situacao !== "aprovado" || !doTipo(o)) return false;
+      var p = A.periodo(o);
+      return !p || (p.ini >= de && p.ini <= ate);   // sem data: aparece sempre (não fica esquecido)
+    }).map(function (o) {
       var total = U.totalOrc(o, dados), pago = somaPags(o);
       var ult = pags(o).reduce(function (m, p) { return p.data > m ? p.data : m; }, "");
       return { o: o, total: total, pago: pago, falta: Math.max(0, Math.round((total - pago) * 100) / 100), ult: ult };
     }).filter(function (x) { return x.falta > 0; })
-      .sort(function (a, b) { var pa = A.periodo(a.o).ini, pb = A.periodo(b.o).ini; return pa < pb ? -1 : pa > pb ? 1 : a.o.numero - b.o.numero; });
-    if (!l.length) return { html: msg("Nenhum valor a receber da chácara nesse período. 🎉"), n: 0 };
+      .sort(function (a, b) { var pa = ini(a.o), pb = ini(b.o); return pa < pb ? -1 : pa > pb ? 1 : a.o.numero - b.o.numero; });
+    function ini(o) { var p = A.periodo(o); return p ? p.ini : "9999"; }
+    if (!l.length) return { html: msg("Nenhum valor a receber nesse período. 🎉"), n: 0 };
     var t = { total: 0, pago: 0, falta: 0 };
     var hj = hoje();
-    var html = '<div class="ag-tab"><table><thead><tr><th>Entrada</th><th>Cliente</th><th class="c">Orçamento</th>' +
+    var html = '<div class="ag-tab"><table><thead><tr><th>' + (f.pag.value === "chacara" ? "Entrada" : "Data") + '</th><th>Cliente</th><th class="c">Orçamento</th>' +
       '<th class="n">Total</th><th class="n">Já pago</th><th class="n">Falta</th><th>Último pagamento</th></tr></thead><tbody>' +
       l.map(function (x) {
-        var p = A.periodo(x.o);
+        var p = A.periodo(x.o) || { ini: "" };
         t.total += x.total; t.pago += x.pago; t.falta += x.falta;
-        return "<tr><td class=\"c\">" + dataBR(p.ini) + (p.ini < hj ? '<br><span class="ag-end">já passou</span>' : "") + "</td><td>" + U.clienteHtml(x.o, h, false) +
+        return "<tr><td class=\"c\">" + (p.ini ? dataBR(p.ini) : "Sem data") +
+          (f.pag.value === "tudo" ? '<br><span class="ag-end">' + (A.tipoOrc(x.o, dados).chacara ? "🏡 Chácara" : "🎈 Decoração") + "</span>" : "") +
+          (p.ini && p.ini < hj ? '<br><span class="ag-end">já passou</span>' : "") + "</td><td>" + U.clienteHtml(x.o, h, false) +
           '</td><td class="c">nº ' + esc(x.o.numero) + '</td><td class="n">' + esc(brl(x.total)) + '</td><td class="n">' + esc(brl(x.pago)) +
           '</td><td class="n"><b>' + esc(brl(x.falta)) + "</b></td><td>" + (x.ult ? dataBR(x.ult) : "Nada pago ainda") + "</td></tr>";
       }).join("") + '</tbody><tfoot><tr class="soma"><td colspan="3"><b>Total</b></td><td class="n"><b>' + esc(brl(t.total)) +
       '</b></td><td class="n"><b>' + esc(brl(t.pago)) + '</b></td><td class="n"><b>' + esc(brl(t.falta)) + "</b></td><td></td></tr></tfoot></table></div>" +
-      '<p class="ag-resumo">Orçamentos da chácara <b>aprovados</b>, com entrada no período, que ainda têm valor a pagar. ' + NOTA_PAG + "</p>";
-    return { html: html, n: l.length, rotulo: "aluguel(éis) com valor a receber" };
+      '<p class="ag-resumo">Orçamentos <b>aprovados</b> (' + NOMES_PAG[f.pag.value] + "), com a data de entrada ou do evento no período, que ainda têm valor a pagar. " +
+      "Orçamentos aprovados sem nenhuma data aparecem sempre. " + NOTA_PAG + "</p>";
+    return { html: html, n: l.length, rotulo: "orçamento(s) com valor a receber" };
   }
 
   var MONTAR = { entradas: entradas, reservas: reservas, faturamento: faturamento, clientes: clientes, lucro: lucro, despesas: despesas,
@@ -321,7 +342,10 @@
   function montar() {
     var tipo = f.tipo.value;
     document.getElementById("rot-sit").hidden = soAprovados();
+    document.getElementById("rot-pag").hidden = !usaTipoPag();
     var titulo = TITULOS[tipo];
+    if (tipo === "recebimentos") titulo = "Recebimentos por mês – " + NOMES_PAG[f.pag.value];
+    if (tipo === "receber") titulo = "Valores a receber – " + NOMES_PAG[f.pag.value];
     document.title = titulo + " – Top Fest";
     var corpo;
     if (!f.de.value || !f.ate.value || f.ate.value < f.de.value) corpo = { html: msg('Escolha as datas "De" e "Até" (a segunda depois da primeira).') };
@@ -336,7 +360,7 @@
         (corpo.rotulo ? " · <b>" + corpo.n + "</b> " + corpo.rotulo : "") + "</p>" : "") +
       corpo.html;
     document.getElementById("imprimir").disabled = false;
-    history.replaceState(null, "", "?tipo=" + tipo + "&de=" + f.de.value + "&ate=" + f.ate.value + "&sit=" + f.sit.value);
+    history.replaceState(null, "", "?tipo=" + tipo + "&de=" + f.de.value + "&ate=" + f.ate.value + "&sit=" + f.sit.value + "&pt=" + f.pag.value);
   }
 
   var q = new URLSearchParams(location.search);
@@ -345,6 +369,7 @@
   f.de.value = q.get("de") || pp.de;
   f.ate.value = q.get("ate") || pp.ate;
   if (q.get("sit")) f.sit.value = q.get("sit");
+  if (NOMES_PAG[q.get("pt")]) f.pag.value = q.get("pt");
 
   document.getElementById("imprimir").addEventListener("click", function () { window.print(); });
   // Ao trocar de relatório, o período volta ao mais comum para ele.
@@ -353,7 +378,7 @@
     f.de.value = p.de; f.ate.value = p.ate;
     if (dados) montar();
   });
-  ["de", "ate", "sit"].forEach(function (k) { f[k].addEventListener("change", function () { if (dados) montar(); }); });
+  ["de", "ate", "sit", "pag"].forEach(function (k) { f[k].addEventListener("change", function () { if (dados) montar(); }); });
 
   sb.auth.getSession().then(function (r) {
     if (!r.data.session) { erro("Entre na área da administradora primeiro e depois abra o relatório de novo."); return; }

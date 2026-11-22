@@ -610,15 +610,16 @@ Cada orçamento tem o botão **💰 Pagamentos**. Use para anotar **cada dinheir
 
 **Na lista de orçamentos**
 - Os orçamentos **aprovados** mostram um selo: **Falta pagar** (nada pago), **Entrada paga** (pagou uma parte) ou **✅ Pago** (quitado), e a linha "Pago: R$ … · Falta: R$ …".
-- O quadro **💰 A receber** mostra a soma do que falta receber de todos os aprovados. Toque em **Ver a lista** para ver só esses, com a data mais próxima primeiro. **Mostrar todos** volta à lista completa.
+- O quadro **💰 A receber** mostra a soma do que falta receber de todos os aprovados. Toque em **Ver a lista** para ver só esses, com a data mais próxima primeiro. **Mostrar todos** volta à lista completa. O botão **📄 Relatório de recebimentos** abre o relatório explicado abaixo.
 - O filtro **Todos os pagamentos / Falta receber / Pagos** faz o mesmo pelo menu.
 - Se você mudar os itens ou o desconto do orçamento, o "falta pagar" se ajusta sozinho. A janela do orçamento também mostra **Já pago** e **Falta pagar** embaixo do total.
 
-**Relatórios da chácara (📄 Relatórios da chácara)**
-- **💵 Recebimentos por mês:** o dinheiro que **entrou de verdade** em cada mês, pela data de cada pagamento, separado por Pix, Dinheiro, Cartão e Transferência. Mostra também as despesas e a **sobra no caixa** (recebido − despesas), e embaixo a lista de todos os pagamentos.
-- **⏳ A receber:** os aluguéis da chácara aprovados que ainda têm valor a pagar, com total, já pago, falta e a data do último pagamento.
+**Relatórios de pagamentos (em 📄 Relatórios da chácara)**
+- Nos dois relatórios abaixo aparece o filtro **Tipo**: **🏡 Chácara**, **🎈 Decoração** ou **Chácara e decoração** (tudo junto, com uma coluna dizendo de qual é cada pagamento).
+- **💵 Recebimentos por mês:** o dinheiro que **entrou de verdade** em cada mês, pela data de cada pagamento, separado por Pix, Dinheiro, Cartão e Transferência. Embaixo vem a lista de todos os pagamentos. No tipo **Chácara**, mostra também as despesas e a **sobra no caixa** (recebido − despesas); as despesas são só da chácara, por isso não aparecem nos outros tipos.
+- **⏳ A receber:** os orçamentos aprovados que ainda têm valor a pagar, com total, já pago, falta e a data do último pagamento. Orçamento aprovado sem nenhuma data aparece sempre, como **Sem data**.
 - Diferença para o **📈 Lucro por mês:** o lucro conta o aluguel inteiro no mês da **entrada** na chácara; os recebimentos contam o dinheiro no mês em que ele **foi pago**.
-- Os pagamentos são do **orçamento inteiro**: se o orçamento tem chácara e decoração (ou frete), o valor recebido inclui tudo.
+- Os pagamentos são do **orçamento inteiro** e não são divididos: um orçamento com chácara **e** decoração conta inteiro em **Chácara**. Em **Decoração** entram só os orçamentos sem chácara.
 
 **Quem vê:** os pagamentos ficam no orçamento, com a mesma proteção. **Só você**, com login. Eles também vão junto na **💾 Cópia de segurança**.
 

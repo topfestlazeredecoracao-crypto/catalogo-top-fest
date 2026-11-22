@@ -1828,7 +1828,8 @@
     var soma = l.reduce(function (s, o) { return s + situacaoPag(o).falta; }, 0);
     var vendo = $("#filtro-pag").value === "receber";
     box.innerHTML = "<span>💰 A receber: <b>" + esc(brl(soma)) + "</b> de " + l.length + (l.length === 1 ? " orçamento aprovado" : " orçamentos aprovados") + "</span>" +
-      '<button class="btn" type="button" data-acao="ver-receber">' + (vendo ? "Mostrar todos" : "Ver a lista") + "</button>";
+      '<button class="btn" type="button" data-acao="ver-receber">' + (vendo ? "Mostrar todos" : "Ver a lista") + "</button>" +
+      '<a class="btn" href="relatorio-chacara.html?tipo=recebimentos&pt=tudo" target="_blank" rel="noopener">📄 Relatório de recebimentos</a>';
   }
 
   function desenharOrcamentos() {
