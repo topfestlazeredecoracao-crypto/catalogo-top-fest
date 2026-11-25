@@ -271,6 +271,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 60,
+   "codigo": 441,
+   "descricao": "Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "pe518171587",
+   "imagem": "reserva/fotos/produtos/mwrw0ssx-hugxr2.webp",
+   "kit_itens": [],
+   "nome": "Diária completa Sexta-feira (18h) a domingo (20h)",
+   "ordem": 1,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 12,
    "codigo": 131,
    "descricao": "1 arco decorativo, 1 escadinha para doces e 5 boleiras/bandejas.",
@@ -330,19 +343,6 @@
    "imagem": "reserva/fotos/produtos/p058.jpg",
    "kit_itens": [],
    "nome": "Luminária letreiro LED A4 para escrita",
-   "ordem": 1,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
-   "categoria_id": 60,
-   "codigo": 438,
-   "descricao": "",
-   "id": "p260fa5d94f",
-   "imagem": "reserva/fotos/produtos/mwpq50pz-cnegta.webp",
-   "kit_itens": [],
-   "nome": "Meia diária ( 5 horas) - área externa - De segunda a quinta-feira",
    "ordem": 1,
    "preco": null,
    "quantidade": 1
@@ -506,12 +506,12 @@
   {
    "ativo": true,
    "categoria_id": 60,
-   "codigo": 437,
-   "descricao": "",
-   "id": "p0b0ebf08a5",
-   "imagem": "reserva/fotos/produtos/mwppq2jf-hur4cf.webp",
+   "codigo": 444,
+   "descricao": "Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p569c105376",
+   "imagem": "reserva/fotos/produtos/mwrv5rdx-n7qaaj.webp",
    "kit_itens": [],
-   "nome": "Diária completa - dias de semana ( segunda a quinta-feira)",
+   "nome": "Diária completa do final de semana (sábado e domingo)",
    "ordem": 2,
    "preco": null,
    "quantidade": 1
@@ -675,12 +675,12 @@
   {
    "ativo": true,
    "categoria_id": 60,
-   "codigo": 439,
-   "descricao": "",
-   "id": "p75d79f4b79",
-   "imagem": "reserva/fotos/produtos/mwpqbw46-yypzfj.webp",
+   "codigo": 440,
+   "descricao": "Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "pc5b9465dbf",
+   "imagem": "reserva/fotos/produtos/mwry89x5-81ow94.webp",
    "kit_itens": [],
-   "nome": "Diária completa -  sexta-feira",
+   "nome": "Domingo - diária completa",
    "ordem": 3,
    "preco": null,
    "quantidade": 1
@@ -908,19 +908,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 60,
-   "codigo": 440,
-   "descricao": "",
-   "id": "pc5b9465dbf",
-   "imagem": "reserva/fotos/produtos/mwpqloz7-unqkwr.webp",
-   "kit_itens": [],
-   "nome": "Diária completa do final de semana (1 dia sábado ou domingo)",
-   "ordem": 4,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 12,
    "codigo": 138,
    "descricao": "1 boleira de 20 cm e 22 cm de altura, 2 bandejas redondas de 20 cm e 2 de 17 cm.",
@@ -993,6 +980,19 @@
    "imagem": "reserva/fotos/produtos/mwl56vs2-ik9w92.webp",
    "kit_itens": [],
    "nome": "Pelúcia George Pig",
+   "ordem": 4,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 457,
+   "descricao": "Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "pe2d3f8d56b",
+   "imagem": "reserva/fotos/produtos/mwry8xjb-j26z43.webp",
+   "kit_itens": [],
+   "nome": "Sábado - diária completa",
    "ordem": 4,
    "preco": null,
    "quantidade": 1
@@ -1155,19 +1155,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 60,
-   "codigo": 444,
-   "descricao": "",
-   "id": "p569c105376",
-   "imagem": "reserva/fotos/produtos/mwput1gr-nyp4sm.webp",
-   "kit_itens": [],
-   "nome": "Diária completa do final de semana (sábado e domingo)",
-   "ordem": 5,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 10,
    "codigo": 275,
    "descricao": "",
@@ -1214,6 +1201,19 @@
    "imagem": "reserva/fotos/produtos/mwl57nar-09nv6s.webp",
    "kit_itens": [],
    "nome": "Pelúcia Anjinho urso",
+   "ordem": 5,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 437,
+   "descricao": "Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p0b0ebf08a5",
+   "imagem": "reserva/fotos/produtos/mwrxkm4p-fdgt5a.webp",
+   "kit_itens": [],
+   "nome": "Segunda-feira - diária completa",
    "ordem": 5,
    "preco": null,
    "quantidade": 1
@@ -1376,19 +1376,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 60,
-   "codigo": 441,
-   "descricao": "",
-   "id": "pe518171587",
-   "imagem": "reserva/fotos/produtos/mwpqowy4-hj0yom.webp",
-   "kit_itens": [],
-   "nome": "Diária completa do final de semana (Sexta-feira (18hrs) até domingo (20hrs))",
-   "ordem": 6,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 56,
    "codigo": 443,
    "descricao": "",
@@ -1461,6 +1448,19 @@
    "imagem": "reserva/fotos/produtos/mwl58aul-ey8u4q.webp",
    "kit_itens": [],
    "nome": "Pelúcia Coelhinho branco e azul",
+   "ordem": 6,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 449,
+   "descricao": "Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p64ac4214c6",
+   "imagem": "reserva/fotos/produtos/mwrxmboz-7exdb4.webp",
+   "kit_itens": [],
+   "nome": "Terça-feira - diária completa",
    "ordem": 6,
    "preco": null,
    "quantidade": 1
@@ -1597,19 +1597,6 @@
   },
   {
    "ativo": true,
-   "categoria_id": 60,
-   "codigo": 442,
-   "descricao": "",
-   "id": "p99b377c830",
-   "imagem": "reserva/fotos/produtos/mwpribq7-x594pm.webp",
-   "kit_itens": [],
-   "nome": "Locação casada ( chácara + decoração)",
-   "ordem": 7,
-   "preco": null,
-   "quantidade": 1
-  },
-  {
-   "ativo": true,
    "categoria_id": 10,
    "codigo": 277,
    "descricao": "",
@@ -1630,6 +1617,19 @@
    "imagem": "reserva/fotos/produtos/mwl59drj-862qeo.webp",
    "kit_itens": [],
    "nome": "Pelúcia Scooby Doo",
+   "ordem": 7,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 450,
+   "descricao": "Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p2b00037f23",
+   "imagem": "reserva/fotos/produtos/mwrxmw7u-o75ijd.webp",
+   "kit_itens": [],
+   "nome": "Quarta - feira - diária completa",
    "ordem": 7,
    "preco": null,
    "quantidade": 1
@@ -1784,7 +1784,62 @@
    "descricao": "",
    "id": "i10",
    "imagem": "reserva/fotos/inspiracoes/i10.jpg",
-   "kit_itens": [],
+   "kit_itens": [
+    {
+     "codigo": 466,
+     "nome": "kit com 2 arcos romanos e 3 cilindros",
+     "produto_id": "pfcf11befad",
+     "quantidade": 2
+    },
+    {
+     "codigo": 50,
+     "nome": "Capa para arco romano – Preto",
+     "produto_id": "p183",
+     "quantidade": 1
+    },
+    {
+     "codigo": 124,
+     "nome": "Luminária letreiro LED A4 para escrita",
+     "produto_id": "p058",
+     "quantidade": 1
+    },
+    {
+     "codigo": 285,
+     "nome": "Número de Neon Led -  nº 0 - 50 cm",
+     "produto_id": "pc6964f9d4c",
+     "quantidade": 1
+    },
+    {
+     "codigo": 290,
+     "nome": "Número de Neon Led -  nº 6 - 50 cm",
+     "produto_id": "pe2733c0e18",
+     "quantidade": 1
+    },
+    {
+     "codigo": 181,
+     "nome": "Tapete felpudo cinza 2 x 1,5 m",
+     "produto_id": "p031",
+     "quantidade": 1
+    },
+    {
+     "codigo": 139,
+     "nome": "Boleira prateada",
+     "produto_id": "p042",
+     "quantidade": 1
+    },
+    {
+     "codigo": 138,
+     "nome": "Kit com 5 peças prata com espelhos",
+     "produto_id": "p041",
+     "quantidade": 1
+    },
+    {
+     "codigo": 130,
+     "nome": "Placa Happy Birthday 40 x 28 cm, branco",
+     "produto_id": "p064",
+     "quantidade": 1
+    }
+   ],
    "nome": "Decoração completa com dois arcos romanos e cilindros",
    "ordem": 8,
    "preco": null,
@@ -1812,6 +1867,19 @@
    "imagem": "reserva/fotos/produtos/mwl5a2t2-ihm2wa.webp",
    "kit_itens": [],
    "nome": "Pelúcia Bob Esponja",
+   "ordem": 8,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 451,
+   "descricao": "Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "pee85625278",
+   "imagem": "reserva/fotos/produtos/mwrxni1l-ijfq2z.webp",
+   "kit_itens": [],
+   "nome": "Quinta-feira - diária completa",
    "ordem": 8,
    "preco": null,
    "quantidade": 1
@@ -2013,6 +2081,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 60,
+   "codigo": 453,
+   "descricao": "Diária com acesso à área externa (sem uso da casa interna). Inclui piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet equipada (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p398b1f1b26",
+   "imagem": "reserva/fotos/produtos/mwry2odd-z500rh.webp",
+   "kit_itens": [],
+   "nome": "Segunda-feira - Uso exclusivo da área externa",
+   "ordem": 9,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 13,
    "codigo": 162,
    "descricao": "",
@@ -2182,6 +2263,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 60,
+   "codigo": 454,
+   "descricao": "Diária com acesso à área externa (sem uso da casa interna). Inclui piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet equipada (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p14db1d9e1c",
+   "imagem": "reserva/fotos/produtos/mwry395l-tyzsw1.webp",
+   "kit_itens": [],
+   "nome": "Terça-feira - Uso exclusivo da área externa",
+   "ordem": 10,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 8,
    "codigo": 106,
    "descricao": "Meidas: Alturas de 80, 70 e 60 cm, com tampos redondos de 70, 60 e 50 cm de diâmetro.",
@@ -2304,7 +2398,44 @@
    "descricao": "",
    "id": "i07",
    "imagem": "reserva/fotos/inspiracoes/i07.jpg",
-   "kit_itens": [],
+   "kit_itens": [
+    {
+     "codigo": 462,
+     "nome": "Kit com 1 arco romano 2m, 1 arco redondo 1,5m e 3 cilindros",
+     "produto_id": "p7ac035a27b",
+     "quantidade": 1
+    },
+    {
+     "codigo": 93,
+     "nome": "Conjunto de 5 mesas douradas reforçadas com tampo branco",
+     "produto_id": "p015",
+     "quantidade": 1
+    },
+    {
+     "codigo": 21,
+     "nome": "Capa para arco redondo 1,5mm romano e cilindros - Confraternização",
+     "produto_id": "p127",
+     "quantidade": 1
+    },
+    {
+     "codigo": 296,
+     "nome": "Vaso completo com flores",
+     "produto_id": "p91a591f1fe",
+     "quantidade": 1
+    },
+    {
+     "codigo": 134,
+     "nome": "Kit com 2 bandejas douradas com espelho",
+     "produto_id": "p037",
+     "quantidade": 1
+    },
+    {
+     "codigo": 136,
+     "nome": "Bandeja roda gigante dourada com espelho",
+     "produto_id": "p039",
+     "quantidade": 1
+    }
+   ],
    "nome": "Decoração completa para sua confraternização",
    "ordem": 11,
    "preco": null,
@@ -2345,6 +2476,19 @@
    "imagem": "reserva/fotos/produtos/mwl5ce1w-uulrzf.webp",
    "kit_itens": [],
    "nome": "Pelúcia Menina rezando",
+   "ordem": 11,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 455,
+   "descricao": "Diária com acesso à área externa (sem uso da casa interna). Inclui piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet equipada (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "pc3cc2141a5",
+   "imagem": "reserva/fotos/produtos/mwry3x1u-8ogguw.webp",
+   "kit_itens": [],
+   "nome": "Quarta-feira - Uso exclusivo da área externa",
    "ordem": 11,
    "preco": null,
    "quantidade": 1
@@ -2533,6 +2677,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 60,
+   "codigo": 456,
+   "descricao": "Diária com acesso à área externa (sem uso da casa interna). Inclui piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet equipada (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p87056ceea2",
+   "imagem": "reserva/fotos/produtos/mwry4jw2-vel1ha.webp",
+   "kit_itens": [],
+   "nome": "Quinta-feira - Uso exclusivo da área externa",
+   "ordem": 12,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 9,
    "codigo": 123,
    "descricao": "",
@@ -2670,6 +2827,19 @@
    "imagem": "reserva/fotos/produtos/mwl5dfkt-3db7vn.webp",
    "kit_itens": [],
    "nome": "Pelúcia cachorrinho branco e rosa",
+   "ordem": 13,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 448,
+   "descricao": "Opção econômica para pequenas comemorações (manhã, tarde ou noite) com acesso à área externa (sem uso da casa interna). Inclui piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet equipada (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "pc1ce396e21",
+   "imagem": "reserva/fotos/produtos/mwrwxlll-qv1ag6.webp",
+   "kit_itens": [],
+   "nome": "Segunda-feira  - Meia diária (5 horas) - Uso exclusivo da área externa",
    "ordem": 13,
    "preco": null,
    "quantidade": 1
@@ -2871,6 +3041,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 60,
+   "codigo": 438,
+   "descricao": "Opção econômica para pequenas comemorações (manhã, tarde ou noite) com acesso à área externa (sem uso da casa interna). Inclui piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet equipada (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p260fa5d94f",
+   "imagem": "reserva/fotos/produtos/mwrwhw19-filjnd.webp",
+   "kit_itens": [],
+   "nome": "Terça-feira - Meia diária (5 horas) - Uso exclusivo da área externa",
+   "ordem": 14,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 7,
    "codigo": 252,
    "descricao": "",
@@ -3008,6 +3191,19 @@
    "imagem": "reserva/fotos/produtos/mwl5f2co-4p6jby.webp",
    "kit_itens": [],
    "nome": "Pelúcia Urso grande",
+   "ordem": 15,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 60,
+   "codigo": 446,
+   "descricao": "Opção econômica para pequenas comemorações (manhã, tarde ou noite) com acesso à área externa (sem uso da casa interna). Inclui piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet equipada (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "pd576d232d7",
+   "imagem": "reserva/fotos/produtos/mwrwwoz7-501v06.webp",
+   "kit_itens": [],
+   "nome": "Quarta-feira  - Meia diária (5 horas) - Uso exclusivo da área externa",
    "ordem": 15,
    "preco": null,
    "quantidade": 1
@@ -3157,6 +3353,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 60,
+   "codigo": 447,
+   "descricao": "Opção econômica para pequenas comemorações (manhã, tarde ou noite) com acesso à área externa (sem uso da casa interna). Inclui piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet equipada (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p3ec57de898",
+   "imagem": "reserva/fotos/produtos/mwrwx5i9-0rvbap.webp",
+   "kit_itens": [],
+   "nome": "Quinta-feira - Meia diária (5 horas) - Uso exclusivo da área externa",
+   "ordem": 16,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 18,
    "codigo": 202,
    "descricao": "7 rosas abertas e 2 botões.",
@@ -3261,6 +3470,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 60,
+   "codigo": 452,
+   "descricao": "Valores a combinar - Área de lazer completa com casa de 2 quartos (4 beliches e 1 cama de solteiro), sala com sofá-cama de casal, banheiro, cozinha com fogão elétrico e som ambiente. Conta ainda com piscina, gramado, 2 banheiros externos, barracão ventilado com mesas e cadeiras, área gourmet completa (churrasqueira, iglu, fogão, geladeira e bebedouro) e Wi-Fi.",
+   "id": "p90cc546978",
+   "imagem": "reserva/fotos/produtos/mwrxolmu-3mgw4e.webp",
+   "kit_itens": [],
+   "nome": "Feriados - diária completa",
+   "ordem": 17,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 12,
    "codigo": 148,
    "descricao": "Kit com bandejas, vasos e boleiras na cor rose gold.",
@@ -3294,6 +3516,19 @@
    "imagem": "reserva/fotos/produtos/p075.jpg",
    "kit_itens": [],
    "nome": "Rosas avulsas na cor branca",
+   "ordem": 17,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 55,
+   "codigo": 458,
+   "descricao": "",
+   "id": "pe7d3d7e437",
+   "imagem": "reserva/fotos/produtos/mwrz573a-ackpzv.webp",
+   "kit_itens": [],
+   "nome": "Urso branco e rosa para chá revelação",
    "ordem": 17,
    "preco": null,
    "quantidade": 1
@@ -3372,6 +3607,19 @@
    "imagem": "reserva/fotos/inspiracoes/i15.jpg",
    "kit_itens": [],
    "nome": "Decoração completa 2 arcos romanos e mesa de madeira",
+   "ordem": 18,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 55,
+   "codigo": 459,
+   "descricao": "",
+   "id": "pb3fb01a2d7",
+   "imagem": "reserva/fotos/produtos/mwrz5tgy-eb52t9.webp",
+   "kit_itens": [],
+   "nome": "Hipopótamo cinza",
    "ordem": 18,
    "preco": null,
    "quantidade": 1
@@ -3495,6 +3743,32 @@
   },
   {
    "ativo": true,
+   "categoria_id": 55,
+   "codigo": 460,
+   "descricao": "",
+   "id": "pc99f6fb049",
+   "imagem": "reserva/fotos/produtos/mwrz68e7-75trze.webp",
+   "kit_itens": [],
+   "nome": "Hipopótamo rosa",
+   "ordem": 19,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 9,
+   "codigo": 462,
+   "descricao": "",
+   "id": "p7ac035a27b",
+   "imagem": "reserva/fotos/produtos/mwtjs2nx-1nhom5.webp",
+   "kit_itens": [],
+   "nome": "Kit com 1 arco romano 2m, 1 arco redondo 1,5m e 3 cilindros",
+   "ordem": 19,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 12,
    "codigo": 151,
    "descricao": "",
@@ -3606,6 +3880,32 @@
    "imagem": "reserva/fotos/inspiracoes/i16.jpg",
    "kit_itens": [],
    "nome": "Decoração completa 2 arcos romanos e mesa de madeira",
+   "ordem": 20,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 55,
+   "codigo": 461,
+   "descricao": "",
+   "id": "p7b1cb69a00",
+   "imagem": "reserva/fotos/produtos/mwrz7vn4-unaq0c.webp",
+   "kit_itens": [],
+   "nome": "Elefante rosa",
+   "ordem": 20,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 9,
+   "codigo": 463,
+   "descricao": "",
+   "id": "p5498c26c33",
+   "imagem": "reserva/fotos/produtos/mwtjw0eg-7mib28.webp",
+   "kit_itens": [],
+   "nome": "Kit 1 arco romano e 3 cilindros",
    "ordem": 20,
    "preco": null,
    "quantidade": 1
@@ -3742,6 +4042,19 @@
   },
   {
    "ativo": true,
+   "categoria_id": 9,
+   "codigo": 464,
+   "descricao": "",
+   "id": "pef4d27d534",
+   "imagem": "reserva/fotos/produtos/mwtjynok-y845mx.webp",
+   "kit_itens": [],
+   "nome": "Kit com arco redondo 1,5m e 3 cilindros",
+   "ordem": 21,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
    "categoria_id": 10,
    "codigo": 291,
    "descricao": "Pode ser colocado em painel ou no chão e precisa ser ligado na tomada.",
@@ -3814,6 +4127,19 @@
    "imagem": "reserva/fotos/inspiracoes/i19.jpg",
    "kit_itens": [],
    "nome": "Decoração completa com 1 arco redondo, 1 arco romano, jogo de mesas e cilindros",
+   "ordem": 22,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 9,
+   "codigo": 466,
+   "descricao": "",
+   "id": "pfcf11befad",
+   "imagem": "reserva/fotos/produtos/mwtk4ttw-9201yh.webp",
+   "kit_itens": [],
+   "nome": "kit com 2 arcos romanos e 3 cilindros",
    "ordem": 22,
    "preco": null,
    "quantidade": 1
@@ -4776,6 +5102,19 @@
    "imagem": "reserva/fotos/produtos/mwlgiohv-6f7rd2.webp",
    "kit_itens": [],
    "nome": "Kit com 10 folhas artificiais para decoração",
+   "ordem": 35,
+   "preco": null,
+   "quantidade": 1
+  },
+  {
+   "ativo": true,
+   "categoria_id": 2,
+   "codigo": 465,
+   "descricao": "",
+   "id": "pb97895034f",
+   "imagem": "reserva/fotos/produtos/mwtk2rmm-qc0rv3.webp",
+   "kit_itens": [],
+   "nome": "Kit com 2 arcos romanos e 3 cilindros",
    "ordem": 35,
    "preco": null,
    "quantidade": 1
